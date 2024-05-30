@@ -1,0 +1,1 @@
+BG_COLOR_ENTRY = "#F3EBE8"
