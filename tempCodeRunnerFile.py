@@ -1,1 +1,3 @@
-BG_COLOR_ENTRY = "#F3EBE8"
+if __name__ == "__main__":
+    app = LoginApp()
+    app.mainloop()

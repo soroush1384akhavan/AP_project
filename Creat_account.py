@@ -27,7 +27,6 @@ class Signup(Tk):
         self.title("Login")
         self.resizable(width=False, height=False)
         self.config(width=1125, height=800, bg=BG_COLOR_BACK)
-
         self.setup_ui()
         
     def setup_ui(self):
@@ -319,6 +318,7 @@ class Signup(Tk):
         )
         self.create_button.place(x=400, y=642.66)
         
+
         
     
 if __name__ == "__main__":
