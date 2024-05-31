@@ -108,7 +108,8 @@ class LoginApp(Tk):
     def on_click_sign_in(self, event):
         self.sign_in_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_CLICK)
         self.after(200, lambda: self.sign_in_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_OFF))
-        
+        self.destroy()
+        Creat_account.start()
     
     def on_enter_log_in(self, event):
         self.log_in_button.configure(fg_color=LOG_IN_BUTTON_COLOR_ON)

@@ -1,73 +1,70 @@
-import tkinter as tk
-from tkinter import ttk
+from tkinter import Tk, Canvas, PhotoImage, StringVar, Entry, Button, Listbox, END
+import re
 
-class SampleApp(tk.Tk):
+# Constants
+BG_COLOR_BACK = "#393939"
+FONT_LABEL = ('Khula', 50)
+FONT_STYLE_ENTRY = ('Kdam Thmor', 28)
+FONT_BUTTON = ('Kdam Thmor', 28)
+TEXT_COLOR_ENTRY = "#BDB7B4"
+BG_COLOR_ENTRY = "#888888"
+
+class Signup(Tk):
     def __init__(self):
         super().__init__()
-        self.title("Page Switcher")
-        self.geometry("600x400")
+        self.title("Login")
+        self.resizable(width=False, height=False)
+        self.config(width=1125, height=800, bg=BG_COLOR_BACK)
+        self.setup_ui()
         
-        self.container = tk.Frame(self)
-        self.container.place(relx=0, rely=0, relwidth=1, relheight=1)
-
-        self.frames = {}
-        for F in (StartPage, PageOne):
-            page_name = F.__name__
-            frame = F(parent=self.container, controller=self)
-            self.frames[page_name] = frame
-            frame.place(relx=1, rely=0, relwidth=1, relheight=1)  # Initially place the frame off-screen to the right
-
-        self.show_frame("StartPage")
-
-    def show_frame(self, page_name):
-        frame = self.frames[page_name]
-        self.slide_in(frame)
-
-    def slide_in(self, frame):
-        for other_frame in self.frames.values():
-            other_frame.place_forget()
+    def setup_ui(self):
+        self.background_image = PhotoImage(file="Signup_6.png")
+        self.canvas = Canvas(width=1125, height=800, highlightthickness=0, bg=BG_COLOR_BACK)
+        self.canvas.create_image(562, 400, image=self.background_image)
+        self.canvas.place(relwidth=1, relheight=1)
         
-        frame.place(relx=1, rely=0, relwidth=1, relheight=1)  # Place the new frame off-screen to the right
+        self.city_var = StringVar()
         
-        def update_position(x):
-            frame.place_configure(relx=x)
-            self.update()
-
-        steps = 20
-        duration = 100  # Total duration in milliseconds
-        delay = duration // steps
+        self.city_entry = Entry(
+            master=self,
+            font=FONT_STYLE_ENTRY,
+            width=40,
+            textvariable=self.city_var
+        )
+        self.city_entry.place(x=400, y=200)
+        self.city_entry.bind("<KeyRelease>", self.show_suggestions)
         
-        for i in range(steps):
-            x = 1 - (i + 1) / steps
-            self.after(delay * i, update_position, x)
+        self.suggestion_listbox = Listbox(
+            master=self,
+            font=FONT_STYLE_ENTRY,
+            width=40,
+            height=4
+        )
+        self.suggestion_listbox.bind("<<ListboxSelect>>", self.insert_suggestion)
         
-        # Ensure the final position is set
-        self.after(duration, frame.place_configure, {'relx': 0})
+    def show_suggestions(self, event):
+        typed_text = self.city_var.get().lower()
+        suggestions = ["New York", "London", "Paris", "Tokyo"]  # Or any other list of suggestions
+        matched_cities = [city for city in suggestions if typed_text in city.lower()]
+        self.suggestion_listbox.delete(0, END)
+        for city in matched_cities:
+            self.suggestion_listbox.insert(END, city)
+        if matched_cities:
+            self.suggestion_listbox.place(x=400, y=240)  # Adjust the position as needed
+        else:
+            self.suggestion_listbox.place_forget()
+        
+    def insert_suggestion(self, event):
+        selected_index = self.suggestion_listbox.curselection()
+        if selected_index:
+            selected_suggestion = self.suggestion_listbox.get(selected_index)
+            self.city_entry.delete(0, END)
+            self.city_entry.insert(0, selected_suggestion)
+            self.suggestion_listbox.place_forget()
 
-class StartPage(tk.Frame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-
-        label = tk.Label(self, text="Start Page", font=("Verdana", 24))
-        label.pack(side="top", fill="x", pady=10)
-
-        button1 = ttk.Button(self, text="Go to Page One",
-                            command=lambda: controller.show_frame("PageOne"))
-        button1.pack()
-
-class PageOne(tk.Frame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-
-        label = tk.Label(self, text="Page One", font=("Verdana", 24))
-        label.pack(side="top", fill="x", pady=10)
-
-        button = ttk.Button(self, text="Go back to Start Page",
-                            command=lambda: controller.show_frame("StartPage"))
-        button.pack()
+def start():
+    app = Signup()
+    app.mainloop()
 
 if __name__ == "__main__":
-    app = SampleApp()
-    app.mainloop()
+    start()
