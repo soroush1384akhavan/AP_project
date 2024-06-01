@@ -10,7 +10,7 @@ google_sheet_endpoint_post = "https://api.sheety.co/264aeabc6ddf3801a77aa09b5a1d
 def get_from_google():
     response = requests.get(google_sheet_endpoint_post, auth=(USER_NAME, PASSWORD))
     data = response.json()
-    print(data)
+    #print(data)
     return data
     with open("credentials.json", "w") as file:
         json.dump(data, file)
@@ -18,4 +18,5 @@ def get_from_google():
         if account["username"] == "admin" :
             print(account)
 
-get_from_google()
+if __name__ == "__main__":
+    get_from_google()

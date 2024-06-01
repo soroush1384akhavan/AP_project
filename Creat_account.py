@@ -637,6 +637,9 @@ class Signup(Tk):
             json.dump(existing_credentials, file, indent=4)
         
         tkinter.messagebox.showinfo("Account Created", "Your account has been created successfully!")
+        import login
+        self.destroy()
+        login.start()
         
         default = {
             "admin": {

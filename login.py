@@ -1,7 +1,9 @@
 from tkinter import *
+import tkinter.messagebox
 from customtkinter import *
 import Creat_account
-
+from tkinter import Toplevel
+        
 # Constants
 BG_COLOR_BACK = "#FBE5B6"
 FONT_LABEL = ('Kaisei Opi', 75)
@@ -24,7 +26,7 @@ class LoginApp(Tk):
         self.config(width=1125, height=800, bg=BG_COLOR_BACK)
 
         self.setup_ui()
-        self.load_data()
+        #self.load_data()
         
     def setup_ui(self):
         self.background_image = PhotoImage(file="back_ground.png")
@@ -45,6 +47,27 @@ class LoginApp(Tk):
             text_color="black"
         )
         self.username_entry.place(x=562.5, y=277.34)
+        
+
+
+
+        self.forgot_password_button = CTkButton(
+            master=self,
+            width=257.03,
+            height=64.06,
+            corner_radius=10,
+            border_width=1,
+            hover=TRUE,
+            fg_color=SIGN_IN_BUTTON_COLOR_OFF,
+            text="Forgot Password",
+            text_color="#4B3E39",
+            font=FONT_BUTTON       
+        )
+        self.forgot_password_button.place(x=574.22, y=650)  # Adjust the position as needed
+        self.forgot_password_button.bind("<Enter>", self.on_enter_forgot_password)
+        self.forgot_password_button.bind("<Leave>", self.on_leave_forgot_password)
+        self.forgot_password_button.bind("<Button-1>", self.on_click_forgot_password)
+
 
         self.password_entry = CTkEntry(
             master=self,
@@ -97,7 +120,8 @@ class LoginApp(Tk):
 
     def load_data(self):
         import get_from_sheet
-        self.data = get_from_sheet.get_from_google()
+        data = get_from_sheet.get_from_google()
+        return(data)
     
     def on_enter_sign_in(self, event):
         self.sign_in_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_ON)
@@ -120,7 +144,112 @@ class LoginApp(Tk):
     def on_click_log_in(self, event):
         self.log_in_button.configure(fg_color=LOG_IN_BUTTON_COLOR_CLICK)
         self.after(200, lambda: self.log_in_button.configure(fg_color=LOG_IN_BUTTON_COLOR_OFF))
+        if self.is_username_exists():
+            self.is_valid_credentials()
+            if self.is_valid_credentials():
+                self.destroy()
+                import menu
+        
+    def is_username_exists(self):
+        data = self.load_data()
+        username = self.username_entry.get()
+        for account in data["sheet1"]:
+            if account["username"] == username :
+                return True
+        tkinter.messagebox.showinfo("account does not exist", "check your username")
+        return False
+    
+    def is_valid_credentials(self):
+        data = self.load_data()
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        for account in data["sheet1"]:
+            if account["username"] == username and account["password"] == password:
+                print("welcome")
+                return True
+        tkinter.messagebox.showinfo("incorrect password", "check your password")  
+        return False
+
+    def on_enter_forgot_password(self, event):
+        self.forgot_password_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_ON)
+
+    def on_leave_forgot_password(self, event):
+        self.forgot_password_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_OFF)
+
+    def on_click_forgot_password(self, event):
+        self.forgot_password_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_CLICK)
+        self.after(200, lambda: self.forgot_password_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_OFF))
+        self.open_forgot_password_window()
+
+    def open_forgot_password_window(self):
+        forgot_password_window = Toplevel(self)
+        forgot_password_window.title("Forgot Password")
+        forgot_password_window.geometry("600x400")
+        forgot_password_window.configure(bg=BG_COLOR_BACK)
+
+        username_2_entry = CTkEntry(
+            master=forgot_password_window,
+            placeholder_text="Username:",
+            font=FONT_STYLE_ENTRY,
+            width=400, 
+            height=67.19,
+            border_width=2,
+            corner_radius=10,
+            fg_color=BG_COLOR_ENTRY,
+            placeholder_text_color=TEXT_COLOR_ENTRY,
+            text_color="black"
+        )
+        username_2_entry.pack(pady=20)
+        
+        security_2_entry = CTkEntry(
+            master=forgot_password_window,
+            placeholder_text="What was your school name:",
+            font=FONT_STYLE_ENTRY,
+            width=400,  
+            height=67.19,
+            border_width=2,
+            corner_radius=10,
+            fg_color=BG_COLOR_ENTRY,
+            placeholder_text_color=TEXT_COLOR_ENTRY,
+            text_color="black"
+        )
+        security_2_entry.pack(pady=20)
+        
+        what_is_button = CTkButton(
+            master=forgot_password_window,  
+            width=175,
+            height=64.06,
+            corner_radius=10,
+            border_width=1,
+            hover=True,
+            fg_color=LOG_IN_BUTTON_COLOR_OFF,
+            text="Submit",
+            text_color="black",
+            font=FONT_BUTTON       
+        )
+        what_is_button.pack(pady=20)
+        
+        def is_valid_q():
+            data = self.load_data()
+            username = username_2_entry.get()
+            question = security_2_entry.get()
+            for account in data["sheet1"]:
+                if account["username"] == username and account["securitytext"] == question:
+                    print(account["password"])
+                    return True
+            tkinter.messagebox.showinfo("incorrect answer", "check your answer")  
+            return False
+        def on_click_submit():
+            if is_valid_q():
+                
+
+        
+
+
+def start():
+    app = LoginApp()
+    app.mainloop() 
+    #app.load_data()   
 
 if __name__ == "__main__":
-    app = LoginApp()
-    app.mainloop()
+    start()
