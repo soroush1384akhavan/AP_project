@@ -1,6 +1,8 @@
 from tkinter import *
+import tkinter.messagebox
 from customtkinter import *
 import re
+import email_sender
 
 # Constants
 BG_COLOR_BACK = "#393939"
@@ -134,25 +136,35 @@ class Signup(Tk):
 
           
     def on_enter_continue_2(self, event):
-        self.continue_2_button.configure(fg_color=CONTINUE_BUTTON_COLOR_ON)
+        if self.continue_2_button.cget('state') == NORMAL:
+            self.continue_2_button.configure(fg_color=CONTINUE_BUTTON_COLOR_ON)
         
     def on_leave_continue_2(self, event):
         self.continue_2_button.configure(fg_color=CONTINUE_BUTTON_COLOR_OFF)
     
     def on_click_continue_2(self, event):
-        self.continue_2_button.configure(fg_color=CONTINUE_BUTTON_COLOR_CLICK)
-        self.after(100, lambda: self.continue_2_button.configure(fg_color=CONTINUE_BUTTON_COLOR_OFF))
-        self.page_3()
+        if self.continue_2_button.cget('state') == NORMAL:
+            self.continue_2_button.configure(fg_color=CONTINUE_BUTTON_COLOR_CLICK)
+            self.after(100, lambda: self.continue_2_button.configure(fg_color=CONTINUE_BUTTON_COLOR_OFF))
+            email_sender.email_sender(emailtosent=self.email_entry.get())
+            self.page_3()
         
     def on_enter_create(self, event):
-        self.create_button.configure(fg_color=CREATE_BUTTON_COLOR_ON)
+        if self.create_button.cget('state') == NORMAL:
+            self.create_button.configure(fg_color=CREATE_BUTTON_COLOR_ON)
         
     def on_leave_create(self, event):
         self.create_button.configure(fg_color=CREATE_BUTTON_COLOR_OFF)
     
     def on_click_create(self, event):
-        self.create_button.configure(fg_color=CREATE_BUTTON_COLOR_CLICK)
-        self.after(100, lambda: self.create_button.configure(fg_color=CREATE_BUTTON_COLOR_OFF))
+        if self.create_button.cget('state') == NORMAL:
+            self.create_button.configure(fg_color=CREATE_BUTTON_COLOR_CLICK)
+            self.after(100, lambda: self.create_button.configure(fg_color=CREATE_BUTTON_COLOR_OFF))
+            if email_sender.check(self.verification_code_entry.get()):
+                print("correct")
+            else:
+                tkinter.messagebox.showerror("Error", "Verification code is incorrect")
+                print("incorrect")
         
     
     def page_2(self):
@@ -191,6 +203,10 @@ class Signup(Tk):
             text_color="black"
         )
         self.email_entry.place(x=400, y=248)
+        self.email_entry.bind("<KeyRelease>", self.check_email)
+        self.email_entry.bind("<KeyRelease>", self.check_page_2)
+        
+        
         
         self.phone_number_entry = CTkEntry(
             master=self,
@@ -207,12 +223,13 @@ class Signup(Tk):
             text_color="black",
         )
         self.phone_number_entry.place(x=400, y=337)
+        self.phone_number_entry.bind("<KeyRelease>", self.check_number)
         
         self.city_var = StringVar()
         
         self.city_entry = CTkEntry(
             master=self,
-            placeholder_text="City",
+            
             font=FONT_STYLE_ENTRY,
             width=516.41,
             height=67.19,
@@ -223,10 +240,14 @@ class Signup(Tk):
             border_color="black",
             bg_color="#888888",
             text_color="black",
-            textvariable=self.city_var
+            textvariable=self.city_var,
+            placeholder_text="City"
         )
         self.city_entry.place(x=400, y=427)
         self.city_entry.bind("<KeyRelease>", self.show_suggestions)
+        self.city_entry.bind("<KeyRelease>", self.check_city)
+        self.city_entry.bind("<KeyRelease>", self.check_page_2)
+        
         
         self.suggestion_listbox = Listbox(
             master=self,
@@ -252,6 +273,9 @@ class Signup(Tk):
             text_color="black"
         )
         self.birth_day_entry.place(x=400, y=517)
+        self.birth_day_entry.bind("<KeyRelease>", self.check_birth)
+        self.birth_day_entry.bind("<KeyRelease>", self.check_page_2)
+        
         
         self.continue_2_button = CTkButton(
             master=self,
@@ -265,10 +289,11 @@ class Signup(Tk):
             text_color="black",
             bg_color="#888888",
             border_color="black",
+            state=DISABLED,
             font=FONT_BUTTON       
         )
         self.continue_2_button.place(x=400, y=642.66)
-        
+    
         self.continue_2_button.bind("<Enter>", self.on_enter_continue_2)
         self.continue_2_button.bind("<Leave>", self.on_leave_continue_2)
         self.continue_2_button.bind("<Button-1>", self.on_click_continue_2)
@@ -321,6 +346,7 @@ class Signup(Tk):
         )
         self.repeat_password_entry.place(x=400, y=337)
         self.repeat_password_entry.bind("<KeyRelease>", self.check_equality)
+        self.repeat_password_entry.bind("<KeyRelease>", self.check_page_3)
         
         self.security_q_entry = CTkEntry(
             master=self,
@@ -337,6 +363,9 @@ class Signup(Tk):
             text_color="black"
         )
         self.security_q_entry.place(x=400, y=427)
+        self.security_q_entry.bind("<KeyRelease>", self.check_secruity_text)
+        self.security_q_entry.bind("<KeyRelease>", self.check_page_3)
+        
         
         self.verification_code_entry = CTkEntry(
             master=self,
@@ -353,6 +382,8 @@ class Signup(Tk):
             text_color="black"
         )
         self.verification_code_entry.place(x=400, y=517)
+        self.verification_code_entry.bind("<KeyRelease>", self.check_page_3)
+        
         
         self.create_button = CTkButton(
             master=self,
@@ -366,6 +397,7 @@ class Signup(Tk):
             text_color="black",
             bg_color="#888888",
             border_color="black",
+            state=DISABLED,
             font=FONT_BUTTON       
         )
         self.create_button.place(x=400, y=642.66)
@@ -443,11 +475,93 @@ class Signup(Tk):
             self.user_name_entry.configure(border_color="red")
             return False
         
+    def check_secruity_text(self, event):
+        text = self.security_q_entry.get()
+        if text:
+            self.security_q_entry.configure(border_color="green")
+            return True
+        else:
+            self.security_q_entry.configure(border_color="red")
+            return False
+        
     def check_page_1(self, event):
         if self.check_name(None) and self.check_last_name(None) and self.check_user_name(None):
             self.continue_button.configure(state=NORMAL)
         else:
             self.continue_button.configure(state=DISABLED)
+    
+    def check_page_2(self, event):
+        if self.check_email(None) and self.check_number(None) and self.check_city(None) and self.check_birth(None):
+            self.continue_2_button.configure(state=NORMAL)
+        else:
+            self.continue_2_button.configure(state=DISABLED)
+            
+    def check_page_3(self, event):
+        if self.check_equality(None) and self.evaluate_password_strength(self.password_entry.get())>=5 and self.check_secruity_text(None) and self.verification_code_entry.get():
+            self.create_button.configure(state=NORMAL)
+        else:
+            self.create_button.configure(state=DISABLED)
+        
+            
+    def check_birth(self, event):
+        date_regex = r'^\d{4}-\d{1,2}-\d{1,2}$'
+        date_str = self.birth_day_entry.get()
+        
+        if not re.match(date_regex, date_str):
+            self.birth_day_entry.configure(border_color="red")
+            return False
+        
+        year, month, day = map(int, date_str.split('-'))
+        
+        if year < 1920 or year >2005 :
+            self.birth_day_entry.configure(border_color="red")
+            return False
+        
+        if month < 1 or month > 12:
+            self.birth_day_entry.configure(border_color="red")
+            return False
+        
+        if month in [1, 3, 5, 7, 8, 10, 12]:
+            if day < 1 or day > 31:
+                self.birth_day_entry.configure(border_color="red")
+                return False
+            
+        elif month in [4, 6, 9, 11]:
+            if day < 1 or day > 30:
+                self.birth_day_entry.configure(border_color="red")
+                return False
+            
+        elif month == 2:
+            if day < 1 or day > 28:
+                self.birth_day_entry.configure(border_color="red")
+                return False
+        
+        self.birth_day_entry.configure(border_color="green")
+        return True
+    
+   
+
+    def check_email(self, event):
+        email = self.email_entry.get()
+        email_regex = r'^[a-zA-Z0-9.]+@(?:gmail|yahoo)\.com$'
+        
+        if re.match(email_regex, email):
+            self.email_entry.configure(border_color="green")
+            return True
+        else:
+            self.email_entry.configure(border_color="red")
+            return False
+        
+    def check_number(self, event):
+        number = self.phone_number_entry.get()
+        number_regex = r'^09\d{9}$'
+        if re.match(number_regex, number):
+            self.phone_number_entry.configure(border_color="green")
+            return True
+        else:
+            self.phone_number_entry.configure(border_color="red")
+            return False
+
     
     def show_suggestions(self, event):
         typed_text = self.city_var.get().lower()
@@ -469,6 +583,16 @@ class Signup(Tk):
             self.city_entry.delete(0, END)
             self.city_entry.insert(0, selected_suggestion)
             self.suggestion_listbox.place_forget()
+            
+    def check_city(self, event):
+        city = self.city_entry.get()
+        import cities
+        if str(city) in str(cities.start()):
+            self.city_entry.configure(border_color="green")
+            return True
+        else:
+            self.city_entry.configure(border_color="red")
+            return False
 
 
 

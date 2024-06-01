@@ -1,11 +1,11 @@
 import requests
 import pandas as pd
 
-GOOGLE_SHEET_NAME = "workout"
-USER_NAME = "soroush1384akhavan"
-PASSWORD = "sa1384"
-google_sheet_endpoint_post = "https://api.sheety.co/bd9514ce5c9d48ad46feff3f53f91a6e/copyOfMyWorkouts/workouts"
-df = pd.read_json("credentials.json")
+GOOGLE_SHEET_NAME = "sheet1"
+USER_NAME = "soroushak84"
+PASSWORD = "Sa1384"
+google_sheet_endpoint_post = "https://api.sheety.co/264aeabc6ddf3801a77aa09b5a1dac08/accounting/sheet1"
+df = pd.read_json("data.json")
 
 
 data_dict = df.to_dict()
@@ -16,8 +16,8 @@ sheet_inputs_list = []
 def send_to_google():
     for key in data_dict:
         account_data = data_dict[key]
-        if key == "admin":
-            continue
+        # if key == "admin":
+        #     continue
         sheet_inputs = {
             GOOGLE_SHEET_NAME: {
                 "username" : key,
@@ -42,4 +42,4 @@ def send_to_google():
 
     print(f"Sheety Response: \n {sheet_response.text}")
 
-#send_to_google()
+send_to_google()

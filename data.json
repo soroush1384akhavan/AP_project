@@ -1,0 +1,21 @@
+{
+    "user1": {
+      "email": "user1@example.com",
+      "password": "password1",
+      "fname": "John",
+      "lname": "Doe"
+    },
+    "user2": {
+      "email": "user2@example.com",
+      "password": "password2",
+      "fname": "Jane",
+      "lname": "Doe"
+    },
+    "user3": {
+      "email": "user3@example.com",
+      "password": "password3",
+      "fname": "Jim",
+      "lname": "Beam"
+    }
+  }
+  
