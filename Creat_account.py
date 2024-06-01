@@ -3,6 +3,7 @@ import tkinter.messagebox
 from customtkinter import *
 import re
 import email_sender
+import json
 
 # Constants
 BG_COLOR_BACK = "#393939"
@@ -162,6 +163,7 @@ class Signup(Tk):
             self.after(100, lambda: self.create_button.configure(fg_color=CREATE_BUTTON_COLOR_OFF))
             if email_sender.check(self.verification_code_entry.get()):
                 print("correct")
+                self.save_credentials()
             else:
                 tkinter.messagebox.showerror("Error", "Verification code is incorrect")
                 print("incorrect")
@@ -593,6 +595,71 @@ class Signup(Tk):
         else:
             self.city_entry.configure(border_color="red")
             return False
+    
+
+
+    def save_credentials(self):
+        firstname = self.first_name_entry.get()
+        lastname = self.last_name_entry.get()
+        username = self.user_name_entry.get()
+        email = self.email_entry.get()
+        phonenumber = self.phone_number_entry.get()
+        city = self.city_entry.get()
+        birthday = self.birth_day_entry.get()
+        password = self.password_entry.get()
+        securitytext = self.security_q_entry.get()
+        
+        file_path = "data.json"
+        
+        try:
+            with open(file_path, "r") as file:
+                existing_credentials = json.load(file)
+        except FileNotFoundError:
+            existing_credentials = {}
+
+        if username in existing_credentials:
+            tkinter.messagebox.showerror("Error", "This username already exists.")
+            return
+
+        existing_credentials[username] = {
+            "email": email,
+            "password": password,
+            "fname": firstname,
+            "lname": lastname,
+            "phonenumber": phonenumber,
+            "city": city,
+            "birthday": birthday,
+            "securitytext": securitytext
+        }
+        
+
+        with open(file_path, "w") as file:
+            json.dump(existing_credentials, file, indent=4)
+        
+        tkinter.messagebox.showinfo("Account Created", "Your account has been created successfully!")
+        
+        default = {
+            "admin": {
+                "email": "soroush1384.akhavan@gmail.com",
+                "password": "123",
+                "fname": "Admin",
+                "lname": "User",
+                "phonenumber": "0000000000",
+                "city": "AdminCity",
+                "birthday": "1970-01-01",
+                "securitytext": "Admin Security Question"
+            }
+        }
+        
+        try:
+            import data_sheet
+            data_sheet.send_to_google()
+            with open(file_path, "w") as file:
+                json.dump(default, file, indent=4)
+        except Exception as e:
+            print("Something went wrong:", str(e))
+
+
 
 
 

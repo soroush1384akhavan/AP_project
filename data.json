@@ -1,21 +1,12 @@
 {
-    "user1": {
-      "email": "user1@example.com",
-      "password": "password1",
-      "fname": "John",
-      "lname": "Doe"
-    },
-    "user2": {
-      "email": "user2@example.com",
-      "password": "password2",
-      "fname": "Jane",
-      "lname": "Doe"
-    },
-    "user3": {
-      "email": "user3@example.com",
-      "password": "password3",
-      "fname": "Jim",
-      "lname": "Beam"
+    "admin": {
+        "email": "soroush1384.akhavan@gmail.com",
+        "password": "123",
+        "fname": "Admin",
+        "lname": "User",
+        "phonenumber": "0000000000",
+        "city": "AdminCity",
+        "birthday": "1970-01-01",
+        "securitytext": "Admin Security Question"
     }
-  }
-  
+}
