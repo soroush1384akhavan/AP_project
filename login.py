@@ -63,7 +63,7 @@ class LoginApp(Tk):
             text_color="#4B3E39",
             font=FONT_BUTTON       
         )
-        self.forgot_password_button.place(x=574.22, y=650)  # Adjust the position as needed
+        self.forgot_password_button.place(x=694.22, y=700)  # Adjust the position as needed
         self.forgot_password_button.bind("<Enter>", self.on_enter_forgot_password)
         self.forgot_password_button.bind("<Leave>", self.on_leave_forgot_password)
         self.forgot_password_button.bind("<Button-1>", self.on_click_forgot_password)
@@ -215,6 +215,20 @@ class LoginApp(Tk):
         )
         security_2_entry.pack(pady=20)
         
+        def is_valid_q():
+            data = self.load_data()
+            username = username_2_entry.get()
+            question = security_2_entry.get()
+            for account in data["sheet1"]:
+                if account["username"] == username and account["securitytext"] == question:
+                    tkinter.messagebox.showinfo("Password Retrieved", f"Your password is: {account['password']}")
+                    return True
+            tkinter.messagebox.showinfo("Incorrect Answer", "Check your answer")  
+            return False
+        
+        def on_click_submit(event):
+            is_valid_q()
+        
         what_is_button = CTkButton(
             master=forgot_password_window,  
             width=175,
@@ -228,19 +242,8 @@ class LoginApp(Tk):
             font=FONT_BUTTON       
         )
         what_is_button.pack(pady=20)
-        
-        def is_valid_q():
-            data = self.load_data()
-            username = username_2_entry.get()
-            question = security_2_entry.get()
-            for account in data["sheet1"]:
-                if account["username"] == username and account["securitytext"] == question:
-                    print(account["password"])
-                    return True
-            tkinter.messagebox.showinfo("incorrect answer", "check your answer")  
-            return False
-        def on_click_submit():
-            if is_valid_q():
+        what_is_button.bind("<Button-1>", on_click_submit)
+
                 
 
         
