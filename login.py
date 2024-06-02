@@ -63,7 +63,7 @@ class LoginApp(Tk):
             text_color="#4B3E39",
             font=FONT_BUTTON       
         )
-        self.forgot_password_button.place(x=694.22, y=700)  # Adjust the position as needed
+        self.forgot_password_button.place(x=694.22, y=700)  
         self.forgot_password_button.bind("<Enter>", self.on_enter_forgot_password)
         self.forgot_password_button.bind("<Leave>", self.on_leave_forgot_password)
         self.forgot_password_button.bind("<Button-1>", self.on_click_forgot_password)
