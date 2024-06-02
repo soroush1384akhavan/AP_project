@@ -24,25 +24,24 @@ FONT_LABEL_Q = ('Tenor Sans', 15)
 
 window = Tk()
 window.title("Menu")
-window.resizable(width=False, height=False)
-window.config(width=620, height=568, bg=BG_COLOR_BACK)
+window.config(width=1125, height=800, bg=BG_COLOR_BACK)
 
 pannel_income_window = Tk()
 pannel_income_window.title("income")
+pannel_income_window.config(width=600, height=800, bg=BG_COLOR_BACK)
 def on_income_click():
-    pannel_income_window.geometry('%dx%d' %(500,200))
     pannel_income_window.mainloop()
 
 category_window = Tk() 
-category_window.title("category")      
+category_window.title("category") 
+category_window.config(width=600, height=800, bg=BG_COLOR_BACK)     
 def on_category_click():
-    category_window.geometry('%dx%d' %(600,300))
     category_window.mainloop()
     
 setting_window = Tk()
 setting_window.title("Setting")
+setting_window.config(width=1125, height=800, bg=BG_COLOR_BACK)
 def on_setting_click():
-    setting_window.geometry('%dx%d' %(600,300))
     setting_window.mainloop()   
         
 def on_income_submit():
@@ -165,10 +164,12 @@ def delete_user_account():
         pass # soroush fix it   
     
 #   BUTTONS
+option_var = StringVar()
+
 income_button = CTkButton(
     master=window,
-    width=100,
-    height=41,
+    width=220,
+    height=60,
     corner_radius=10,
     border_width=1,
     hover=TRUE,
@@ -177,40 +178,40 @@ income_button = CTkButton(
     font=FONT_BUTTON, 
     command= on_income_click       
 )
-income_button.place(x=30, y=50)
+income_button.place(x=550, y=200)
 
 
 price_button = CTkButton(
     master=window,
-    width=100,
-    height=41,
+    width=220,
+    height=60,
     corner_radius=10,
     border_width=1,
     hover=TRUE,
     fg_color=BUTTON_COLOR_OFF,
     text="price",
-    font=FONT_BUTTON       
+    font=FONT_BUTTON,      
 )
-price_button.place(x=180, y=50)
+price_button.place(x=800, y=200)
 
 category_button = CTkButton(
     master=window,
-    width=100,
-    height=41,
+    width=220,
+    height=60,
     corner_radius=10,
     border_width=1,
     hover=TRUE,
     fg_color=BUTTON_COLOR_OFF,
-    text="categorys",
+    text="categories",
     font=FONT_BUTTON,
     command= on_category_click      
 )
-category_button.place(x=30, y=100)
+category_button.place(x=550, y=270)
 
 search_button = CTkButton(
     master=window,
-    width=100,
-    height=41,
+    width=220,
+    height=60,
     corner_radius=10,
     border_width=1,
     hover=TRUE,
@@ -218,12 +219,12 @@ search_button = CTkButton(
     text="search",
     font=FONT_BUTTON       
 )
-search_button.place(x=180, y=100)
+search_button.place(x=800, y=270)
 
 exit_button = CTkButton(
     master=window,
-    width=100,
-    height=41,
+    width=220,
+    height=60,
     corner_radius=10,
     border_width=1,
     hover=TRUE,
@@ -232,69 +233,219 @@ exit_button = CTkButton(
     font=FONT_BUTTON,
     command= window.destroy     
 )
-exit_button.place(x=30, y=150)
+exit_button.place(x=550, y=340)
 
 # _______________ panel_incom_window ________________ 
 
-lbl1 = Label(pannel_income_window, text= 'میزان درامد')
-lbl1.grid(row=0, column=0, padx=5, pady=5)
-mizan_income = Entry(pannel_income_window)
-mizan_income.grid(row=0, column=1, padx=5, pady=5)
+lbl1 = CTkLabel(
+    master= pannel_income_window,
+    width=100,
+    height=35,
+    fg_color=BG_COLOR_ENTRY,
+    text= 'mizan daramad:',
+    text_color="white")
+lbl1.place(x=10, y=20)
+
+mizan_income = CTkEntry(
+    master=pannel_income_window,
+    font=FONT_STYLE_ENTRY,
+    width=100,
+    height=35,
+    border_width=2,
+    corner_radius=10,
+    fg_color=BG_COLOR_ENTRY,
+    placeholder_text_color=TEXT_COLOR_ENTRY,
+    text_color="black"
+    )
+mizan_income.place(x=120, y=20)
     
-lbl2 = Label(pannel_income_window, text= 'تازیخ درامد')
-lbl2.grid(row=1, column=0, padx=5, pady=5)
-date_income = Entry(pannel_income_window)
-date_income.grid(row=1, column=1, padx=5, pady=5)
+lbl2 = CTkLabel(
+    master= pannel_income_window,
+    width=100,
+    height=35,
+    fg_color=BG_COLOR_ENTRY,
+    text= 'tarikh daramad:',
+    text_color="white")
+lbl2.place(x=10, y=70)
 
-income_list = ['naghd', 'check', 'cripto']    
-lbl3 = Label(pannel_income_window, text= 'منبع درامد')
-lbl3.grid(row=2, column=0, padx=5, pady=5)
-main_income = OptionMenu(pannel_income_window, 'naghd', *income_list)
-main_income.grid(row=2, column=1, padx=5, pady=5)
+date_income = CTkEntry(
+    master=pannel_income_window,
+    placeholder_text="XXXX/XX/XX",
+    font=FONT_STYLE_ENTRY,
+    width=100,
+    height=35,
+    border_width=2,
+    corner_radius=10,
+    fg_color=BG_COLOR_ENTRY,
+    placeholder_text_color=TEXT_COLOR_ENTRY,
+    text_color="black")
+date_income.place(x=120, y=70)
 
-category_list = ['bank', 'company', 'personal'] 
+income_list = ('naghd', 'check', 'cripto')   
+lbl3 = CTkLabel(
+    master= pannel_income_window,
+    width=100,
+    height=35,
+    fg_color=BG_COLOR_ENTRY,
+    text= 'manbaa daramad',
+    text_color="white")
+lbl3.place(x=10, y=120)
+main_income = OptionMenu(
+    pannel_income_window, 
+    option_var,
+    # income_list[0], 
+    *income_list)
+main_income.place(x=120, y=120)
+
+category_list = ('bank', 'company', 'personal')
 # category_list = return_category_list(user_id)
 
-lbl3 = Label(pannel_income_window, text= 'دسته بندی')
-lbl3.grid(row=3, column=0, padx=5, pady=5)
-category_income = OptionMenu(pannel_income_window, 'bank', *category_list)
-category_income.grid(row=3, column=1, padx=5, pady=5)
+lbl4 = CTkLabel(
+    master= pannel_income_window,
+    width=100,
+    height=35,
+    fg_color=BG_COLOR_ENTRY,
+    text= 'category',
+    text_color="white")
+lbl4.place(x=10, y=170)
+category_income = OptionMenu(
+    pannel_income_window,
+    option_var, 
+    # category_list[0], 
+    *category_list)
 
-lbl4 = Label(pannel_income_window, text='توضیحات')
-lbl4.grid(row=4, column=0, padx=5, pady=5)
-income_desc = Entry(pannel_income_window)
-income_desc.grid(row=4, column=1, padx=5, pady=5)
+category_income.place(x=120, y=170)
 
-submit_btn = Button(pannel_income_window, text= 'submit', command=on_income_submit)
-submit_btn.grid(row=5, column=0, padx=10, pady=10)
+lbl5 = CTkLabel(
+    master= pannel_income_window,
+    width=100,
+    height=35,
+    fg_color=BG_COLOR_ENTRY,
+    text= 'discription',
+    text_color="white")
+lbl5.place(x=10, y=220)
+income_desc = CTkEntry(
+    master=pannel_income_window,
+    font=FONT_STYLE_ENTRY,
+    width=100,
+    height=35,
+    border_width=2,
+    corner_radius=10,
+    fg_color=BG_COLOR_ENTRY,
+    placeholder_text_color=TEXT_COLOR_ENTRY,
+    text_color="black")
+income_desc.place(x=120, y=220)
+
+submit_btn = CTkButton(
+    master=pannel_income_window,
+    width=70,
+    height=30,
+    corner_radius=10,
+    border_width=1,
+    hover=TRUE,
+    fg_color=BG_COLOR_ENTRY,
+    text="Submit",
+    text_color="#4B3E39",
+    font=FONT_BUTTON,
+    command= on_income_submit       
+        )
+submit_btn.place(x=100, y=300)
 
 # _______________ category_window ________________ 
 
-catLbl = Label(category_window, text='دسته بندی خود را وارد کنید:')
-catLbl.grid(row=0, column=0, padx=5, pady=5)
-cat_entry = Entry(category_window)
-cat_entry.grid(row=1, column=0, padx=5, pady=5)
+catLbl = CTkLabel(
+    master= category_window,
+    width=100,
+    height=35,
+    fg_color=BG_COLOR_ENTRY,
+    text= 'add your new category here:',
+    text_color="white")
+catLbl.place(x=20,y=100)
+cat_entry = CTkEntry(
+    master=category_window,
+    font=FONT_STYLE_ENTRY,
+    width=200,
+    height=35,
+    border_width=2,
+    corner_radius=10,
+    fg_color=BG_COLOR_ENTRY,
+    placeholder_text_color=TEXT_COLOR_ENTRY,
+    text_color="black")
+cat_entry.place(x=200, y=100)
 
-create_cat_btn = Button(category_window, text='create', command= on_craete_category)
-create_cat_btn.grid(row=2, column=0, padx=10, pady=10)
+create_cat_btn = CTkButton(
+    master=category_window, 
+    width=70,
+    height=30,
+    corner_radius=10,
+    border_width=1,
+    hover=TRUE,
+    fg_color=BG_COLOR_ENTRY,
+    text="create",
+    text_color="#4B3E39",
+    font=FONT_BUTTON,
+    command= on_craete_category)
+create_cat_btn.place(x=50, y=190)
 
 # _______________ setting_window ________________ 
 
 chk_state = BooleanVar()
-theme_switch = CTkSwitch(setting_window)
+theme_switch = CTkSwitch(
+    setting_window,
+    # command= change_theme
+    )
 theme_switch.grid(row= 0, column= 0,padx=20, pady=10)
-theme_label = Label(setting_window, text='change theme')
-theme_label.grid(row=0, column=1)
+theme_label = CTkLabel(
+    master=setting_window,
+    text= 'change theme',
+    text_color= BG_COLOR_ENTRY
+)
+theme_label.place(x=10, y=20)
 
-# یک رادیو باتن بین سه گزینه: income, price, both
-delete_data_button = Button(setting_window, text='delete info')
-delete_data_button.grid(row=1, column=0, padx=5, pady=5)
-delete_data_label = Label(setting_window, text='Delete user info from dataBase')
-delete_data_label.grid(row=1, column=1, padx=5, pady=5)
+option_delete = ('income', 'price', 'both')
+delete_data_optionMenu = OptionMenu(
+    setting_window, 
+    option_var,
+    # option_delete[0],
+    *option_delete
+    )
+delete_data_optionMenu.place()
+delete_data_button = CTkButton(
+    master=setting_window, 
+    width=70,
+    height=30,
+    corner_radius=10,
+    border_width=1,
+    hover=TRUE,
+    fg_color=BG_COLOR_ENTRY,
+    text='delete info',
+    text_color="#4B3E39",
+    font=FONT_BUTTON,
+    )
+delete_data_button.place(x= 150, y= 70)
+delete_data_label = CTkLabel(
+    master= setting_window, 
+    text='Delete user info from dataBase',
+    text_color= BG_COLOR_ENTRY)
+delete_data_label.place(x=10, y=70)
 
-delete_user_button = Button(setting_window, text='delete user account', command= delete_user_account)
-delete_user_button.grid(row=2, column=0, padx=5, pady=5)
-delete_user_label = Label(setting_window, text='Delete user account from dataBase')
-delete_user_label.grid(row=2, column=1, padx=5, pady=5)
+delete_user_button = CTkButton(
+    master=setting_window, 
+    width=70,
+    height=30,
+    corner_radius=10,
+    border_width=1,
+    hover=TRUE,
+    fg_color=BG_COLOR_ENTRY,
+    text='delete user account',
+    text_color="#4B3E39",
+    font=FONT_BUTTON,  
+    command= delete_user_account)
+delete_user_button.place(x=150, y=110)
+delete_user_label = CTkLabel(
+    master= setting_window, 
+    text='Delete user account from dataBase',
+    text_color= BG_COLOR_ENTRY)
+delete_data_label.place(x=10, y=110)
 
 window.mainloop()
