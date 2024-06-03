@@ -96,6 +96,8 @@ class IncomeApp(Tk):
         self.category_list = self.return_category_list('mmd')
         if len(self.category_list) == 0:
             self.category_list = ["you didn't add a category"]
+        else:
+            self.category_list = (self.category_list[0])[1:]
             
         self.option_var2 = StringVar()
         self.option_var2.set(self.category_list[0])
@@ -208,7 +210,7 @@ class IncomeApp(Tk):
         connect.commit()
         connect.close()
         
-        return (category_on_db[0])[1:]
+        return category_on_db
         
 
 def start():
