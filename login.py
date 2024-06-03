@@ -148,7 +148,8 @@ class LoginApp(Tk):
             self.is_valid_credentials()
             if self.is_valid_credentials():
                 self.destroy()
-                import menu
+                import main
+                main.start()
         
     def is_username_exists(self):
         data = self.load_data()
