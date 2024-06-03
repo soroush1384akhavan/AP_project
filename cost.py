@@ -21,10 +21,10 @@ FONT_LABEL = ('Tenor Sans', 40)
 FONT_BUTTON  = ('Tenor Sans', 15)
 FONT_LABEL_Q = ('Tenor Sans', 15)
 
-class IncomeApp(Tk):
+class costApp(Tk):
     def __init__(self):
         super().__init__()
-        self.title("Income")
+        self.title("cost")
         self.resizable(width=False, height=False)
         self.config(width=1125, height=800, bg=BG_COLOR_BACK)
         
@@ -36,11 +36,11 @@ class IncomeApp(Tk):
             width=100,
             height=35,
             fg_color=BG_COLOR_ENTRY,
-            text= 'mizan daramad:',
+            text= 'amount of cost:',
             text_color="white")
         self.lbl1.place(x=10, y=20)
 
-        self.mizan_income = CTkEntry(
+        self.mizan_cost = CTkEntry(
             master=self,
             font=FONT_STYLE_ENTRY,
             width=100,
@@ -51,18 +51,18 @@ class IncomeApp(Tk):
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black"
             )
-        self.mizan_income.place(x=120, y=20)
+        self.mizan_cost.place(x=120, y=20)
             
         self.lbl2 = CTkLabel(
             master= self,
             width=100,
             height=35,
             fg_color=BG_COLOR_ENTRY,
-            text= 'tarikh daramad:',
+            text= 'date of cost:',
             text_color="white")
         self.lbl2.place(x=10, y=70)
 
-        self.date_income = CTkEntry(
+        self.date_cost = CTkEntry(
             master=self,
             placeholder_text="XXXX/XX/XX",
             font=FONT_STYLE_ENTRY,
@@ -73,11 +73,11 @@ class IncomeApp(Tk):
             fg_color=BG_COLOR_ENTRY,
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black")
-        self.date_income.place(x=120, y=70)
+        self.date_cost.place(x=120, y=70)
 
-        self.income_list = ('naghd', 'check', 'cripto') 
+        self.cost_list = ('naghd', 'check', 'cripto') 
         self.option_var1 = StringVar() 
-        self.option_var1.set(self.income_list[0]) 
+        self.option_var1.set(self.cost_list[0]) 
         self.lbl3 = CTkLabel(
             master= self,
             width=100,
@@ -86,20 +86,19 @@ class IncomeApp(Tk):
             text= 'manbaa daramad',
             text_color="white")
         self.lbl3.place(x=10, y=120)
-        self.main_income = OptionMenu(
+        self.main_cost = OptionMenu(
             self, 
             self.option_var1,
-            # income_list[0], 
-            *self.income_list)
-        self.main_income.place(x=120, y=120)
+            # cost_list[0], 
+            *self.cost_list)
+        self.main_cost.place(x=120, y=120)
 
         self.category_list = self.return_category_list('amura')
         if len(self.category_list) == 0:
             self.category_list = ["you didn't add a category"]
             
-        self.option_var2 = StringVar()
+        self.option_var2 = StringVar() 
         self.option_var2.set(self.category_list[0])
-            
         self.lbl4 = CTkLabel(
             master= self,
             width=100,
@@ -108,13 +107,13 @@ class IncomeApp(Tk):
             text= 'category',
             text_color="white")
         self.lbl4.place(x=10, y=170)
-        self.category_income = OptionMenu(
+        self.category_cost = OptionMenu(
             self,
             self.option_var2, 
             # category_list[0], 
             *self.category_list)
 
-        self.category_income.place(x=120, y=170)
+        self.category_cost.place(x=120, y=170)
 
         self.lbl5 = CTkLabel(
             master= self,
@@ -124,7 +123,7 @@ class IncomeApp(Tk):
             text= 'discription',
             text_color="white")
         self.lbl5.place(x=10, y=220)
-        self.income_desc = CTkEntry(
+        self.cost_desc = CTkEntry(
             master=self,
             font=FONT_STYLE_ENTRY,
             width=100,
@@ -134,7 +133,7 @@ class IncomeApp(Tk):
             fg_color=BG_COLOR_ENTRY,
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black")
-        self.income_desc.place(x=120, y=220)
+        self.cost_desc.place(x=120, y=220)
 
         self.submit_btn = CTkButton(
             master= self,
@@ -150,54 +149,7 @@ class IncomeApp(Tk):
         
         self.submit_btn.place(x=100, y=300)
         self.submit_btn.bind("<Button-1>", self.on_sumbit_clicked)
-        
-    def on_sumbit_clicked(self, event):
-        self.submit_btn.configure(fg_color=SIGN_IN_BUTTON_COLOR_CLICK)
-        self.after(200, lambda: self.submit_btn.configure(fg_color=SIGN_IN_BUTTON_COLOR_OFF))
-        
-        is_valid = True
-        if self.mizan_income.get() == '' or self.date_income.get() == '':
-            is_valid = False
-            if self.mizan_income.get() == '':
-                self.mizan_income.configure(border_color="red")
-            if self.date_income.get() == '':
-                self.date_income.configure(border_color="red")
-                
-        else:
-            # if type(self.mizan_income.get()) != int or self.mizan_income.get() <=0:
-            #     is_valid = False
-            if not re.match(r'^\d{4}/\d{1,2}/\d{1,2}$', self.date_income.get()) and int(self.date_income.get()>0):
-                is_valid = False 
-            if not re.match(r'[0-9]+', self.date_income.get()):
-                is_valid = False 
-            if len(self.income_desc.get()) > 100:
-                is_valid = False
-        
-        if is_valid:
-            self.set_income_info_in_db('amura', self.mizan_income.get(), self.date_income.get(), self.option_var1.get(), self.option_var2.get(), self.income_desc.get())
-            tkinter.messagebox.showinfo('succes', 'the information successfully saved')
-
-        else:
-            tkinter.messagebox.showerror('Error', 'something went wrong!!')
-        
-    def set_income_info_in_db(self, id, mizan, date, main, category, description= ''):
-        
-        connect = sqlite3.connect('users.db')
-        c = connect.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS income (
-                user_name TEXT NOT NULL, 
-                mizan INTEGER NOT NULL,
-                date text NOT NULL,
-                income_resource text NIT NULL,
-                category text,
-                description text);''')
-        
-        c.execute('''INSERT INTO income (user_name, mizan, date, income_resource, category, description)
-                VALUES (?, ?, ?, ?, ?, ?);''', [id, mizan, date, main, category, description])
-        
-        connect.commit()
-        connect.close()
-        
+    
     def return_category_list(self, id):
         connect = sqlite3.connect('users.db')
         c = connect.cursor()
@@ -209,10 +161,58 @@ class IncomeApp(Tk):
         connect.close()
         
         return (category_on_db[0])[1:]
+   
+    def on_sumbit_clicked(self, event):
+        self.submit_btn.configure(fg_color=SIGN_IN_BUTTON_COLOR_CLICK)
+        self.after(200, lambda: self.submit_btn.configure(fg_color=SIGN_IN_BUTTON_COLOR_OFF))
+        
+        is_valid = True
+        if self.mizan_cost.get() == '' or self.date_cost.get() == '':
+            is_valid = False
+            if self.mizan_cost.get() == '':
+                self.mizan_cost.configure(border_color="red")
+            if self.date_cost.get() == '':
+                self.date_cost.configure(border_color="red")
+                
+        else:
+            # if type(self.mizan_cost.get()) != int or self.mizan_cost.get() <=0:
+            #     is_valid = False
+            if not re.match(r'^\d{4}/\d{1,2}/\d{1,2}$', self.date_cost.get()) and int(self.date_cost.get()>0):
+                is_valid = False 
+            if not re.match(r'[0-9]+', self.date_cost.get()):
+                is_valid = False 
+            if len(self.cost_desc.get()) > 100:
+                is_valid = False
+        
+        if is_valid:
+            self.set_cost_info_in_db(12, self.mizan_cost.get(), self.date_cost.get(), self.option_var1.get(), self.option_var2.get(), self.cost_desc.get())
+            tkinter.messagebox.showinfo('succes', 'the information successfully saved')
+
+        else:
+            tkinter.messagebox.showerror('Error', 'something went wrong!!')
+            self.on_sumbit_clicked()
+        
+    def set_cost_info_in_db(self, id, mizan, date, main, category, description= ''):
+        
+        connect = sqlite3.connect('users.db')
+        c = connect.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS cost(
+                user_name TEXT NOT NULL, 
+                mizan INTEGER NoT NULL,
+                date text NOT NULL,
+                cost_resource text NIT NULL,
+                category text,
+                description text);''')
+        
+        c.execute('''INSERT INTO cost (user_name, mizan, date, cost_resource, category, description)
+                VALUES (?, ?, ?, ?, ?, ?);''', [id, mizan, date, main, category, description])
+
+        connect.commit()
+        connect.close()
         
 
 def start():
-    app = IncomeApp()
+    app = costApp()
     app.mainloop() 
     #app.load_data()   
 
