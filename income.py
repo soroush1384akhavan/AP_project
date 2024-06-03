@@ -93,7 +93,7 @@ class IncomeApp(Tk):
             *self.income_list)
         self.main_income.place(x=120, y=120)
 
-        self.category_list = self.return_category_list('amura')
+        self.category_list = self.return_category_list('mmd')
         if len(self.category_list) == 0:
             self.category_list = ["you didn't add a category"]
             
@@ -174,7 +174,7 @@ class IncomeApp(Tk):
                 is_valid = False
         
         if is_valid:
-            self.set_income_info_in_db('amura', self.mizan_income.get(), self.date_income.get(), self.option_var1.get(), self.option_var2.get(), self.income_desc.get())
+            self.set_income_info_in_db('mmd', self.mizan_income.get(), self.date_income.get(), self.option_var1.get(), self.option_var2.get(), self.income_desc.get())
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
 
         else:

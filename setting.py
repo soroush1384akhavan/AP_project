@@ -1,7 +1,6 @@
 from tkinter import *
 import tkinter.messagebox
 from customtkinter import *
-import re
 import sqlite3
 
 #consts
@@ -25,9 +24,9 @@ FONT_LABEL_Q = ('Tenor Sans', 15)
 class SettingApp(Tk):
     def __init__(self):
         super().__init__()
-        self.title("cost")
-        # self.resizable(width=False, height=False)
-        self.config(width=1125, height=800, bg=BG_COLOR_BACK)
+        self.title("setting")
+        self.resizable(width=False, height=False)
+        self.config(width=600, height=800, bg=BG_COLOR_BACK)
         
         self.setup_ui()
         
@@ -37,7 +36,7 @@ class SettingApp(Tk):
             self,
             # command= change_theme
             )
-        self.theme_switch.grid(row= 0, column= 0,padx=20, pady=10)
+        self.theme_switch.place(x = 50, y= 20)
         self.theme_label = CTkLabel(
             master=self,
             text= 'change theme',
@@ -45,7 +44,7 @@ class SettingApp(Tk):
         )
         self.theme_label.place(x=120, y=20)
 
-        self.option_delete = ('income', 'price', 'both')
+        self.option_delete = ('income', 'cost', 'both')
         self.option_var = StringVar()
         self.option_var.set(self.option_delete[0])
         self.delete_data_optionMenu = OptionMenu(
@@ -97,8 +96,8 @@ class SettingApp(Tk):
         self.delete_data_label.place(x=10, y=160)
         
     def on_delete_user_account(self, event):
-        self.delete_user_button(fg_color=SIGN_IN_BUTTON_COLOR_CLICK)
-        self.after(200, lambda: self.delete_user_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_OFF))
+        # self.delete_user_button(fg_color=SIGN_IN_BUTTON_COLOR_CLICK)
+        # self.after(200, lambda: self.delete_user_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_OFF))
         
         message_box = tkinter.messagebox.askquestion('delete','آیا برای حذف اکانت خود مطمین هستید؟', icon = 'warning')
         if message_box == 'yes':
@@ -138,7 +137,7 @@ class SettingApp(Tk):
         
         message_box = tkinter.messagebox.askquestion('delete','آیا برای حذف اطلاعات خود مطمین هستید؟', icon = 'warning')
         if message_box:
-            self.delete_transaction('amura', self.option_var.get())
+            self.delete_transaction('soroush', self.option_var.get())
             tkinter.messagebox.showinfo('complite', 'the information you chose was deleted')
         
 

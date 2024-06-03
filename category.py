@@ -72,7 +72,7 @@ class CategoryApp(Tk):
         
         if self.cat_entry.get() != '' and len(self.cat_entry.get())< 15:
             if re.match('[0-9a-zA-Z]+', self.cat_entry.get()):
-                self.set_category_info_in_db('amura', self.cat_entry.get())
+                self.set_category_info_in_db('mmd', self.cat_entry.get())
                 tkinter.messagebox.showinfo('complete', 'the category succesfully saved')
             else:
                 tkinter.messagebox.showerror('Error', 'category not avalibel!')
