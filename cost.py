@@ -153,14 +153,14 @@ class costApp(Tk):
     def return_category_list(self, id):
         connect = sqlite3.connect('users.db')
         c = connect.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE, category text);''')
+        c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
         category_on_db = c.fetchall()
         
         connect.commit()
         connect.close()
         
-        return category_on_db[1:]
+        return (category_on_db[0])[1:]
    
     def on_sumbit_clicked(self, event):
         self.submit_btn.configure(fg_color=SIGN_IN_BUTTON_COLOR_CLICK)
@@ -187,7 +187,7 @@ class costApp(Tk):
         if is_valid:
             self.set_cost_info_in_db(12, self.mizan_cost.get(), self.date_cost.get(), self.option_var1.get(), self.option_var2.get(), self.cost_desc.get())
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
-            self.destroy()
+
         else:
             tkinter.messagebox.showerror('Error', 'something went wrong!!')
             self.on_sumbit_clicked()
@@ -197,7 +197,7 @@ class costApp(Tk):
         connect = sqlite3.connect('users.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS cost(
-                user_name TEXT NOT NULL UNIQUE, 
+                user_name TEXT NOT NULL, 
                 mizan INTEGER NoT NULL,
                 date text NOT NULL,
                 cost_resource text NIT NULL,
@@ -206,7 +206,7 @@ class costApp(Tk):
         
         c.execute('''INSERT INTO cost (user_name, mizan, date, cost_resource, category, description)
                 VALUES (?, ?, ?, ?, ?, ?);''', [id, mizan, date, main, category, description])
-        
+
         connect.commit()
         connect.close()
         

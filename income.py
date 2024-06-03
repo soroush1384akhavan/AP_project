@@ -176,7 +176,7 @@ class IncomeApp(Tk):
         if is_valid:
             self.set_income_info_in_db('amura', self.mizan_income.get(), self.date_income.get(), self.option_var1.get(), self.option_var2.get(), self.income_desc.get())
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
-            self.destroy()
+
         else:
             tkinter.messagebox.showerror('Error', 'something went wrong!!')
         
@@ -185,7 +185,7 @@ class IncomeApp(Tk):
         connect = sqlite3.connect('users.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS income (
-                user_name TEXT NOT NULL UNIQUE, 
+                user_name TEXT NOT NULL, 
                 mizan INTEGER NOT NULL,
                 date text NOT NULL,
                 income_resource text NIT NULL,
@@ -201,14 +201,14 @@ class IncomeApp(Tk):
     def return_category_list(self, id):
         connect = sqlite3.connect('users.db')
         c = connect.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE, category text);''')
+        c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
         category_on_db = c.fetchall()
         
         connect.commit()
         connect.close()
         
-        return category_on_db[1:]
+        return (category_on_db[0])[1:]
         
 
 def start():

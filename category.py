@@ -84,15 +84,18 @@ class CategoryApp(Tk):
         
         connect = sqlite3.connect('users.db')
         c = connect.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE, cat1 text);''')
-        c.execute("INSERT INTO categories (user_name) VALUES (?);", (user_name,))
+        c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
+        try:
+            c.execute("INSERT INTO categories (user_name) VALUES (?);", (user_name,))
+        except:
+            pass
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (user_name,))
         
         cat_list = c.fetchall()
-        n = len(cat_list[0]) -1
+        n = len(cat_list[0])
         column = 'cat' + '%s'%(n)
-        c.execute("ALTER TABLE categories ADD ? TEXT;", (column,))
-        c.execute('''UPDATE categories SET ? = ? WHERE user_name = ?''', [column, category, user_name])
+        c.execute(f"ALTER TABLE categories ADD {column} TEXT;")
+        c.execute(f"UPDATE categories SET {column} = '{category}' WHERE user_name = ?", (user_name,))
         
         connect.commit()
         connect.close()
