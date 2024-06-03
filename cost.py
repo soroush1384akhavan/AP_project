@@ -93,7 +93,7 @@ class costApp(Tk):
             *self.cost_list)
         self.main_cost.place(x=120, y=120)
 
-        self.category_list = self.return_category_list('amura')
+        self.category_list = self.return_category_list('mmd')
         if len(self.category_list) == 0:
             self.category_list = ["you didn't add a category"]
             
@@ -185,7 +185,7 @@ class costApp(Tk):
                 is_valid = False
         
         if is_valid:
-            self.set_cost_info_in_db(12, self.mizan_cost.get(), self.date_cost.get(), self.option_var1.get(), self.option_var2.get(), self.cost_desc.get())
+            self.set_cost_info_in_db('soroush', self.mizan_cost.get(), self.date_cost.get(), self.option_var1.get(), self.option_var2.get(), self.cost_desc.get())
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
 
         else:
