@@ -241,7 +241,8 @@ class IncomePage:
             self.category_label,
             self.category_menu,
             self.description_label,
-            self.description_entry
+            self.description_entry,
+            self.submit_btn
         ])
         
     def clear_widgets(self):
@@ -578,7 +579,8 @@ class CostPage:
             self.category_label,
             self.category_menu,
             self.description_label,
-            self.description_entry
+            self.description_entry,
+            self.title_label
         ])
         
     def clear_widgets(self):
@@ -767,6 +769,13 @@ class CategoryPage:
         self.create_cat_btn.bind("<Enter>", self.on_enter_create)
         self.create_cat_btn.bind("<Leave>", self.on_leave_create)
         
+        self.widget_list.extend([
+            self.create_cat_btn,
+            self.category_entry,
+            self.add_category_label,
+            self.category_label
+        ])
+        
     def clear_widgets(self):
         for widget in self.widget_list:
             widget.place_forget()
@@ -864,6 +873,8 @@ class SettingPage:
         
         self.theme_switch = CTkSwitch(
             self.master,
+            bg_color="white",
+            text_color="black"
             # command= change_theme
             )
         self.theme_switch.place(x = 580, y= 185)
@@ -951,6 +962,17 @@ class SettingPage:
         self.delete_user_btn.bind("<Enter>", self.on_enter_del_user)
         self.delete_user_btn.bind("<Leave>", self.on_leave_del_user)
         
+        self.widget_list.extend([
+            self.delete_user_btn,
+            self.delete_account_label,
+            self.delete_info_btn,
+            self.source_of_income_menu,
+            self.delete_info_label,
+            self.theme_switch,
+            self.change_theme_label,
+            self.setting_label
+        ])
+        
     def clear_widgets(self):
         for widget in self.widget_list:
             widget.place_forget()
@@ -1024,7 +1046,8 @@ class Main(Tk):
         self.title("Accountig")
         self.resizable(width=False, height=False)
         self.config(width=1125, height=800, bg=BG_COLOR_BACK_OFF)
-        self.widget_list = []
+        self.object_list = []
+        
 
         self.setup_ui()
         
@@ -1162,7 +1185,9 @@ class Main(Tk):
 
     def show_income_page(self, event):
         self.income_page = IncomePage(self)
-        self.income_page.clear_widgets()
+        self.object_list.append(self.income_page)
+        for object in self.object_list:
+            object.clear_widgets()
         self.income_page.setup_ui()
         
     def on_enter_set_income(self, event):
@@ -1173,7 +1198,9 @@ class Main(Tk):
     
     def cost_registration(self, event):
         self.cost_page = CostPage(self)
-        self.cost_page.clear_widgets()
+        self.object_list.append(self.cost_page)
+        for object in self.object_list:
+            object.clear_widgets()
         self.cost_page.setup_ui()    
         
     def on_enter_cost_register(self, event):
@@ -1184,7 +1211,9 @@ class Main(Tk):
     
     def show_category_page(self, event):
         self.category_page = CategoryPage(self)
-        self.category_page.clear_widgets()
+        self.object_list.append(self.category_page)
+        for object in self.object_list:
+            object.clear_widgets()
         self.category_page.setup_ui()    
     
     def on_enter_categories(self, event):
@@ -1209,7 +1238,9 @@ class Main(Tk):
         
     def show_setting_page(self, event):
         self.setting_page = SettingPage(self)
-        self.setting_page.clear_widgets()
+        self.object_list.append(self.setting_page)
+        for object in self.object_list:
+            object.clear_widgets()
         self.setting_page.setup_ui()
     
     def on_enter_setting(self, event):
