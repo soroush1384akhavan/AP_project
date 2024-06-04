@@ -1432,6 +1432,7 @@ class ReportingPage:
         connect.commit()
         connect.close()
         
+        
         return item_selcted
     
     def get_cost_from_db(self, user_name, source, kind):
