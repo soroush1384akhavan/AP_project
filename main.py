@@ -1354,33 +1354,34 @@ class ReportingPage:
     def on_leave_submit(self, event):
         self.submit_btn.configure(fg_color="white")
         
-    # def add_filter(self):
-    #     if self.section_menu.get() == 'both':
-    #         pass
-    #     else:
-    #         item_list = self.get_income_from_db(self.section_menu.get(), 'amura')
-    #         if len(self.day_report_entry.get()) != 0:
-    #             min, max = self.day_report_entry.get().split('-')
-    #             for item in item_list:
-    #                 if (item[2].split('/'))[2] < min or (item[2].split('/'))[2] > max:
-    #                     item_list.remove(item)
+    def add_filter(self):
+        if self.section_menu.get() == 'both':
+            pass
+        else:
+            item_list = self.get_income_from_db(self.section_menu.get(), 'amura')
+            if len(self.day_report_entry.get()) != 0:
+                min, max = self.day_report_entry.get().split('-')
+                for item in item_list:
+                    if (item[2].split('/'))[2] < min or (item[2].split('/'))[2] > max:
+                        item_list.remove(item)
                         
-    #         if len(self.month_report_entry.get()) != 0:
-    #             min, max = self.month_report_entry.get().split('-')
-    #             for item in item_list:
-    #                 if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
-    #                     item_list.remove(item)
+            if len(self.month_report_entry.get()) != 0:
+                min, max = self.month_report_entry.get().split('-')
+                for item in item_list:
+                    if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
+                        item_list.remove(item)
                         
-    #         if len(self.year_report_entry.get()) != 0:
-    #             min, max = self.year_report_entry.get().split('-')
-    #             for item in item_list:
-    #                 if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
-    #                     item_list.remove(item)
+            if len(self.year_report_entry.get()) != 0:
+                min, max = self.year_report_entry.get().split('-')
+                for item in item_list:
+                    if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
+                        item_list.remove(item)
                         
-    #         if len(self.price_amount_entry.get()) !=0:
-    #             min , max = self.price_amount_entry.get().split('-')
-    #             for item in item_list:
-    #                 if item[1] < min 
+            if len(self.price_amount_entry.get()) != 0:
+                min , max = self.price_amount_entry.get().split('-')
+                for item in item_list:
+                    if item[1] < min or item[1] > max:
+                        item_list.remove(item)
     
     def check_page(self):
         pass
@@ -1398,6 +1399,27 @@ class ReportingPage:
         return category_on_db
     
     def get_income_from_db(self, user_name, source, kind):
+        connect = sqlite3.connect('users.db')
+        c = connect.cursor()
+        if source == '':
+            c.execute("SELCET * FROM TABLE income WHERE user_name = ? and income_resource = ? ;",
+                    (user_name, kind))
+        elif kind == '':
+            c.execute("SELCET * FROM TABLE income WHERE user_name = ? and category = ? ;",
+                    (user_name, source))
+        elif source == '' and kind == '':
+            c.execute("SELCET * FROM TABLE income WHERE user_name = ? ;", (user_name,))
+        else:
+            c.execute("SELCET * FROM TABLE income WHERE user_name = ? and income_resource = ? and category = ? ;",
+                    (user_name, kind, source))
+        item_selcted = c.fetchall()
+        
+        connect.commit()
+        connect.close()
+        
+        return item_selcted
+    
+    def get_cost_from_db(self, user_name, source, kind):
         connect = sqlite3.connect('users.db')
         c = connect.cursor()
         if source == '':
