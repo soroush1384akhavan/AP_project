@@ -588,7 +588,8 @@ class CostPage:
             self.category_menu,
             self.description_label,
             self.description_entry,
-            self.title_label
+            self.title_label,
+            self.submit_btn
         ])
         
     def clear_widgets(self):
@@ -1393,7 +1394,8 @@ class SearchPage:
             self.from_label,
             self.to_label,
             self.from_entry,
-            self.to_entry
+            self.to_entry,
+            self.search_btn
         ])
     
     def clear_widgets(self):
@@ -1743,26 +1745,24 @@ class ReportingPage:
         
 
         
-        # self.widget_list.extend([
-        #     self.date_label,
-        #     self.reporting_label,
-        #     self.report_day_label,
-        #     self.report_month_label,
-        #     self.report_year_label,
-        #     self.report_kind_label,
-        #     self.report_source_label,
-        #     self.report_source_list,
-        #     self.report_kind_list,
-        #     self.report_section_list,
-        #     self.day_report_entry,
-        #     self.month_report_entry,
-        #     self.year_report_entry,
-        #     self.price_amount_entry,
-        #     self.price_amount_label,
-        #     self.kind_menu,
-        #     self.source_menu,
-        #     self.section_menu,
-        # ])
+        self.widget_list.extend([
+            self.submit_btn,
+            self.section_menu,
+            self.report_section_label,
+            self.price_amount_entry,
+            self.price_amount_label,
+            self.kind_menu,
+            self.report_kind_label,
+            self.source_menu,
+            self.report_source_label,
+            self.report_day_label,
+            self.year_report_entry,
+            self.day_report_entry,
+            self.report_year_label,
+            self.month_report_entry,
+            self.report_month_label,
+            self.reporting_label,
+        ])
         
     def clear_widgets(self):
         for widget in self.widget_list:
