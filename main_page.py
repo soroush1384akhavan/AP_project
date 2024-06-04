@@ -128,7 +128,7 @@ class IncomePage:
             height=74
         )
         
-        self.income_list = ('naghd', 'check', 'cripto') 
+        self.income_list = ('cash', 'chek', 'cripto') 
         self.option_var1 = StringVar() 
         self.option_var1.set(self.income_list[0]) 
         
@@ -329,36 +329,34 @@ class IncomePage:
             self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
             with open('user_object.pkl', 'rb') as input:
                 person = pickle.load(input)
-            self.set_income_info_in_db(person.username, self.income_amount_entry.get(), self.date_entry.get(), self.option_var1.get(), self.option_var2.get(), self.description_entry.get("1.0", END))
+            self.set_income_info_in_db(person.username, self.income_amount_entry.get(), self.date_entry.get(), self.option_var2.get(), self.option_var1.get(), self.description_entry.get("1.0", END))
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
             
         
-    def set_income_info_in_db(self, id, mizan, date, main, category, description= ''):
+    def set_income_info_in_db(self, user_name, mizan, date, source, type_of_income, description= ''):
         with open('user_object.pkl', 'rb') as input:
             person = pickle.load(input)
-        connect = sqlite3.connect(f'{person.username}.db')
+        connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS income(
                 id INTEGER NOT NULL, 
                 mizan INTEGER NOT NULL,
                 date text NOT NULL,
                 income_resource text NIT NULL,
-                category text,
+                type_of_income text,
                 description text);''')
         
         c.execute('''INSERT INTO income (id, mizan, date, income_resource, category, description)
-                VALUES (?, ?, ?, ?, ?, ?);''', [id, mizan, date, main, category, description])
+                VALUES (?, ?, ?, ?, ?, ?);''', [user_name, mizan, date, source, type_of_income, description])
         
         connect.commit()
         connect.close()
         
-    def return_category_list(self, id):
-        with open('user_object.pkl', 'rb') as input:
-            person = pickle.load(input)
-        connect = sqlite3.connect(f'{person.username}.db')
+    def return_category_list(self, user_name):
+        connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
-        c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
+        c.execute("SELECT * FROM categories WHERE user_name = ?;", (user_name,))
         category_on_db = c.fetchall()
         
         connect.commit()
@@ -472,7 +470,7 @@ class CostPage:
             height=74
         )
         
-        self.income_list = ('naghd', 'check', 'cripto') 
+        self.income_list = ('cash', 'chek', 'cripto') 
         self.option_var1 = StringVar() 
         self.option_var1.set(self.income_list[0]) 
         with open('user_object.pkl', 'rb') as input:
@@ -673,37 +671,32 @@ class CostPage:
             self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
             with open('user_object.pkl', 'rb') as input:
                 person = pickle.load(input)
-            self.set_cost_info_in_db(person.username, self.cost_amount_entry.get(), self.date_entry.get(), self.option_var1.get(), self.option_var2.get(), self.description_entry.get("1.0", END))
+            self.set_cost_info_in_db(person.username, self.cost_amount_entry.get(), self.date_entry.get(), self.option_var2.get(), self.option_var1.get(), self.description_entry.get("1.0", END))
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
             
         
-    def set_cost_info_in_db(self, id, mizan, date, main, category, description= ''):
-        
-        with open('user_object.pkl', 'rb') as input:
-            person = pickle.load(input)
-        connect = sqlite3.connect(f'{person.username}.db')
+    def set_cost_info_in_db(self, user_name, mizan, date, source, type_of_cost, description= ''):
+        connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS cost(
                 user_name TEXT NOT NULL, 
                 mizan INTEGER NoT NULL,
                 date text NOT NULL,
                 cost_resource text NIT NULL,
-                category text,
+                type_of_cost text,
                 description text);''')
         
         c.execute('''INSERT INTO cost (user_name, mizan, date, cost_resource, category, description)
-                VALUES (?, ?, ?, ?, ?, ?);''', [id, mizan, date, main, category, description])
+                VALUES (?, ?, ?, ?, ?, ?);''', [user_name, mizan, date, source, type_of_cost, description])
 
         connect.commit()
         connect.close()
         
-    def return_category_list(self, id):
-        with open('user_object.pkl', 'rb') as input:
-            person = pickle.load(input)
-        connect = sqlite3.connect(f'{person.username}.db')
+    def return_category_list(self, user_name):
+        connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
-        c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
+        c.execute("SELECT * FROM categories WHERE user_name = ?;", (user_name,))
         category_on_db = c.fetchall()
         
         connect.commit()
@@ -1020,15 +1013,14 @@ class SettingPage:
         
         message_box = tkinter.messagebox.askquestion('delete info','آیا برای حذف اطلاعات خود مطمین هستید؟', icon = 'warning')
         if message_box:
-            self.delete_transaction('soroush', self.option_var.get())
+            with open('user_object.pkl', 'rb') as input:
+                person = pickle.load(input)
+            self.delete_transaction(person.username, self.option_var.get())
             tkinter.messagebox.showinfo('complite', 'the information you chose was deleted')
                 
     def delete_transaction(self, user_name, change):
-    
         if change == 'income':
-            with open('user_object.pkl', 'rb') as input:
-                person = pickle.load(input)
-            connect = sqlite3.connect(f'{person.username}.db')
+            connect = sqlite3.connect(f'{user_name}.db')
             c = connect.cursor()
             c.execute('''DELETE FROM income WHERE user_name = ?;''' ,(user_name,))
             
@@ -1036,9 +1028,7 @@ class SettingPage:
             connect.close()
             
         elif change == 'price':
-            with open('user_object.pkl', 'rb') as input:
-                person = pickle.load(input)
-            connect = sqlite3.connect(f'{person.username}.db')
+            connect = sqlite3.connect(f'{user_name}.db')
             c = connect.cursor()
             c.execute('''DELETE FROM price WHERE user_name = ?;''' ,(user_name,))
             
@@ -1046,9 +1036,7 @@ class SettingPage:
             connect.close()
             
         elif change == 'both':
-            with open('user_object.pkl', 'rb') as input:
-                person = pickle.load(input)
-            connect = sqlite3.connect(f'{person.username}.db')
+            connect = sqlite3.connect(f'{user_name}.db')
             c = connect.cursor()
             c.execute('''DELETE FROM income WHERE user_name = ?;''', (user_name,))
             c.execute('''DELETE FROM price WHERE user_name = ?;''', (user_name,))
@@ -1596,14 +1584,14 @@ class ReportingPage:
         # self.year_report_entry.bind("<KeyRelease>", self.check_page)
         
         
-        self.report_kind_list = ('naghd', 'check', 'cripto') 
+        self.report_kind_list = ('cash', 'chek', 'cripto') 
         self.option_var1 = StringVar() 
         self.option_var1.set(self.report_kind_list[0]) 
         with open('user_object.pkl', 'rb') as input:
             person = pickle.load(input)
         self.report_source_list = self.return_category_list(person.username)
         if len(self.report_source_list) == 0:
-            self.report_source_list = ["you didn't add a category"]
+            self.report_source_list = ["","you didn't add a category"]
         else:
             self.report_source_list = (self.report_source_list[0])[1:]
          
@@ -1773,7 +1761,23 @@ class ReportingPage:
         self.submit_btn.configure(fg_color="gray")
         self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
         
-        
+        if self.section_menu.get() == 'income':
+            item_list = self.get_income_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            value_list = self.add_filter(item_list)
+            
+        elif self.section_menu.get() == 'cost':
+            item_list = self.get_cost_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            value_list = self.add_filter(item_list)
+            
+        else:
+            item_list1 = self.get_income_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            value_list = self.add_filter(item_list1)
+            item_list2 = self.get_cost_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            value_list2 = self.add_filter(item_list2)
+            
+            value_list = value_list.extend(value_list2)
+            
+        print(value_list)
     
     def on_enter_submit(self, event):
         self.submit_btn.configure(fg_color="#B0B2AE")
@@ -1781,14 +1785,38 @@ class ReportingPage:
     def on_leave_submit(self, event):
         self.submit_btn.configure(fg_color="white")
         
-    def add_filter(self):
-        pass
+    def add_filter(self, item_list):        
+        if len(self.day_report_entry.get()) != 0:
+            min, max = self.day_report_entry.get().split('-')
+            for item in item_list:
+                if (item[2].split('/'))[2] < min or (item[2].split('/'))[2] > max:
+                    item_list.remove(item)
+                        
+        if len(self.month_report_entry.get()) != 0:
+            min, max = self.month_report_entry.get().split('-')
+            for item in item_list:
+                if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
+                    item_list.remove(item)
+                        
+        if len(self.year_report_entry.get()) != 0:
+            min, max = self.year_report_entry.get().split('-')
+            for item in item_list:
+                if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
+                    item_list.remove(item)
+                        
+        if len(self.price_amount_entry.get()) != 0:
+            min , max = self.price_amount_entry.get().split('-')
+            for item in item_list:
+                if item[1] < min or item[1] > max:
+                    item_list.remove(item)
+                    
+        return item_list
     
     def check_page(self):
         pass
         
     def return_category_list(self, id):
-        connect = sqlite3.connect('users.db')
+        connect = sqlite3.connect(f'{id}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
@@ -1798,6 +1826,50 @@ class ReportingPage:
         connect.close()
         
         return category_on_db
+    
+    def get_income_from_db(self, user_name, source, kind):
+        connect = sqlite3.connect(f'{user_name}.db')
+        c = connect.cursor()
+        if source == '':
+            c.execute("SELECT * FROM income WHERE user_name = ? and income_resource = ? ;",
+                    (user_name, kind))
+        elif kind == '':
+            c.execute("SELECT * FROM income WHERE user_name = ? and category = ? ;",
+                    (user_name, source))
+        elif source == '' and kind == '':
+            c.execute("SELECT * FROM income WHERE user_name = ? ;", (user_name,))
+        else:
+            c.execute("SELECT * FROM income WHERE user_name = ? and income_resource = ? and category = ? ;",
+                    (user_name, kind, source))
+        item_selcted = c.fetchall()
+        
+        connect.commit()
+        connect.close()
+        
+        
+        return item_selcted
+    
+    def get_cost_from_db(self, user_name, source, kind):
+        connect = sqlite3.connect(f'{user_name}.db')
+        c = connect.cursor()
+        if source == '':
+            c.execute("SELECT * FROM cost WHERE user_name = ? and cost_resource = ? ;",
+                    (user_name, kind))
+        elif kind == '':
+            c.execute("SELECT * FROM cost WHERE user_name = ? and category = ? ;",
+                    (user_name, source))
+        elif source == '' and kind == '':
+            c.execute("SELECT * FROM cost WHERE user_name = ? ;", (user_name,))
+        else:
+            c.execute("SELECT * FROM cost WHERE user_name = ? and cost_resource = ? and category = ? ;",
+                    (user_name, source, kind))
+        item_selcted = c.fetchall()
+        
+        connect.commit()
+        connect.close()
+        
+        return item_selcted
+        
         
 class Main(Tk):
     def __init__(self):
