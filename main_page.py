@@ -1054,8 +1054,416 @@ class SettingPage:
             
             connect.commit()
             connect.close()
+      
+      
+class SearchPage:  
+    def __init__(self, master):
+        self.master = master
+        self.widget_list = []
+
+        self.setup_ui()
+
+    def setup_ui(self):
+        self.search_label = Label(
+                self.master, 
+                text="search", 
+                font=('Bold', 40),
+                fg="black", 
+                bg="white"
+            )
+        self.search_label.place(
+            x=313, 
+            y=38, 
+            width=287, 
+            height=74
+        )    
+        
+        self.filter_label = Label(
+                self.master, 
+                text="filters:", 
+                font=('inter', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.filter_label.place(
+            x=306, 
+            y=165, 
+            width=93, 
+            height=74
+        )     
             
+        self.year_label = Label(
+                self.master, 
+                text="Year:", 
+                font=('light', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.year_label.place(
+            x=306, 
+            y=245, 
+            width=66, 
+            height=74
+        ) 
+        
+        self.month_label = Label(
+                self.master, 
+                text="Month:", 
+                font=('light', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.month_label.place(
+            x=566, 
+            y=245, 
+            width=94, 
+            height=74
+        )  
+        
+        self.day_label = Label(
+                self.master, 
+                text="Day:", 
+                font=('light', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.day_label.place(
+            x=866, 
+            y=245, 
+            width=66, 
+            height=74
+        )    
+        
+        self.search_in_label = Label(
+                self.master, 
+                text="Search in:", 
+                font=('light', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.search_in_label.place(
+            x=306, 
+            y=325, 
+            width=135, 
+            height=74
+        )   
+        
+        self.money_range_label = Label(
+                self.master, 
+                text="Money range:", 
+                font=('light', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.money_range_label.place(
+            x=666, 
+            y=325, 
+            width=188, 
+            height=74
+        ) 
+        
+        self.search_in_2_label = Label(
+                self.master, 
+                text="Search in:", 
+                font=('light', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.search_in_2_label.place(
+            x=306, 
+            y=405, 
+            width=135, 
+            height=74
+        ) 
+        
+        self.search_goal_label = Label(
+                self.master, 
+                text="What do you want to search?", 
+                font=('light', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.search_goal_label.place(
+            x=306, 
+            y=487, 
+            width=372, 
+            height=100
+        ) 
+        
+        self.from_label = Label(
+                self.master, 
+                text="from", 
+                font=('light', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.from_label.place(
+            x=856, 
+            y=325, 
+            width=66, 
+            height=74
+        )
+        
+        self.to_label = Label(
+                self.master, 
+                text="to", 
+                font=('light', 20),
+                fg="black", 
+                bg="white"
+            )
+        self.to_label.place(
+            x=976, 
+            y=325, 
+            width=66, 
+            height=74
+        )
+        
+        self.from_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            width=60,
+            height=60,
+            border_width=2,
+            bg_color="white",
+            corner_radius=10,
+            border_color= "#3300FF",
+            fg_color="white",
+            placeholder_text_color="gray",
+            text_color="black"
+            )
+        self.from_entry.place(x=924, y=332)
+        self.from_entry.bind("<KeyRelease>", self.check_from_and_to)
+        self.from_entry.bind("<KeyRelease>", self.check_page)
+        
+        
+        
+        self.to_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            width=60,
+            height=60,
+            border_width=2,
+            bg_color="white",
+            corner_radius=10,
+            border_color= "#3300FF",
+            fg_color="white",
+            placeholder_text_color="gray",
+            text_color="black"
+            )
+        self.to_entry.place(x=1040, y=332)
+        self.to_entry.bind("<KeyRelease>", self.check_from_and_to)
+        self.to_entry.bind("<KeyRelease>", self.check_page)
+        
+        
+        self.year_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            width=159,
+            height=40,
+            border_width=2,
+            bg_color="white",
+            corner_radius=10,
+            border_color= "#3300FF",
+            fg_color="white",
+            placeholder_text_color="gray",
+            text_color="black"
+            )
+        self.year_entry.place(x=390, y=262)
+        self.year_entry.bind("<KeyRelease>", self.check_year)
+        self.year_entry.bind("<KeyRelease>", self.check_page)
+        
+        
+        self.month_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            width=159,
+            height=40,
+            border_width=2,
+            bg_color="white",
+            corner_radius=10,
+            border_color= "#3300FF",
+            fg_color="white",
+            placeholder_text_color="gray",
+            text_color="black"
+            )
+        self.month_entry.place(x=670, y=262)
+        self.month_entry.bind("<KeyRelease>", self.check_month)
+        self.month_entry.bind("<KeyRelease>", self.check_page)
+        
+        
+        self.day_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            width=159,
+            height=40,
+            border_width=2,
+            bg_color="white",
+            corner_radius=10,
+            border_color= "#3300FF",
+            fg_color="white",
+            placeholder_text_color="gray",
+            text_color="black"
+            )
+        self.day_entry.place(x=930, y=262)
+        self.day_entry.bind("<KeyRelease>", self.check_day)
+        self.day_entry.bind("<KeyRelease>", self.check_page)
+        
+        self.search_goal_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            width=392,
+            height=62,
+            border_width=2,
+            bg_color="white",
+            corner_radius=10,
+            border_color= "#3300FF",
+            fg_color="white",
+            placeholder_text_color="gray",
+            text_color="black"
+            )
+        self.search_goal_entry.place(x=712, y=507)
+        
+        self.search_btn = CTkButton(
+            master= self.master,
+            width=130,
+            height=47,
+            state=NORMAL,
+            corner_radius=10,
+            border_width=1,
+            hover=TRUE,
+            fg_color="white",
+            bg_color="white",
+            text="Search",
+            text_color="black",
+            font=('Kdam Thmor', 17)
+            )
+        self.search_btn.place(x=300, y=615)
+        self.search_btn.bind("<Button-1>", self.on_enter_search)
+        self.search_btn.bind("<Enter>", self.on_leave_search)
+        self.search_btn.bind("<Leave>", self.on_enter_search)
+        
+        self.search_list_1 = ['Income', 'Cost']
+        self.seach_in_menu = CTkOptionMenu(
+            master=self.master,
+            button_color="#FFCC5C",
+            fg_color="#FBE5B6",
+            bg_color="white",
+            dropdown_fg_color="white",
+            dropdown_hover_color="#F8E1AF",
+            button_hover_color="#FFCC5C",
+            text_color="black",
+            dropdown_text_color="black",
+            values=self.search_list_1 
+            )
+        self.seach_in_menu.place(x=470, y=350)
+        
+        self.search_list_2 = ['Description', 'money category', 'income source', 'cost source', 'all' ]
+        self.seach_in_2_menu = CTkOptionMenu(
+        master=self.master,
+        button_color="#FFCC5C",
+        fg_color="#FBE5B6",
+        bg_color="white",
+        dropdown_fg_color="white",
+        dropdown_hover_color="#F8E1AF",
+        button_hover_color="#FFCC5C",
+        text_color="black",
+        dropdown_text_color="black",
+        values=self.search_list_2
+        )
+        self.seach_in_2_menu.place(x=470, y=433)
+        
+        
+        
+        self.widget_list.extend([
+            self.search_in_2_label,
+            self.search_in_label,
+            self.money_range_label,
+            self.day_label,
+            self.month_label,
+            self.year_label,
+            self.filter_label,
+            self.search_label,
+            self.search_goal_label,
+            self.year_entry,
+            self.month_entry,
+            self.day_entry,
+            self.search_goal_entry,
+            self.seach_in_menu,
+            self.seach_in_2_menu,
+            self.from_label,
+            self.to_label,
+            self.from_entry,
+            self.to_entry
+        ])
+    
+    def clear_widgets(self):
+        for widget in self.widget_list:
+            widget.place_forget()
+        self.widget_list.clear()
+        
+    def check_year(self, event):
+        value = self.year_entry.get()
+        if value.isdigit() and 1920 <= int(value) <= 2040 or value == "":
+            self.year_entry.configure(border_color="green")
+            return True
+        else:
+            self.year_entry.configure(border_color="red")
+            return False
+
+            
+    def check_month(self, event):
+        value = self.month_entry.get()
+        if value.isdigit() and 1 <= int(value) <= 12 or value == "":
+            self.month_entry.configure(border_color="green")
+            return True
+        else:
+            self.month_entry.configure(border_color="red")
+            return False
+        
+    def check_day(self, event):
+        value = self.day_entry.get()
+        if value.isdigit() and 1 <= int(value) <= 31 or value == "":
+            self.day_entry.configure(border_color="green")
+            return True
+        else:
+            self.day_entry.configure(border_color="red")
+            return False
+        
+    def check_from_and_to(self, event):
+        from_g = self.from_entry.get()
+        to_g = self.to_entry.get()
+        try:
+            if from_g.isdigit() and  0 <= int(from_g) <= int(to_g) and from_g.isdigit() or(from_g=="" and from_g==""): 
+                self.from_entry.configure(border_color="green")
+                self.to_entry.configure(border_color="green")
+                return True
+            else:
+                self.from_entry.configure(border_color="red")
+                self.to_entry.configure(border_color="red")
+                return False
+        except:
+            pass
+        
+    def check_page(self, event):
+        if self.check_year(None) and self.check_month(None) and self.check_day(None) and self.check_from_and_to(None):
+            self.search_btn.configure(state=NORMAL) 
+        else:
+            self.search_btn.configure(state=DISABLED)
                 
+    def on_leave_search(self, event):
+        if self.search_btn.cget('state') == NORMAL:
+            self.search_btn.configure(fg_color="#B0B2AE")
+        
+    def on_enter_search(self, event):
+        self.search_btn.configure(fg_color="white")
+    
+        
+    def on_search_clicked(self, event):
+        if self.search_btn.cget('state') == NORMAL:
+            self.search_btn.configure(fg_color="gray")
+            self.search_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
+            
+        
 class ReportingPage:
     def __init__(self, master):
         self.master = master
@@ -1478,6 +1886,7 @@ class Main(Tk):
         self.search_button.place(x=0, y=337)
         self.search_button.bind("<Enter>", self.on_enter_search)
         self.search_button.bind("<Leave>", self.on_leave_search)
+        self.search_button.bind("<Button-1>", self.show_search_page)
         
         self.reporting_button = CTkButton(
             master=self,
@@ -1578,6 +1987,13 @@ class Main(Tk):
             object.clear_widgets()
         self.income_page.setup_ui()
         
+    def show_search_page(self, event):
+        self.search_page = SearchPage(self)
+        self.object_list.append(self.search_page)
+        for object in self.object_list:
+            object.clear_widgets()
+        self.search_page.setup_ui()
+        
     def on_enter_set_income(self, event):
         self.set_income_button.configure(fg_color=BG_COLOR_BACK_ON)
         
@@ -1609,9 +2025,6 @@ class Main(Tk):
         
     def on_leave_categories(self, event):
         self.categories_button.configure(fg_color=BG_COLOR_BACK_OFF)
-     
-    def show_search_page(self, event):
-        pass
         
     def on_enter_search(self, event):
         self.search_button.configure(fg_color=BG_COLOR_BACK_ON)
