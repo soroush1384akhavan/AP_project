@@ -5,6 +5,7 @@ import Creat_account
 from tkinter import Toplevel
 import sqlite3
 import re
+import pickle
 
 # Constants
 BG_COLOR_BACK_ON = "#FBE5B6"
@@ -330,8 +331,9 @@ class IncomePage:
             
         
     def set_income_info_in_db(self, id, mizan, date, main, category, description= ''):
-        
-        connect = sqlite3.connect('users.db')
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        connect = sqlite3.connect(f'{person.username}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS income(
                 id INTEGER NOT NULL, 
@@ -348,7 +350,9 @@ class IncomePage:
         connect.close()
         
     def return_category_list(self, id):
-        connect = sqlite3.connect('users.db')
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        connect = sqlite3.connect(f'{person.username}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
@@ -669,7 +673,9 @@ class CostPage:
         
     def set_cost_info_in_db(self, id, mizan, date, main, category, description= ''):
         
-        connect = sqlite3.connect('users.db')
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        connect = sqlite3.connect(f'{person.username}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS cost(
                 user_name TEXT NOT NULL, 
@@ -686,7 +692,9 @@ class CostPage:
         connect.close()
         
     def return_category_list(self, id):
-        connect = sqlite3.connect('users.db')
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        connect = sqlite3.connect(f'{person.username}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
@@ -816,7 +824,9 @@ class CategoryPage:
             
     def set_category_info_in_db(self, user_name, category):
         
-        connect = sqlite3.connect('users.db')
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        connect = sqlite3.connect(f'{person.username}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         try:
@@ -1009,7 +1019,9 @@ class SettingPage:
     def delete_transaction(self, user_name, change):
     
         if change == 'income':
-            connect = sqlite3.connect('users.db')
+            with open('user_object.pkl', 'rb') as input:
+                person = pickle.load(input)
+            connect = sqlite3.connect(f'{person.username}.db')
             c = connect.cursor()
             c.execute('''DELETE FROM income WHERE user_name = ?;''' ,(user_name,))
             
@@ -1017,7 +1029,9 @@ class SettingPage:
             connect.close()
             
         elif change == 'price':
-            connect = sqlite3.connect('users.db')
+            with open('user_object.pkl', 'rb') as input:
+                person = pickle.load(input)
+            connect = sqlite3.connect(f'{person.username}.db')
             c = connect.cursor()
             c.execute('''DELETE FROM price WHERE user_name = ?;''' ,(user_name,))
             
@@ -1025,7 +1039,9 @@ class SettingPage:
             connect.close()
             
         elif change == 'both':
-            connect = sqlite3.connect('users.db')
+            with open('user_object.pkl', 'rb') as input:
+                person = pickle.load(input)
+            connect = sqlite3.connect(f'{person.username}.db')
             c = connect.cursor()
             c.execute('''DELETE FROM income WHERE user_name = ?;''', (user_name,))
             c.execute('''DELETE FROM price WHERE user_name = ?;''', (user_name,))
@@ -1386,6 +1402,8 @@ class Main(Tk):
         self.canvas.create_image(562.5, 400, image=self.background_image)
         self.canvas.place(relwidth=1, relheight=1)
         
+        self.canvas.create_oval(30, 50, 80, 100, outline='black')
+        
         self.set_income_button = CTkButton(
             master=self,
             width=273,
@@ -1505,6 +1523,40 @@ class Main(Tk):
         self.exit_button.bind("<Leave>", self.on_leave_exit)
         self.exit_button.bind("<Button-1>", self.on_exit_click)
         
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        
+        self.first_letter = Label(
+          self.master, 
+                text=f"{person.fname[0]}{person.lname[0]}", 
+                font=('Kdam Thmor', 19),
+                fg="black", 
+                bg=BG_COLOR_BACK_OFF
+            )
+        self.first_letter.place(
+            x=40, 
+            y=60, 
+            width=30, 
+            height=30
+        )
+        
+        self.user_name_label = Label(
+          self.master, 
+                text=f"{person.username}", 
+                font=('Kdam Thmor', 19),
+                fg="black", 
+                bg=BG_COLOR_BACK_OFF
+            )
+        self.user_name_label.place(
+            x=100, 
+            y=60, 
+            width=70, 
+            height=30
+        )
+    
+           
+        
+        
         
         self.line_canvas = Canvas(self, width=803, height=1, bg=BG_COLOR_BACK_OFF, highlightthickness=0)
         self.line_canvas.place(x=300, y=150)
@@ -1604,14 +1656,10 @@ class Main(Tk):
 def start():
     try:
         app = Main()
-        import pickle
-
-        # بارگذاری شی از فایل
+        
         with open('user_object.pkl', 'rb') as input:
             person = pickle.load(input)
         print(person.fname)
-
-        # حالا می‌توانید از 'user_object_loaded' همانند شی اصلی استفاده کنید.
 
         app.mainloop()   
     except:
