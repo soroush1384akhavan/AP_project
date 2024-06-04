@@ -93,7 +93,7 @@ class IncomeApp(Tk):
             *self.income_list)
         self.main_income.place(x=120, y=120)
 
-        self.category_list = self.return_category_list('mmd')
+        self.category_list = self.return_category_list('amura')
         if len(self.category_list) == 0:
             self.category_list = ["you didn't add a category"]
         else:

@@ -93,7 +93,7 @@ class costApp(Tk):
             *self.cost_list)
         self.main_cost.place(x=120, y=120)
 
-        self.category_list = self.return_category_list('mmd')
+        self.category_list = self.return_category_list('amura')
         if len(self.category_list) == 0:
             self.category_list = ["you didn't add a category"]
             
