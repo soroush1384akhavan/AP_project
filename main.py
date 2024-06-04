@@ -151,7 +151,7 @@ class IncomePage:
             text_color="black",
             dropdown_text_color="black",
             values=self.income_list)
-        self.source_of_income_menu.place(x=556, y=310)
+        self.source_of_income_menu.place(x=920, y=310)
         
         self.category_label = Label(
                 self.master, 
@@ -178,7 +178,7 @@ class IncomePage:
             text_color="black",
             dropdown_text_color="black",
             values=self.category_list)
-        self.category_menu.place(x=920, y=310)
+        self.category_menu.place(x=556, y=310)
         
         self.description_label = Label(
                 self.master, 
@@ -335,7 +335,7 @@ class IncomePage:
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS income(
                 id INTEGER NOT NULL, 
-                mizan INTEGER NoT NULL,
+                mizan INTEGER NOT NULL,
                 date text NOT NULL,
                 income_resource text NIT NULL,
                 category text,
@@ -489,7 +489,7 @@ class CostPage:
             text_color="black",
             dropdown_text_color="black",
             values=self.income_list)
-        self.source_of_income_menu.place(x=556, y=310)
+        self.source_of_income_menu.place(x=920, y=310)
         
         self.category_label = Label(
                 self.master, 
@@ -516,7 +516,7 @@ class CostPage:
             text_color="black",
             dropdown_text_color="black",
             values=self.category_list)
-        self.category_menu.place(x=920, y=310)
+        self.category_menu.place(x=556, y=310)
         
         self.description_label = Label(
                 self.master, 
@@ -1037,9 +1037,341 @@ class SettingPage:
             connect.commit()
             connect.close()
             
-            
+                
+class ReportingPage:
+    def __init__(self, master):
+        self.master = master
+        self.widget_list = []
+
+        self.setup_ui()
+        
+    def setup_ui(self):
+        self.reporting_label = Label(
+                self.master, 
+                text="Reporting:", 
+                font=('Bold', 40),
+                fg="black", 
+                bg="white"
+            )
+        self.reporting_label.place(
+            x=313, 
+            y=38, 
+            width=287, 
+            height=74
+        )
+        
+        self.date_label = Label(
+                self.master, 
+                text="chose your period date:", 
+                font=('Kdam Thmor', 18),
+                fg="black", 
+                bg="white"
+            )
+        self.date_label.place(
+            x=316, 
+            y=165, 
+            width=250, 
+            height=74
+        )
+        
+        self.report_day_label = Label(
+                self.master, 
+                text="Day:", 
+                font=('Kdam Thmor', 16),
+                fg="black", 
+                bg="white"
+            )
+        self.report_day_label.place(
+            x=296, 
+            y=215, 
+            width=110, 
+            height=74
+        )
+        self.day_report_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            placeholder_text="  from - to",
+            width=120,
+            height=40,
+            border_width=2,
+            corner_radius=10,
+            border_color="#3300FF",
+            bg_color="white",
+            fg_color="white",
+            placeholder_text_color=TEXT_COLOR_ENTRY,
+            text_color="black"
+        )
+        self.day_report_entry.place(x=386, y=235)
+        # self.day_report_entry.bind("<KeyRelease>", self.check_category)
+        # self.day_report_entry.bind("<KeyRelease>", self.check_page)
+        
+        self.report_month_label = Label(
+                self.master, 
+                text="Month:", 
+                font=('Kdam Thmor', 16),
+                fg="black", 
+                bg="white"
+            )
+        self.report_month_label.place(
+            x=550, 
+            y=216, 
+            width=110, 
+            height=74
+        )
+        self.month_report_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            placeholder_text="  from - to",
+            width=120,
+            height=40,
+            border_width=2,
+            corner_radius=10,
+            border_color="#3300FF",
+            bg_color="white",
+            fg_color="white",
+            placeholder_text_color=TEXT_COLOR_ENTRY,
+            text_color="black"
+        )
+        self.month_report_entry.place(x=650, y=235)
+        # self.month_report_entry.bind("<KeyRelease>", self.check_category)
+        # self.month_report_entry.bind("<KeyRelease>", self.check_page)
+        
+        self.report_year_label = Label(
+                self.master, 
+                text="Year:", 
+                font=('Kdam Thmor', 16),
+                fg="black", 
+                bg="white"
+            )
+        self.report_year_label.place(
+            x=800, 
+            y=216, 
+            width=110, 
+            height=74
+        )
+        self.year_report_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            placeholder_text="  from - to",
+            width=120,
+            height=40,
+            border_width=2,
+            corner_radius=10,
+            border_color="#3300FF",
+            bg_color="white",
+            fg_color="white",
+            placeholder_text_color=TEXT_COLOR_ENTRY,
+            text_color="black"
+        )
+        self.year_report_entry.place(x=890, y=235)
+        # self.year_report_entry.bind("<KeyRelease>", self.check_category)
+        # self.year_report_entry.bind("<KeyRelease>", self.check_page)
+        
+        
+        self.report_kind_list = ('naghd', 'check', 'cripto') 
+        self.option_var1 = StringVar() 
+        self.option_var1.set(self.report_kind_list[0]) 
+        
+        self.report_source_list = self.return_category_list('amura')
+        if len(self.report_source_list) == 0:
+            self.report_source_list = ["you didn't add a category"]
+        else:
+            self.report_source_list = (self.report_source_list[0])[1:]
+         
+        self.option_var2 = StringVar() 
+        self.option_var2.set(self.report_source_list[0])
+        
+        self.report_source_label = Label(
+                self.master, 
+                text="source report:", 
+                font=('Kdam Thmor', 18),
+                fg="black", 
+                bg="white"
+            )
+        self.report_source_label.place(
+            x=280, 
+            y=315, 
+            width=230, 
+            height=50
+        )
+        self.source_menu = CTkOptionMenu(
+            master=self.master,
+            button_color="#FFCC5C",
+            fg_color="#FBE5B6",
+            bg_color="white",
+            dropdown_fg_color="white",
+            dropdown_hover_color="#F8E1AF",
+            button_hover_color="#FFCC5C",
+            text_color="black",
+            dropdown_text_color="black",
+            values=self.report_source_list)
+        self.source_menu.place(x=480, y=326)
+        
+        self.report_kind_label = Label(
+                self.master, 
+                text="kind of report:", 
+                font=('Kdam Thmor', 18),
+                fg="black", 
+                bg="white"
+            )
+        self.report_kind_label.place(
+            x=700, 
+            y=315, 
+            width=150, 
+            height=50
+        )
+        self.kind_menu = CTkOptionMenu(
+            master=self.master,
+            button_color="#FFCC5C",
+            fg_color="#FBE5B6",
+            bg_color="white",
+            dropdown_fg_color="white",
+            dropdown_hover_color="#F8E1AF",
+            button_hover_color="#FFCC5C",
+            text_color="black",
+            dropdown_text_color="black",
+            values=self.report_kind_list)
+        self.kind_menu.place(x=870, y=326)
+        
+        self.price_amount_label = Label(
+                self.master, 
+                text="price amount:", 
+                font=('Kdam Thmor', 18),
+                fg="black", 
+                bg="white"
+            )
+        self.price_amount_label.place(
+            x=316, 
+            y=405, 
+            width=150, 
+            height=50
+        )
+        
+        self.price_amount_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            placeholder_text="     from - to",
+            width=160,
+            height=40,
+            border_width=2,
+            corner_radius=10,
+            border_color="#3300FF",
+            bg_color="white",
+            fg_color="white",
+            placeholder_text_color=TEXT_COLOR_ENTRY,
+            text_color="black"
+        )
+        self.price_amount_entry.place(x=490, y=410)
+        # self.year_report_entry.bind("<KeyRelease>", self.check_category)
+        # self.year_report_entry.bind("<KeyRelease>", self.check_page)
+        
+        self.report_section_list = ('both', 'income', 'cost') 
+        self.option_var3 = StringVar() 
+        self.option_var3.set(self.report_section_list[0])
+        
+        self.report_section_label = Label(
+                self.master, 
+                text="source report:", 
+                font=('Kdam Thmor', 18),
+                fg="black", 
+                bg="white"
+            )
+        self.report_section_label.place(
+            x=280, 
+            y=495, 
+            width=230, 
+            height=50
+        )
+        self.section_menu = CTkOptionMenu(
+            master=self.master,
+            button_color="#FFCC5C",
+            fg_color="#FBE5B6",
+            bg_color="white",
+            dropdown_fg_color="white",
+            dropdown_hover_color="#F8E1AF",
+            button_hover_color="#FFCC5C",
+            text_color="black",
+            dropdown_text_color="black",
+            values=self.report_section_list)
+        self.section_menu.place(x=480, y=505)
+        
+        self.submit_btn = CTkButton(
+            master= self.master,
+            width=260,
+            height=64,
+            state=DISABLED,
+            corner_radius=10,
+            border_width=1,
+            hover=TRUE,
+            fg_color="white",
+            bg_color="white",
+            text="Filtering",
+            text_color="black",
+            font=FONT_BUTTON)
+        
+        self.submit_btn.place(x=310, y=700)
+        self.submit_btn.bind("<Button-1>", self.on_submit_clicked)
+        self.submit_btn.bind("<Enter>", self.on_enter_submit)
+        self.submit_btn.bind("<Leave>", self.on_leave_submit)
+        
+
+        
+        # self.widget_list.extend([
+        #     self.date_label,
+        #     self.reporting_label,
+        #     self.report_day_label,
+        #     self.report_month_label,
+        #     self.report_year_label,
+        #     self.report_kind_label,
+        #     self.report_source_label,
+        #     self.report_source_list,
+        #     self.report_kind_list,
+        #     self.report_section_list,
+        #     self.day_report_entry,
+        #     self.month_report_entry,
+        #     self.year_report_entry,
+        #     self.price_amount_entry,
+        #     self.price_amount_label,
+        #     self.kind_menu,
+        #     self.source_menu,
+        #     self.section_menu,
+        # ])
+        
+    def clear_widgets(self):
+        for widget in self.widget_list:
+            widget.place_forget()
+        self.widget_list.clear()
+        
+    def on_submit_clicked(self, event):
+        self.submit_btn.configure(fg_color="gray")
+        self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
+        
+        
     
-                          
+    def on_enter_submit(self, event):
+        self.submit_btn.configure(fg_color="#B0B2AE")
+    
+    def on_leave_submit(self, event):
+        self.submit_btn.configure(fg_color="white")
+        
+    def add_filter(self):
+        pass
+    
+    def check_page(self):
+        pass
+        
+    def return_category_list(self, id):
+        connect = sqlite3.connect('users.db')
+        c = connect.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
+        c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
+        category_on_db = c.fetchall()
+        
+        connect.commit()
+        connect.close()
+        
+        return category_on_db
+        
 class Main(Tk):
     def __init__(self):
         super().__init__()
@@ -1141,6 +1473,7 @@ class Main(Tk):
         self.reporting_button.place(x=0, y=387)
         self.reporting_button.bind("<Enter>", self.on_enter_reporting)
         self.reporting_button.bind("<Leave>", self.on_leave_reporting)
+        self.reporting_button.bind("<Button-1>", self.show_reporting_page)
         
         self.setting_button = CTkButton(
             master=self,
@@ -1222,6 +1555,8 @@ class Main(Tk):
     def on_leave_categories(self, event):
         self.categories_button.configure(fg_color=BG_COLOR_BACK_OFF)
      
+    def show_search_page(self, event):
+        pass
         
     def on_enter_search(self, event):
         self.search_button.configure(fg_color=BG_COLOR_BACK_ON)
@@ -1229,6 +1564,12 @@ class Main(Tk):
     def on_leave_search(self, event):
         self.search_button.configure(fg_color=BG_COLOR_BACK_OFF)
         
+    def show_reporting_page(self, event):
+        self.report_page = ReportingPage(self)
+        self.object_list.append(self.report_page)
+        for object in self.object_list:
+            object.clear_widgets()   
+        self.report_page.setup_ui()
         
     def on_enter_reporting(self, event):
         self.reporting_button.configure(fg_color=BG_COLOR_BACK_ON)
