@@ -3,6 +3,7 @@ import tkinter.messagebox
 from customtkinter import *
 import Creat_account
 from tkinter import Toplevel
+import pandas as pd
         
 # Constants
 BG_COLOR_BACK = "#FBE5B6"
@@ -147,9 +148,32 @@ class LoginApp(Tk):
         if self.is_username_exists():
             self.is_valid_credentials()
             if self.is_valid_credentials():
+                self.create_person()
                 self.destroy()
-                import main
-                main.start()
+                try :
+                    import main_page
+                    main_page.start()
+                except:
+                    print("error")
+                           
+    def create_person(self):
+        data = self.load_data()
+        data_2 = pd.DataFrame(data['sheet1'])
+        username = self.username_entry.get()
+        user_row = data_2[data_2['username'] == username]
+        #print(user_row)
+        user_dict = user_row.iloc[0].to_dict()
+        import Person
+        person = Person.Person(**user_dict)
+        import pickle
+
+        # فرض کنید 'user_object' شی است که می‌خواهید ذخیره کنید.
+
+        # ذخیره شی به فایل
+        with open('user_object.pkl', 'wb') as output:
+            pickle.dump(person, output, pickle.HIGHEST_PROTOCOL)
+
+        
         
     def is_username_exists(self):
         data = self.load_data()
