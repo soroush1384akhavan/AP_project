@@ -133,12 +133,10 @@ class IncomePage:
         
         self.category_list = self.return_category_list('amura')
         if len(self.category_list) == 0:
-            self.category_list = ["you didn't add a category"]
+            self.category_list = ["","you didn't add a category"]
         else:
             self.category_list = (self.category_list[0])[1:]
             
-        self.option_var2 = StringVar() 
-        self.option_var2.set(self.category_list[0])
         
         self.source_of_income_menu = CTkOptionMenu(
             master=self.master,
@@ -152,6 +150,9 @@ class IncomePage:
             dropdown_text_color="black",
             values=self.income_list)
         self.source_of_income_menu.place(x=920, y=310)
+        
+        self.option_var2 = StringVar() 
+        self.option_var2.set(self.source_of_income_menu.get())
         
         self.category_label = Label(
                 self.master, 
@@ -331,7 +332,7 @@ class IncomePage:
         
     def set_income_info_in_db(self, id, mizan, date, main, category, description= ''):
         
-        connect = sqlite3.connect('users.db')
+        connect = sqlite3.connect(f'{id}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS income(
                 id INTEGER NOT NULL, 
@@ -348,7 +349,7 @@ class IncomePage:
         connect.close()
         
     def return_category_list(self, id):
-        connect = sqlite3.connect('users.db')
+        connect = sqlite3.connect(f'{id}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
@@ -471,7 +472,7 @@ class CostPage:
         
         self.category_list = self.return_category_list('amura')
         if len(self.category_list) == 0:
-            self.category_list = ["you didn't add a category"]
+            self.category_list = ["","you didn't add a category"]
         else:
             self.category_list = (self.category_list[0])[1:]
             
@@ -669,7 +670,7 @@ class CostPage:
         
     def set_cost_info_in_db(self, id, mizan, date, main, category, description= ''):
         
-        connect = sqlite3.connect('users.db')
+        connect = sqlite3.connect(f'{id}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS cost(
                 user_name TEXT NOT NULL, 
@@ -686,7 +687,7 @@ class CostPage:
         connect.close()
         
     def return_category_list(self, id):
-        connect = sqlite3.connect('users.db')
+        connect = sqlite3.connect(f'{id}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
@@ -816,7 +817,7 @@ class CategoryPage:
             
     def set_category_info_in_db(self, user_name, category):
         
-        connect = sqlite3.connect('users.db')
+        connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         try:
@@ -1013,7 +1014,7 @@ class SettingPage:
     def delete_transaction(self, user_name, change):
     
         if change == 'income':
-            connect = sqlite3.connect('users.db')
+            connect = sqlite3.connect(f'{id}.db')
             c = connect.cursor()
             c.execute('''DELETE FROM income WHERE user_name = ?;''' ,(user_name,))
             
@@ -1021,7 +1022,7 @@ class SettingPage:
             connect.close()
             
         elif change == 'price':
-            connect = sqlite3.connect('users.db')
+            connect = sqlite3.connect(f'{id}.db')
             c = connect.cursor()
             c.execute('''DELETE FROM price WHERE user_name = ?;''' ,(user_name,))
             
@@ -1029,7 +1030,7 @@ class SettingPage:
             connect.close()
             
         elif change == 'both':
-            connect = sqlite3.connect('users.db')
+            connect = sqlite3.connect(f'{id}.db')
             c = connect.cursor()
             c.execute('''DELETE FROM income WHERE user_name = ?;''', (user_name,))
             c.execute('''DELETE FROM price WHERE user_name = ?;''', (user_name,))
@@ -1346,7 +1347,23 @@ class ReportingPage:
         self.submit_btn.configure(fg_color="gray")
         self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
         
-        
+        if self.section_menu.get() == 'income':
+            item_list = self.get_income_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            value_list = self.add_filter(item_list)
+            
+        elif self.section_menu.get() == 'cost':
+            item_list = self.get_cost_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            value_list = self.add_filter(item_list)
+            
+        else:
+            item_list1 = self.get_income_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            value_list = self.add_filter(item_list1)
+            item_list2 = self.get_cost_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            value_list2 = self.add_filter(item_list2)
+            
+            value_list = value_list.extend(value_list2)
+            
+        print(value_list)
     
     def on_enter_submit(self, event):
         self.submit_btn.configure(fg_color="#B0B2AE")
@@ -1354,40 +1371,38 @@ class ReportingPage:
     def on_leave_submit(self, event):
         self.submit_btn.configure(fg_color="white")
         
-    def add_filter(self):
-        if self.section_menu.get() == 'both':
-            pass
-        else:
-            item_list = self.get_income_from_db(self.section_menu.get(), 'amura')
-            if len(self.day_report_entry.get()) != 0:
-                min, max = self.day_report_entry.get().split('-')
-                for item in item_list:
-                    if (item[2].split('/'))[2] < min or (item[2].split('/'))[2] > max:
-                        item_list.remove(item)
+    def add_filter(self, item_list):        
+        if len(self.day_report_entry.get()) != 0:
+            min, max = self.day_report_entry.get().split('-')
+            for item in item_list:
+                if (item[2].split('/'))[2] < min or (item[2].split('/'))[2] > max:
+                    item_list.remove(item)
                         
-            if len(self.month_report_entry.get()) != 0:
-                min, max = self.month_report_entry.get().split('-')
-                for item in item_list:
-                    if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
-                        item_list.remove(item)
+        if len(self.month_report_entry.get()) != 0:
+            min, max = self.month_report_entry.get().split('-')
+            for item in item_list:
+                if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
+                    item_list.remove(item)
                         
-            if len(self.year_report_entry.get()) != 0:
-                min, max = self.year_report_entry.get().split('-')
-                for item in item_list:
-                    if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
-                        item_list.remove(item)
+        if len(self.year_report_entry.get()) != 0:
+            min, max = self.year_report_entry.get().split('-')
+            for item in item_list:
+                if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
+                    item_list.remove(item)
                         
-            if len(self.price_amount_entry.get()) != 0:
-                min , max = self.price_amount_entry.get().split('-')
-                for item in item_list:
-                    if item[1] < min or item[1] > max:
-                        item_list.remove(item)
+        if len(self.price_amount_entry.get()) != 0:
+            min , max = self.price_amount_entry.get().split('-')
+            for item in item_list:
+                if item[1] < min or item[1] > max:
+                    item_list.remove(item)
+                    
+        return item_list
     
     def check_page(self):
         pass
         
     def return_category_list(self, id):
-        connect = sqlite3.connect('users.db')
+        connect = sqlite3.connect(f'{id}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
@@ -1399,18 +1414,18 @@ class ReportingPage:
         return category_on_db
     
     def get_income_from_db(self, user_name, source, kind):
-        connect = sqlite3.connect('users.db')
+        connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         if source == '':
-            c.execute("SELCET * FROM TABLE income WHERE user_name = ? and income_resource = ? ;",
+            c.execute("SELECT * FROM income WHERE user_name = ? and income_resource = ? ;",
                     (user_name, kind))
         elif kind == '':
-            c.execute("SELCET * FROM TABLE income WHERE user_name = ? and category = ? ;",
+            c.execute("SELECT * FROM income WHERE user_name = ? and category = ? ;",
                     (user_name, source))
         elif source == '' and kind == '':
-            c.execute("SELCET * FROM TABLE income WHERE user_name = ? ;", (user_name,))
+            c.execute("SELECT * FROM income WHERE user_name = ? ;", (user_name,))
         else:
-            c.execute("SELCET * FROM TABLE income WHERE user_name = ? and income_resource = ? and category = ? ;",
+            c.execute("SELECT * FROM income WHERE user_name = ? and income_resource = ? and category = ? ;",
                     (user_name, kind, source))
         item_selcted = c.fetchall()
         
@@ -1420,19 +1435,19 @@ class ReportingPage:
         return item_selcted
     
     def get_cost_from_db(self, user_name, source, kind):
-        connect = sqlite3.connect('users.db')
+        connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         if source == '':
-            c.execute("SELCET * FROM TABLE income WHERE user_name = ? and income_resource = ? ;",
+            c.execute("SELECT * FROM cost WHERE user_name = ? and cost_resource = ? ;",
                     (user_name, kind))
         elif kind == '':
-            c.execute("SELCET * FROM TABLE income WHERE user_name = ? and category = ? ;",
+            c.execute("SELECT * FROM cost WHERE user_name = ? and category = ? ;",
                     (user_name, source))
         elif source == '' and kind == '':
-            c.execute("SELCET * FROM TABLE income WHERE user_name = ? ;", (user_name,))
+            c.execute("SELECT * FROM cost WHERE user_name = ? ;", (user_name,))
         else:
-            c.execute("SELCET * FROM TABLE income WHERE user_name = ? and income_resource = ? and category = ? ;",
-                    (user_name, kind, source))
+            c.execute("SELECT * FROM cost WHERE user_name = ? and cost_resource = ? and category = ? ;",
+                    (user_name, source, kind))
         item_selcted = c.fetchall()
         
         connect.commit()
