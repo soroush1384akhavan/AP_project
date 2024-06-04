@@ -132,7 +132,9 @@ class IncomePage:
         self.option_var1 = StringVar() 
         self.option_var1.set(self.income_list[0]) 
         
-        self.category_list = self.return_category_list('amura')
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        self.category_list = self.return_category_list(person.username)
         if len(self.category_list) == 0:
             self.category_list = ["you didn't add a category"]
         else:
@@ -325,8 +327,9 @@ class IncomePage:
         if self.submit_btn.cget('state') == NORMAL:
             self.submit_btn.configure(fg_color="gray")
             self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
-        
-            self.set_income_info_in_db('amura', self.income_amount_entry.get(), self.date_entry.get(), self.option_var1.get(), self.option_var2.get(), self.description_entry.get("1.0", END))
+            with open('user_object.pkl', 'rb') as input:
+                person = pickle.load(input)
+            self.set_income_info_in_db(person.username, self.income_amount_entry.get(), self.date_entry.get(), self.option_var1.get(), self.option_var2.get(), self.description_entry.get("1.0", END))
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
             
         
@@ -472,8 +475,9 @@ class CostPage:
         self.income_list = ('naghd', 'check', 'cripto') 
         self.option_var1 = StringVar() 
         self.option_var1.set(self.income_list[0]) 
-        
-        self.category_list = self.return_category_list('amura')
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        self.category_list = self.return_category_list(person.username)
         if len(self.category_list) == 0:
             self.category_list = ["you didn't add a category"]
         else:
@@ -666,8 +670,9 @@ class CostPage:
         if self.submit_btn.cget('state') == NORMAL:
             self.submit_btn.configure(fg_color="gray")
             self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
-        
-            self.set_cost_info_in_db('amura', self.cost_amount_entry.get(), self.date_entry.get(), self.option_var1.get(), self.option_var2.get(), self.description_entry.get("1.0", END))
+            with open('user_object.pkl', 'rb') as input:
+                person = pickle.load(input)
+            self.set_cost_info_in_db(person.username, self.cost_amount_entry.get(), self.date_entry.get(), self.option_var1.get(), self.option_var2.get(), self.description_entry.get("1.0", END))
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
             
         
@@ -818,8 +823,9 @@ class CategoryPage:
         if self.create_cat_btn.cget('state') == NORMAL:
             self.create_cat_btn.configure(fg_color="gray")
             self.create_cat_btn.after(200, lambda: self.create_cat_btn.configure(fg_color="white"))
-        
-            self.set_category_info_in_db('amura', self.category_entry.get())
+            with open('user_object.pkl', 'rb') as input:
+                person = pickle.load(input)
+            self.set_category_info_in_db(person.username, self.category_entry.get())
             tkinter.messagebox.showinfo('complete', 'the category succesfully saved')
             
     def set_category_info_in_db(self, user_name, category):
@@ -1183,8 +1189,9 @@ class ReportingPage:
         self.report_kind_list = ('naghd', 'check', 'cripto') 
         self.option_var1 = StringVar() 
         self.option_var1.set(self.report_kind_list[0]) 
-        
-        self.report_source_list = self.return_category_list('amura')
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        self.report_source_list = self.return_category_list(person.username)
         if len(self.report_source_list) == 0:
             self.report_source_list = ["you didn't add a category"]
         else:
