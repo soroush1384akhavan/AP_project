@@ -339,14 +339,14 @@ class IncomePage:
         connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS income(
-                id INTEGER NOT NULL, 
+                user_name INTEGER NOT NULL, 
                 mizan INTEGER NOT NULL,
                 date text NOT NULL,
                 income_resource text NIT NULL,
                 type_of_income text,
                 description text);''')
         
-        c.execute('''INSERT INTO income (id, mizan, date, income_resource, category, description)
+        c.execute('''INSERT INTO income (user_name, mizan, date, income_resource, type_of_income, description)
                 VALUES (?, ?, ?, ?, ?, ?);''', [user_name, mizan, date, source, type_of_income, description])
         
         connect.commit()
@@ -686,7 +686,7 @@ class CostPage:
                 type_of_cost text,
                 description text);''')
         
-        c.execute('''INSERT INTO cost (user_name, mizan, date, cost_resource, category, description)
+        c.execute('''INSERT INTO cost (user_name, mizan, date, cost_resource, type_of_cost, description)
                 VALUES (?, ?, ?, ?, ?, ?);''', [user_name, mizan, date, source, type_of_cost, description])
 
         connect.commit()
@@ -1712,10 +1712,16 @@ class ReportingPage:
             values=self.report_section_list)
         self.section_menu.place(x=480, y=505)
         
+        self.value_listbox = Listbox(
+            master= self.master,
+            font= FONT_STYLE_ENTRY,
+        )
+        self.value_listbox.place(x=310, y=560, width=740, height=135)
+        
         self.submit_btn = CTkButton(
             master= self.master,
-            width=260,
-            height=64,
+            width=150,
+            height=55,
             state=DISABLED,
             corner_radius=10,
             border_width=1,
@@ -1726,7 +1732,7 @@ class ReportingPage:
             text_color="black",
             font=FONT_BUTTON)
         
-        self.submit_btn.place(x=310, y=700)
+        self.submit_btn.place(x=310, y=720)
         self.submit_btn.bind("<Button-1>", self.on_submit_clicked)
         self.submit_btn.bind("<Enter>", self.on_enter_submit)
         self.submit_btn.bind("<Leave>", self.on_leave_submit)
@@ -1760,24 +1766,29 @@ class ReportingPage:
     def on_submit_clicked(self, event):
         self.submit_btn.configure(fg_color="gray")
         self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
-        
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+            
         if self.section_menu.get() == 'income':
-            item_list = self.get_income_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            item_list = self.get_income_from_db(person.username, self.source_menu.get(), self.kind_menu.get())
             value_list = self.add_filter(item_list)
             
         elif self.section_menu.get() == 'cost':
-            item_list = self.get_cost_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            item_list = self.get_cost_from_db(person.username, self.source_menu.get(), self.kind_menu.get())
             value_list = self.add_filter(item_list)
             
         else:
-            item_list1 = self.get_income_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            item_list1 = self.get_income_from_db(person.username, self.source_menu.get(), self.kind_menu.get())
             value_list = self.add_filter(item_list1)
-            item_list2 = self.get_cost_from_db('mmd', self.section_menu.get(), self.kind_menu.get())
+            item_list2 = self.get_cost_from_db(person.username, self.source_menu.get(), self.kind_menu.get())
             value_list2 = self.add_filter(item_list2)
             
-            value_list = value_list.extend(value_list2)
+            value_list.extend(value_list2)
             
-        print(value_list)
+        self.value_listbox.option_clear()
+        for item in value_list:
+            self.value_listbox.insert('end', item)
+
     
     def on_enter_submit(self, event):
         self.submit_btn.configure(fg_color="#B0B2AE")
@@ -1815,11 +1826,11 @@ class ReportingPage:
     def check_page(self):
         pass
         
-    def return_category_list(self, id):
-        connect = sqlite3.connect(f'{id}.db')
+    def return_category_list(self, user_name):
+        connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
-        c.execute("SELECT * FROM categories WHERE user_name = ?;", (id,))
+        c.execute("SELECT * FROM categories WHERE user_name = ?;", (user_name,))
         category_on_db = c.fetchall()
         
         connect.commit()
@@ -1827,20 +1838,20 @@ class ReportingPage:
         
         return category_on_db
     
-    def get_income_from_db(self, user_name, source, kind):
+    def get_income_from_db(self, user_name, source, type_of_income):
         connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
-        if source == '':
+        if len(source) == 0 and len(type_of_income) !=0:
             c.execute("SELECT * FROM income WHERE user_name = ? and income_resource = ? ;",
-                    (user_name, kind))
-        elif kind == '':
-            c.execute("SELECT * FROM income WHERE user_name = ? and category = ? ;",
                     (user_name, source))
-        elif source == '' and kind == '':
+        elif len(type_of_income) == 0 and len(source) != 0:
+            c.execute("SELECT * FROM income WHERE user_name = ? and type_of_income = ? ;",
+                    (user_name, type_of_income))
+        elif len(source) == 0 and len(type_of_income) == 0:
             c.execute("SELECT * FROM income WHERE user_name = ? ;", (user_name,))
         else:
-            c.execute("SELECT * FROM income WHERE user_name = ? and income_resource = ? and category = ? ;",
-                    (user_name, kind, source))
+            c.execute("SELECT * FROM income WHERE user_name = ? and income_resource = ? and type_of_income = ? ;",
+                    (user_name, source, type_of_income))
         item_selcted = c.fetchall()
         
         connect.commit()
@@ -1849,20 +1860,20 @@ class ReportingPage:
         
         return item_selcted
     
-    def get_cost_from_db(self, user_name, source, kind):
+    def get_cost_from_db(self, user_name, source, type_of_cost):
         connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         if source == '':
-            c.execute("SELECT * FROM cost WHERE user_name = ? and cost_resource = ? ;",
-                    (user_name, kind))
-        elif kind == '':
-            c.execute("SELECT * FROM cost WHERE user_name = ? and category = ? ;",
+            c.execute("SELECT * FROM cost WHERE user_name = ? AND cost_resource = ? ;",
+                    (user_name, type_of_cost))
+        elif type_of_cost == '':
+            c.execute("SELECT * FROM cost WHERE user_name = ? AND type_of_cost = ? ;",
                     (user_name, source))
-        elif source == '' and kind == '':
+        elif source == '' and type_of_cost == '':
             c.execute("SELECT * FROM cost WHERE user_name = ? ;", (user_name,))
         else:
-            c.execute("SELECT * FROM cost WHERE user_name = ? and cost_resource = ? and category = ? ;",
-                    (user_name, source, kind))
+            c.execute("SELECT * FROM cost WHERE user_name = ? AND cost_resource = ? AND type_of_cost = ? ;",
+                    (user_name, source, type_of_cost))
         item_selcted = c.fetchall()
         
         connect.commit()
