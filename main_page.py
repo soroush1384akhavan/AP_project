@@ -1261,17 +1261,19 @@ class Main(Tk):
         
         
 def start():
-    app = Main()
-    import pickle
+    try:
+        app = Main()
+        import pickle
 
-    # بارگذاری شی از فایل
-    with open('user_object.pkl', 'rb') as input:
-        person = pickle.load(input)
-    print(person.fname)
+        # بارگذاری شی از فایل
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        print(person.fname)
 
-    # حالا می‌توانید از 'user_object_loaded' همانند شی اصلی استفاده کنید.
+        # حالا می‌توانید از 'user_object_loaded' همانند شی اصلی استفاده کنید.
 
-    app.mainloop()   
-
+        app.mainloop()   
+    except:
+        print("error")
 if __name__ == "__main__":
     start()

@@ -150,8 +150,11 @@ class LoginApp(Tk):
             if self.is_valid_credentials():
                 self.create_person()
                 self.destroy()
-                import main
-                main.start()
+                try :
+                    import main_page
+                    main_page.start()
+                except:
+                    print("error")
                            
     def create_person(self):
         data = self.load_data()
