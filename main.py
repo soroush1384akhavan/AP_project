@@ -994,16 +994,12 @@ class SettingPage:
     
         
     def on_delete_user_account(self, event):
-        # self.delete_user_button(fg_color=SIGN_IN_BUTTON_COLOR_CLICK)
-        # self.after(200, lambda: self.delete_user_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_OFF))
         
         message_box = tkinter.messagebox.askquestion('delete account','آیا برای حذف اکانت خود مطمین هستید؟', icon = 'warning')
-        if message_box == 'yes':
-            pass # soroush fix it 
+        # if message_box == 'yes':
+        #     pass # soroush fix it 
         
     def on_delete_info_click(self, event):
-        # self.delete_data_button(fg_color=SIGN_IN_BUTTON_COLOR_CLICK)
-        # self.after(200, lambda: self.delete_data_button.configure(fg_color=SIGN_IN_BUTTON_COLOR_OFF))
         
         message_box = tkinter.messagebox.askquestion('delete info','آیا برای حذف اطلاعات خود مطمین هستید؟', icon = 'warning')
         if message_box:
@@ -1266,6 +1262,15 @@ class Main(Tk):
         
 def start():
     app = Main()
+    import pickle
+
+    # بارگذاری شی از فایل
+    with open('user_object.pkl', 'rb') as input:
+        person = pickle.load(input)
+    print(person.fname)
+
+    # حالا می‌توانید از 'user_object_loaded' همانند شی اصلی استفاده کنید.
+
     app.mainloop()   
 
 if __name__ == "__main__":
