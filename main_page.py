@@ -1825,6 +1825,34 @@ class ReportingPage:
     
     def check_page(self):
         pass
+    
+    def check_year(self, event):
+        value1, value2 = self.year_report_entry.get().split('-')
+        if value1.isdigit() and 1920 <= int(value1) <= 2040 and value2.isdigit() and 1920 <= int(value2) <= 2040 or value1 == "" or value2 == "":
+            self.year_report_entry.configure(border_color="green")
+            return True
+        else:
+            self.year_report_entry.configure(border_color="red")
+            return False
+
+            
+    def check_month(self, event):
+        value = self.month_entry.get()
+        if value.isdigit() and 1 <= int(value) <= 12 or value == "":
+            self.month_entry.configure(border_color="green")
+            return True
+        else:
+            self.month_entry.configure(border_color="red")
+            return False
+        
+    def check_day(self, event):
+        value = self.day_entry.get()
+        if value.isdigit() and 1 <= int(value) <= 31 or value == "":
+            self.day_entry.configure(border_color="green")
+            return True
+        else:
+            self.day_entry.configure(border_color="red")
+            return False
         
     def return_category_list(self, user_name):
         connect = sqlite3.connect(f'{user_name}.db')
