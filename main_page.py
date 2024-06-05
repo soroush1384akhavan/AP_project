@@ -1045,7 +1045,7 @@ class SettingPage:
             connect.close()
       
       
-class SearchPage:  
+class SearchPage:
     def __init__(self, master):
         self.master = master
         self.widget_list = []
@@ -1224,8 +1224,6 @@ class SearchPage:
         self.from_entry.bind("<KeyRelease>", self.check_from_and_to)
         self.from_entry.bind("<KeyRelease>", self.check_page)
         
-        
-        
         self.to_entry = CTkEntry(
             master=self.master,
             font=FONT_STYLE_ENTRY,
@@ -1242,7 +1240,6 @@ class SearchPage:
         self.to_entry.place(x=1040, y=332)
         self.to_entry.bind("<KeyRelease>", self.check_from_and_to)
         self.to_entry.bind("<KeyRelease>", self.check_page)
-        
         
         self.year_entry = CTkEntry(
             master=self.master,
@@ -1261,7 +1258,6 @@ class SearchPage:
         self.year_entry.bind("<KeyRelease>", self.check_year)
         self.year_entry.bind("<KeyRelease>", self.check_page)
         
-        
         self.month_entry = CTkEntry(
             master=self.master,
             font=FONT_STYLE_ENTRY,
@@ -1278,7 +1274,6 @@ class SearchPage:
         self.month_entry.place(x=670, y=262)
         self.month_entry.bind("<KeyRelease>", self.check_month)
         self.month_entry.bind("<KeyRelease>", self.check_page)
-        
         
         self.day_entry = CTkEntry(
             master=self.master,
@@ -1312,6 +1307,7 @@ class SearchPage:
             )
         self.search_goal_entry.place(x=712, y=507)
         
+        
         self.search_btn = CTkButton(
             master= self.master,
             width=130,
@@ -1328,9 +1324,8 @@ class SearchPage:
             #command=self.on_search_clicked
             )
         self.search_btn.place(x=300, y=615)
-        self.search_btn.bind("<Button-1>", self.on_enter_search)
-        self.search_btn.bind("<Enter>", self.on_leave_search)
-        self.search_btn.bind("<Leave>", self.on_enter_search)
+        self.search_btn.bind("<Button-1>", self.on_search_clicked)
+        
         
         self.search_list_1 = ['Income', 'Cost']
         self.search_in_menu = CTkOptionMenu(
@@ -1399,7 +1394,6 @@ class SearchPage:
             self.year_entry.configure(border_color="red")
             return False
 
-            
     def check_month(self, event):
         value = self.month_entry.get()
         if value.isdigit() and 1 <= int(value) <= 12 or value == "":
