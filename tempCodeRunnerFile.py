@@ -1,1 +1,1 @@
-print
+on_search

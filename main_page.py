@@ -158,7 +158,7 @@ class IncomePage:
         
         self.category_label = Label(
                 self.master, 
-                text="Category:", 
+                text="Type:", 
                 font=('Kdam Thmor', 20),
                 fg="black", 
                 bg="white"
@@ -329,7 +329,7 @@ class IncomePage:
             self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
             with open('user_object.pkl', 'rb') as input:
                 person = pickle.load(input)
-            self.set_income_info_in_db(person.username, self.income_amount_entry.get(), self.date_entry.get(), self.option_var2.get(), self.option_var1.get(), self.description_entry.get("1.0", END))
+            self.set_income_info_in_db(person.username, self.income_amount_entry.get(), self.date_entry.get(), self.category_menu.get(), self.source_of_income_menu.get(), self.description_entry.get("1.0", END))
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
             
         
@@ -499,7 +499,7 @@ class CostPage:
         
         self.category_label = Label(
                 self.master, 
-                text="Category:", 
+                text="Type:", 
                 font=('Kdam Thmor', 20),
                 fg="black", 
                 bg="white"
@@ -671,7 +671,7 @@ class CostPage:
             self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
             with open('user_object.pkl', 'rb') as input:
                 person = pickle.load(input)
-            self.set_cost_info_in_db(person.username, self.cost_amount_entry.get(), self.date_entry.get(), self.option_var2.get(), self.option_var1.get(), self.description_entry.get("1.0", END))
+            self.set_cost_info_in_db(person.username, self.cost_amount_entry.get(), self.date_entry.get(), self.category_menu.get(), self.source_of_income_menu.get(), self.description_entry.get("1.0", END))
             tkinter.messagebox.showinfo('succes', 'the information successfully saved')
             
         
@@ -1321,15 +1321,15 @@ class SearchPage:
             bg_color="white",
             text="Search",
             text_color="black",
-            font=('Kdam Thmor', 17),
-            command=self.on_search_clicked
+            font=('Kdam Thmor', 17)
+            #command=self.on_search_clicked
             )
         self.search_btn.place(x=300, y=615)
         self.search_btn.bind("<Button-1>", self.on_search_clicked)
         
         
         self.search_list_1 = ['Income', 'Cost']
-        self.seach_in_menu = CTkOptionMenu(
+        self.search_in_menu = CTkOptionMenu(
             master=self.master,
             button_color="#FFCC5C",
             fg_color="#FBE5B6",
@@ -1341,10 +1341,10 @@ class SearchPage:
             dropdown_text_color="black",
             values=self.search_list_1 
             )
-        self.seach_in_menu.place(x=470, y=350)
+        self.search_in_menu.place(x=470, y=350)
         
-        self.search_list_2 = ['Description', 'money category', 'income source', 'cost source', 'all' ]
-        self.seach_in_2_menu = CTkOptionMenu(
+        self.search_list_2 = ['Description', 'money type', 'source', 'all' ]
+        self.search_in_2_menu = CTkOptionMenu(
         master=self.master,
         button_color="#FFCC5C",
         fg_color="#FBE5B6",
@@ -1356,7 +1356,7 @@ class SearchPage:
         dropdown_text_color="black",
         values=self.search_list_2
         )
-        self.seach_in_2_menu.place(x=470, y=433)
+        self.search_in_2_menu.place(x=470, y=433)
         
         self.widget_list.extend([
             self.search_in_2_label,
@@ -1372,8 +1372,8 @@ class SearchPage:
             self.month_entry,
             self.day_entry,
             self.search_goal_entry,
-            self.seach_in_menu,
-            self.seach_in_2_menu,
+            self.search_in_menu,
+            self.search_in_2_menu,
             self.from_label,
             self.to_label,
             self.from_entry,
@@ -1441,20 +1441,28 @@ class SearchPage:
     def on_enter_search(self, event):
         self.search_btn.configure(fg_color="white")
     
+
+
     def on_search_clicked(self, event):
         year = self.year_entry.get()
         month = self.month_entry.get()
         day = self.day_entry.get()
         from_amount = self.from_entry.get()
         to_amount = self.to_entry.get()
-        search_in = self.seach_in_menu.get()
-        search_in_2 = self.seach_in_2_menu.get()
+        search_in = self.search_in_menu.get()
+        search_in_2 = self.search_in_2_menu.get()
         search_goal = self.search_goal_entry.get()
-
-        results = self.search_database("income", year, month, day, from_amount, to_amount, search_in, search_goal)
+        print(f'{search_in}:')
+        if search_in == "Cost":
+            results_cost = self.search_database_cost("cost", year, month, day, from_amount, to_amount, search_in, search_in_2, search_goal)
+        elif search_in == 'Income':
+            results_cost = self.search_database_income("Income", year, month, day, from_amount, to_amount, search_in, search_in_2, search_goal)
+        
+        results = results_cost
         print(results)
 
-    def search_database(self, table_name, year, month, day, from_amount, to_amount, search_in, search_goal):
+    
+    def search_database_income(self, table_name, year, month, day, from_amount, to_amount, search_in, search_in_2, search_goal):
         with open('user_object.pkl', 'rb') as input:
             person = pickle.load(input)
         connect = sqlite3.connect(f'{person.username}.db')
@@ -1463,6 +1471,63 @@ class SearchPage:
         query = f"SELECT * FROM {table_name} WHERE 1=1"
         params = []
 
+        if search_goal and search_in_2=="all":
+            query += " AND (mizan LIKE ? OR income_resource LIKE ? OR type_of_income LIKE ? OR description LIKE ?)"
+            like_pattern = f"%{search_goal}%"
+            params.extend([like_pattern, like_pattern, like_pattern, like_pattern])
+            
+        elif search_goal and search_in_2=="Description":
+            query += " AND description LIKE ?"
+            like_pattern = f"%{search_goal}%"
+            params.extend([like_pattern])
+        
+        elif search_goal and search_in_2=="money type":
+            query += " AND type_of_income LIKE ?"
+            like_pattern = f"%{search_goal}%"
+            params.extend([like_pattern])
+            
+        elif search_goal and search_in_2=="source":
+            query += " AND income_resource LIKE ?"
+            like_pattern = f"%{search_goal}%"
+            params.extend([like_pattern])
+            
+        if year:
+            query += " AND substr(date, 1, instr(date, '/')-1) = ?"
+            params.append(year)
+        if month:
+            query += " AND substr(date, instr(date, '/')+1, instr(substr(date, instr(date, '/')+1), '/')-1) = ?"
+            params.append(month)
+        if day:
+            query += " AND substr(date, instr(date, '/', instr(date, '/') + 1) + 1) = ?"
+            params.append(day)
+        if from_amount:
+            query += " AND mizan >= ?"
+            params.append(from_amount)
+        if to_amount:
+            query += " AND mizan <= ?"
+            params.append(to_amount)
+
+        cursor.execute(query, params)
+        results = cursor.fetchall()
+
+        connect.close()
+        return results
+    
+    
+    def search_database_cost(self, table_name, year, month, day, from_amount, to_amount, search_in, search_in_2, search_goal):
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        connect = sqlite3.connect(f'{person.username}.db')
+        cursor = connect.cursor()
+
+        query = f"SELECT * FROM {table_name} WHERE 1=1"
+        params = []
+
+        if search_goal:
+            query += " AND (mizan LIKE ? OR cost_resource LIKE ? OR type_of_cost LIKE ? OR description LIKE ?)"
+            like_pattern = f"%{search_goal}%"
+            params.extend([like_pattern, like_pattern, like_pattern, like_pattern])
+        
         if year:
             query += " AND strftime('%Y', date) = ?"
             params.append(year)
@@ -1478,21 +1543,13 @@ class SearchPage:
         if to_amount:
             query += " AND mizan <= ?"
             params.append(to_amount)
-        if search_in:
-            if search_in == "income_resource":
-                query += " AND income_resource LIKE ?"
-            elif search_in == "category":
-                query += " AND category LIKE ?"
-            elif search_in == "description":
-                query += " AND description LIKE ?"
-            params.append(f"%{search_goal}%")
 
         cursor.execute(query, params)
         results = cursor.fetchall()
 
         connect.close()
-
         return results
+
 
 
 
@@ -1877,7 +1934,7 @@ class ReportingPage:
         connect = sqlite3.connect(f'{person.username}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
-        c.execute("SELECT * FROM categories WHERE user_name = ?;", (user_name,))
+        c.execute("SELECT * FROM categories WHERE user_name = ?;", (person.username,))
         category_on_db = c.fetchall()
         
         connect.commit()
