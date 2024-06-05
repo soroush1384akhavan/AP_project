@@ -1045,7 +1045,8 @@ class SettingPage:
             connect.close()
       
       
-class SearchPage:  
+
+class SearchPage:
     def __init__(self, master):
         self.master = master
         self.widget_list = []
@@ -1224,8 +1225,6 @@ class SearchPage:
         self.from_entry.bind("<KeyRelease>", self.check_from_and_to)
         self.from_entry.bind("<KeyRelease>", self.check_page)
         
-        
-        
         self.to_entry = CTkEntry(
             master=self.master,
             font=FONT_STYLE_ENTRY,
@@ -1242,7 +1241,6 @@ class SearchPage:
         self.to_entry.place(x=1040, y=332)
         self.to_entry.bind("<KeyRelease>", self.check_from_and_to)
         self.to_entry.bind("<KeyRelease>", self.check_page)
-        
         
         self.year_entry = CTkEntry(
             master=self.master,
@@ -1261,7 +1259,6 @@ class SearchPage:
         self.year_entry.bind("<KeyRelease>", self.check_year)
         self.year_entry.bind("<KeyRelease>", self.check_page)
         
-        
         self.month_entry = CTkEntry(
             master=self.master,
             font=FONT_STYLE_ENTRY,
@@ -1278,7 +1275,6 @@ class SearchPage:
         self.month_entry.place(x=670, y=262)
         self.month_entry.bind("<KeyRelease>", self.check_month)
         self.month_entry.bind("<KeyRelease>", self.check_page)
-        
         
         self.day_entry = CTkEntry(
             master=self.master,
@@ -1312,6 +1308,7 @@ class SearchPage:
             )
         self.search_goal_entry.place(x=712, y=507)
         
+        
         self.search_btn = CTkButton(
             master= self.master,
             width=130,
@@ -1324,12 +1321,12 @@ class SearchPage:
             bg_color="white",
             text="Search",
             text_color="black",
-            font=('Kdam Thmor', 17)
+            font=('Kdam Thmor', 17),
+            command=self.on_search_clicked
             )
         self.search_btn.place(x=300, y=615)
-        self.search_btn.bind("<Button-1>", self.on_enter_search)
-        self.search_btn.bind("<Enter>", self.on_leave_search)
-        self.search_btn.bind("<Leave>", self.on_enter_search)
+        self.search_btn.bind("<Button-1>", self.on_search_clicked)
+        
         
         self.search_list_1 = ['Income', 'Cost']
         self.seach_in_menu = CTkOptionMenu(
@@ -1360,8 +1357,6 @@ class SearchPage:
         values=self.search_list_2
         )
         self.seach_in_2_menu.place(x=470, y=433)
-        
-        
         
         self.widget_list.extend([
             self.search_in_2_label,
@@ -1400,7 +1395,6 @@ class SearchPage:
             self.year_entry.configure(border_color="red")
             return False
 
-            
     def check_month(self, event):
         value = self.month_entry.get()
         if value.isdigit() and 1 <= int(value) <= 12 or value == "":
@@ -1447,11 +1441,62 @@ class SearchPage:
     def on_enter_search(self, event):
         self.search_btn.configure(fg_color="white")
     
-        
     def on_search_clicked(self, event):
-        if self.search_btn.cget('state') == NORMAL:
-            self.search_btn.configure(fg_color="gray")
-            self.search_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
+        year = self.year_entry.get()
+        month = self.month_entry.get()
+        day = self.day_entry.get()
+        from_amount = self.from_entry.get()
+        to_amount = self.to_entry.get()
+        search_in = self.seach_in_menu.get()
+        search_in_2 = self.seach_in_2_menu.get()
+        search_goal = self.search_goal_entry.get()
+
+        results = self.search_database("income", year, month, day, from_amount, to_amount, search_in, search_goal)
+        print(results)
+
+    def search_database(self, table_name, year, month, day, from_amount, to_amount, search_in, search_goal):
+        with open('user_object.pkl', 'rb') as input:
+            person = pickle.load(input)
+        connect = sqlite3.connect(f'{person.username}.db')
+        cursor = connect.cursor()
+
+        query = f"SELECT * FROM {table_name} WHERE 1=1"
+        params = []
+
+        if year:
+            query += " AND strftime('%Y', date) = ?"
+            params.append(year)
+        if month:
+            query += " AND strftime('%m', date) = ?"
+            params.append(month)
+        if day:
+            query += " AND strftime('%d', date) = ?"
+            params.append(day)
+        if from_amount:
+            query += " AND mizan >= ?"
+            params.append(from_amount)
+        if to_amount:
+            query += " AND mizan <= ?"
+            params.append(to_amount)
+        if search_in:
+            if search_in == "income_resource":
+                query += " AND income_resource LIKE ?"
+            elif search_in == "category":
+                query += " AND category LIKE ?"
+            elif search_in == "description":
+                query += " AND description LIKE ?"
+            params.append(f"%{search_goal}%")
+
+        cursor.execute(query, params)
+        results = cursor.fetchall()
+
+        connect.close()
+
+        return results
+
+
+
+
             
         
 class ReportingPage:
@@ -1854,8 +1899,10 @@ class ReportingPage:
             self.day_entry.configure(border_color="red")
             return False
         
-    def return_category_list(self, user_name):
-        connect = sqlite3.connect(f'{user_name}.db')
+    def return_category_list(self, id):
+        with open('user_object.pkl', 'rb') as input:
+                person = pickle.load(input)
+        connect = sqlite3.connect(f'{person.username}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
         c.execute("SELECT * FROM categories WHERE user_name = ?;", (user_name,))
