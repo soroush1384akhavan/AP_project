@@ -1360,7 +1360,7 @@ class SearchPage:
         dropdown_text_color="black",
         values=self.search_list_2
         )
-        self.seach_in_2_menu.place(x=470, y=433)
+        self.search_in_2_menu.place(x=470, y=433)
         
         self.widget_list.extend([
             self.search_in_2_label,
@@ -1863,6 +1863,7 @@ class ReportingPage:
             self.month_report_entry,
             self.report_month_label,
             self.reporting_label,
+            self.value_listbox
         ])
         
     def clear_widgets(self):
@@ -1996,7 +1997,7 @@ class ReportingPage:
         connect = sqlite3.connect(f'{user_name}.db')
         c = connect.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS categories(user_name TEXT NOT NULL UNIQUE);''')
-        c.execute("SELECT * FROM categories WHERE user_name = ?;", (person.username,))
+        c.execute("SELECT * FROM categories WHERE user_name = ?;", (user_name,))
         category_on_db = c.fetchall()
         
         connect.commit()
