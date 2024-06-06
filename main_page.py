@@ -2209,7 +2209,7 @@ class Main(Tk):
         self.user_name_label.place(
             x=100, 
             y=60, 
-            width=70, 
+            width=172, 
             height=30
         )
     
@@ -2313,7 +2313,19 @@ class Main(Tk):
     def on_leave_exit(self, event):
         self.exit_button.configure(fg_color=BG_COLOR_BACK_OFF)
         
-        
+   
+
+import os
+import platform
+
+def clear_terminal():
+    current_os = platform.system()
+    if current_os == 'Windows':
+        os.system('cls')
+    else:
+        os.system('clear')
+
+# فراخوانی تابع برای پاک کردن ترمینال    
         
         
 def start():
@@ -2323,7 +2335,7 @@ def start():
         with open('user_object.pkl', 'rb') as input:
             person = pickle.load(input)
         print(person.fname)
-
+        clear_terminal() 
         app.mainloop()   
     except:
         print("error")
