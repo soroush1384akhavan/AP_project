@@ -34,7 +34,7 @@ class LoginApp(Tk):
         #self.load_data()
         
     def setup_ui(self):
-        self.background_image = PhotoImage(file="bg_4.png")
+        self.background_image = PhotoImage(file="images/bg_4.png")
         self.canvas = Canvas(width=1201, height=800, highlightthickness=0, bg="#FBE4B8")
         self.canvas.create_image(550, 400, image=self.background_image)
         self.canvas.place(relwidth=1, relheight=1)

@@ -1006,8 +1006,8 @@ class SettingPage:
     def on_delete_user_account(self, event):
         
         message_box = tkinter.messagebox.askquestion('delete account','آیا برای حذف اکانت خود مطمین هستید؟', icon = 'warning')
-        # if message_box == 'yes':
-        #     pass # soroush fix it 
+        if message_box == 'yes':
+              pass
         
     def on_delete_info_click(self, event):
         
@@ -1043,7 +1043,22 @@ class SettingPage:
             
             connect.commit()
             connect.close()
-      
+
+class SearchResultWindow:
+    def __init__(self, results):
+        self.results = results
+        
+        self.window = Toplevel()
+        self.window.title("Search Results")
+        
+        self.result_text = Text(self.window, wrap="word")
+        self.result_text.pack(fill="both", expand=True)
+        
+        self.display_results()
+
+    def display_results(self):
+        for result in self.results:
+            self.result_text.insert("end", f"{result}\n")   
       
 class SearchPage:
     def __init__(self, master):
@@ -1331,6 +1346,9 @@ class SearchPage:
         self.search_in_menu = CTkOptionMenu(
             master=self.master,
             button_color="#FFCC5C",
+            height=40,
+            width=150,
+            font=("arial", 20),
             fg_color="#FBE5B6",
             bg_color="white",
             dropdown_fg_color="white",
@@ -1340,12 +1358,15 @@ class SearchPage:
             dropdown_text_color="black",
             values=self.search_list_1 
             )
-        self.search_in_menu.place(x=470, y=350)
+        self.search_in_menu.place(x=470, y=343)
         
         self.search_list_2 = ['Description', 'money type', 'source', 'all' ]
         self.search_in_2_menu = CTkOptionMenu(
         master=self.master,
         button_color="#FFCC5C",
+        height=40,
+        width=150,
+        font=("arial", 20),
         fg_color="#FBE5B6",
         bg_color="white",
         dropdown_fg_color="white",
@@ -1355,7 +1376,7 @@ class SearchPage:
         dropdown_text_color="black",
         values=self.search_list_2
         )
-        self.search_in_2_menu.place(x=470, y=433)
+        self.search_in_2_menu.place(x=470, y=427)
         
         self.widget_list.extend([
             self.search_in_2_label,
@@ -1458,6 +1479,7 @@ class SearchPage:
             results_cost = self.search_database_income("Income", year, month, day, from_amount, to_amount, search_in, search_in_2, search_goal)
         
         results = results_cost
+        search_result_window = SearchResultWindow(results_cost)
         print(results)
 
     
@@ -1493,18 +1515,14 @@ class SearchPage:
         if year:
             query += " AND substr(date, 1, instr(date, '/')-1) = ?"
             params.append(year)
+
         if month:
             query += " AND substr(date, instr(date, '/')+1, instr(substr(date, instr(date, '/')+1), '/')-1) = ?"
             params.append(month)
+
         if day:
-            query += " AND substr(date, instr(date, '/', instr(date, '/') + 1) + 1) = ?"
-            params.append(day)
-        if from_amount:
-            query += " AND mizan >= ?"
-            params.append(from_amount)
-        if to_amount:
-            query += " AND mizan <= ?"
-            params.append(to_amount)
+            query += " AND (SUBSTR(date, -1) = ? OR SUBSTR(date, -2) = ?)"
+            params.extend([day, day])
 
         cursor.execute(query, params)
         results = cursor.fetchall()
@@ -2055,7 +2073,7 @@ class Main(Tk):
         
         
     def setup_ui(self):
-        self.background_image = PhotoImage(file="main_2.png")
+        self.background_image = PhotoImage(file="images/main_2.png")
         self.canvas = Canvas(self, width=1125, height=800, highlightthickness=0, bg=BG_COLOR_BACK_OFF)
         self.canvas.create_image(562.5, 400, image=self.background_image)
         self.canvas.place(relwidth=1, relheight=1)
@@ -2325,7 +2343,7 @@ def clear_terminal():
     else:
         os.system('clear')
 
-# فراخوانی تابع برای پاک کردن ترمینال    
+   
         
         
 def start():

@@ -42,7 +42,7 @@ class Signup(Tk):
         self.setup_ui()
         
     def setup_ui(self):
-        self.background_image = PhotoImage(file="Signup_6.png")
+        self.background_image = PhotoImage(file="images/Signup_6.png")
         self.canvas = Canvas(width=1125, height=800, highlightthickness=0, bg=BG_COLOR_BACK)
         self.canvas.create_image(562, 400, image=self.background_image)
         self.canvas.place(relwidth=1, relheight=1)
@@ -171,7 +171,7 @@ class Signup(Tk):
     
     def page_2(self):
         self.suggestions_var = StringVar()
-        self.new_background_image = PhotoImage(file="Signup___2.png")
+        self.new_background_image = PhotoImage(file="images/Signup___2.png")
         self.canvas.create_image(562, 400, image=self.new_background_image)
         self.canvas.place(relwidth=1, relheight=1)
         for widget in [self.first_name_entry, self.last_name_entry, self.user_name_entry, self.continue_button]:
@@ -301,7 +301,7 @@ class Signup(Tk):
         self.continue_2_button.bind("<Button-1>", self.on_click_continue_2)
         
     def page_3(self):
-        self.new_background_image_2 = PhotoImage(file="Signup___3.png")
+        self.new_background_image_2 = PhotoImage(file="images/Signup___3.png")
         self.canvas.create_image(562, 400, image=self.new_background_image_2)
         self.canvas.place(relwidth=1, relheight=1)
         
