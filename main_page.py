@@ -1007,7 +1007,44 @@ class SettingPage:
         
         message_box = tkinter.messagebox.askquestion('delete account','آیا برای حذف اکانت خود مطمین هستید؟', icon = 'warning')
         if message_box == 'yes':
-              pass
+            pass
+            # import requests
+            # import pandas as pd
+
+            # GOOGLE_SHEET_NAME = "sheet1"
+            # USER_NAME = "soroushak84"
+            # PASSWORD = "Sa1384"
+            # USERNAME_TO_DELETE = "goal" 
+            # google_sheet_endpoint_get = f"https://api.sheety.co/084b9ab5553470a6b6b23e99b2506c1c/accounting/{GOOGLE_SHEET_NAME}"
+
+            # try:
+            #     response = requests.get(
+            #         google_sheet_endpoint_get,
+            #         auth=(USER_NAME, PASSWORD)
+            #     )
+            #     response.raise_for_status()
+            #     data = response.json()
+
+            #     df = pd.DataFrame(data)
+            #     print(df)
+
+            #    
+            #     user_row_index = df[df['username'] == USERNAME_TO_DELETE].index
+
+            #    
+            #     df.drop(user_row_index, inplace=True)
+
+            #    
+            #     response = requests.put(
+            #         google_sheet_endpoint_get,
+            #         json=df.to_dict(orient='records'),
+            #         auth=(USER_NAME, PASSWORD)
+            #     )
+            #     response.raise_for_status()
+            #     print("Row deleted successfully.")
+            # except requests.exceptions.RequestException as e:
+            #     print(f"Request failed: {e}")
+
         
     def on_delete_info_click(self, event):
         
@@ -1546,14 +1583,17 @@ class SearchPage:
             params.extend([like_pattern, like_pattern, like_pattern, like_pattern])
         
         if year:
-            query += " AND strftime('%Y', date) = ?"
+            query += " AND substr(date, 1, instr(date, '/')-1) = ?"
             params.append(year)
+
         if month:
-            query += " AND strftime('%m', date) = ?"
+            query += " AND substr(date, instr(date, '/')+1, instr(substr(date, instr(date, '/')+1), '/')-1) = ?"
             params.append(month)
+
         if day:
-            query += " AND strftime('%d', date) = ?"
-            params.append(day)
+            query += " AND (SUBSTR(date, -1) = ? OR SUBSTR(date, -2) = ?)"
+            params.extend([day, day])
+            
         if from_amount:
             query += " AND mizan >= ?"
             params.append(from_amount)
@@ -1901,17 +1941,18 @@ class ReportingPage:
         for item in cost_list:
             sum_of_cost += int(item[1])
         
+        self.value_listbox.delete(0, END)
         if self.section_menu.get() == "income" :   
             for item in income_list:
-                self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of income".format(int(item[1])/sum_of_income))
+                self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of income".format(int(item[1])*100/sum_of_income))
         elif self.section_menu.get() == 'cost':
             for item in cost_list:
-                self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of cost".format(int(item[1])/sum_of_cost))
+                self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of cost".format(int(item[1])*100/sum_of_cost))
         elif self.section_menu.get() == 'both':
             for item in income_list:
-                self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of income".format(int(item[1])/sum_of_income))
+                self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of income".format(int(item[1])*100/sum_of_income))
             for item in cost_list:
-                self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of cost".format(int(item[1])/sum_of_cost))
+                self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of cost".format(int(item[1])*100/sum_of_cost))
 
     
     def on_enter_submit(self, event):
