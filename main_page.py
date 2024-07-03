@@ -21,7 +21,9 @@ LOG_IN_BUTTON_COLOR_CLICK = "#B5ACA9"
 SIGN_IN_BUTTON_COLOR_ON = "#C0AC6F"
 SIGN_IN_BUTTON_COLOR_OFF = "#E6CD80"
 SIGN_IN_BUTTON_COLOR_CLICK = "#9A8A57"
-
+BG_DARK_R = '#115173'
+BG_DARK_L = '#022C43'
+count_dark = 0
 class IncomePage:
     def __init__(self, master):
         self.master = master
@@ -30,34 +32,34 @@ class IncomePage:
         self.setup_ui()
 
     def setup_ui(self):
-        self.income_amount_label = Label(
+        self.income_amount_label = CTkLabel(
                 self.master, 
                 text="Income amount:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=200, 
+                height=74
             )
         
         self.income_amount_label.place(
             x=306, 
-            y=165, 
-            width=200, 
-            height=74
+            y=165
         )
         
-        self.title_label = Label(
+        self.title_label = CTkLabel(
                 self.master, 
                 text="Set Income:", 
                 font=('bold', 40),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=287, 
+                height=74
             )
         
         self.title_label.place(
             x=313, 
-            y=38, 
-            width=287, 
-            height=74
+            y=38
         )
         
         self.income_amount_entry = CTkEntry(
@@ -67,9 +69,9 @@ class IncomePage:
             height=40,
             border_width=2,
             corner_radius=10,
-            border_color="#3300FF",
-            bg_color="white",
-            fg_color="white",
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black"
         )
@@ -79,19 +81,19 @@ class IncomePage:
         
         
         
-        self.date_label = Label(
+        self.date_label = CTkLabel(
                 self.master, 
                 text="Date:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=66, 
+                height=74
             )
         
         self.date_label.place(
             x=776, 
-            y=165, 
-            width=66, 
-            height=74
+            y=165
         )
         
         self.date_entry = CTkEntry(
@@ -101,10 +103,10 @@ class IncomePage:
             width=209,
             height=40,
             border_width=2,
-            bg_color="white",
             corner_radius=10,
-            border_color= "#3300FF",
-            fg_color="white",
+            border_color= ("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color="gray",
             text_color="black"
             )
@@ -114,18 +116,18 @@ class IncomePage:
         
         
         
-        self.source_of_income_label = Label(
+        self.source_of_income_label = CTkLabel(
                 self.master, 
                 text="Source of Income:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=244, 
+                height=74
             )
         self.source_of_income_label.place(
             x=306, 
-            y=285, 
-            width=244, 
-            height=74
+            y=285
         )
         
         self.income_list = ('cash', 'chek', 'cripto') 
@@ -145,56 +147,56 @@ class IncomePage:
         
         self.source_of_income_menu = CTkOptionMenu(
             master=self.master,
-            button_color="#FFCC5C",
-            fg_color="#FBE5B6",
-            bg_color="white",
-            dropdown_fg_color="white",
-            dropdown_hover_color="#F8E1AF",
-            button_hover_color="#FFCC5C",
-            text_color="black",
-            dropdown_text_color="black",
+            button_color=("#FFCC5C", '#021018'),
+            fg_color=("#FBE5B6", BG_DARK_L),
+            bg_color=('white', BG_DARK_R),
+            dropdown_fg_color=("white", 'gray'),
+            dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+            button_hover_color=("#FFCC5C", 'black'),
+            text_color=("black", 'white'),
+            dropdown_text_color=("black", 'white'),
             values=self.income_list)
         self.source_of_income_menu.place(x=920, y=310)
         
-        self.category_label = Label(
+        self.category_label = CTkLabel(
                 self.master, 
                 text="Type:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=120, 
+                height=74
             )
         self.category_label.place(
             x=776, 
-            y=285, 
-            width=120, 
-            height=74
+            y=285
         )
         
         self.category_menu = CTkOptionMenu(
             master=self.master,
-            button_color="#FFCC5C",
-            fg_color="#FBE5B6",
-            bg_color="white",
-            dropdown_fg_color="white",
-            dropdown_hover_color="#F8E1AF",
-            button_hover_color="#FFCC5C",
-            text_color="black",
-            dropdown_text_color="black",
+            button_color=("#FFCC5C", '#021018'),
+            fg_color=("#FBE5B6", BG_DARK_L),
+            bg_color=('white', BG_DARK_R),
+            dropdown_fg_color=("white", 'gray'),
+            dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+            button_hover_color=("#FFCC5C", 'black'),
+            text_color=("black", 'white'),
+            dropdown_text_color=("black", 'white'),
             values=self.category_list)
         self.category_menu.place(x=556, y=310)
         
-        self.description_label = Label(
+        self.description_label = CTkLabel(
                 self.master, 
                 text="Description:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=146, 
+                height=74
             )
         self.description_label.place(
             x=314, 
-            y=400, 
-            width=146, 
-            height=74
+            y=400
         )
         self.description_entry = CTkTextbox(
             master=self.master,
@@ -203,9 +205,9 @@ class IncomePage:
             height=190,
             border_width=2,
             corner_radius=10,
-            border_color="#3300FF",
-            bg_color="white",
-            fg_color="white",
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             text_color="black"
         )
         self.description_entry.place(x=480, y=422)
@@ -221,8 +223,8 @@ class IncomePage:
             corner_radius=10,
             border_width=1,
             hover=TRUE,
-            fg_color="white",
-            bg_color="white",
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             text="Submit",
             text_color="black",
             font=FONT_BUTTON)
@@ -317,10 +319,10 @@ class IncomePage:
         
     def on_enter_submit(self, event):
         if self.submit_btn.cget('state') == NORMAL:
-            self.submit_btn.configure(fg_color="#B0B2AE")
+            self.submit_btn.configure(fg_color=('#FBE5B6', BG_DARK_L))
         
     def on_leave_submit(self, event):
-        self.submit_btn.configure(fg_color="white")
+        self.submit_btn.configure(fg_color=("white", BG_DARK_R))
     
         
     def on_sumbit_clicked(self, event):
@@ -372,34 +374,34 @@ class CostPage:
         self.setup_ui()
 
     def setup_ui(self):
-        self.cost_amount_label = Label(
+        self.cost_amount_label = CTkLabel(
                 self.master, 
                 text="Cost amount:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=200, 
+                height=74
             )
         
         self.cost_amount_label.place(
             x=306, 
-            y=165, 
-            width=200, 
-            height=74
+            y=165
         )
         
-        self.title_label = Label(
+        self.title_label = CTkLabel(
                 self.master, 
                 text="Set Cost:", 
                 font=('bold', 40),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=287, 
+                height=74
             )
         
         self.title_label.place(
             x=313, 
-            y=38, 
-            width=287, 
-            height=74
+            y=38
         )
         
         self.cost_amount_entry = CTkEntry(
@@ -409,9 +411,9 @@ class CostPage:
             height=40,
             border_width=2,
             corner_radius=10,
-            border_color="#3300FF",
-            bg_color="white",
-            fg_color="white",
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black"
         )
@@ -421,19 +423,19 @@ class CostPage:
         
         
         
-        self.date_label = Label(
+        self.date_label = CTkLabel(
                 self.master, 
                 text="Date:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=66, 
+                height=74
             )
         
         self.date_label.place(
             x=776, 
-            y=165, 
-            width=66, 
-            height=74
+            y=165
         )
         
         self.date_entry = CTkEntry(
@@ -443,10 +445,10 @@ class CostPage:
             width=209,
             height=40,
             border_width=2,
-            bg_color="white",
             corner_radius=10,
-            border_color= "#3300FF",
-            fg_color="white",
+            border_color= ("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color="gray",
             text_color="black"
             )
@@ -456,18 +458,18 @@ class CostPage:
         
         
         
-        self.source_of_income_label = Label(
+        self.source_of_income_label = CTkLabel(
                 self.master, 
                 text="Source of Cost:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=244, 
+                height=74
             )
         self.source_of_income_label.place(
             x=306, 
-            y=285, 
-            width=244, 
-            height=74
+            y=285
         )
         
         self.income_list = ('cash', 'chek', 'cripto') 
@@ -486,56 +488,56 @@ class CostPage:
         
         self.source_of_income_menu = CTkOptionMenu(
             master=self.master,
-            button_color="#FFCC5C",
-            fg_color="#FBE5B6",
-            bg_color="white",
-            dropdown_fg_color="white",
-            dropdown_hover_color="#F8E1AF",
-            button_hover_color="#FFCC5C",
-            text_color="black",
-            dropdown_text_color="black",
+            button_color=("#FFCC5C", '#021018'),
+            fg_color=("#FBE5B6", BG_DARK_L),
+            bg_color=('white', BG_DARK_R),
+            dropdown_fg_color=("white", 'gray'),
+            dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+            button_hover_color=("#FFCC5C", 'black'),
+            text_color=("black", 'white'),
+            dropdown_text_color=("black", 'white'),
             values=self.income_list)
         self.source_of_income_menu.place(x=920, y=310)
         
-        self.category_label = Label(
+        self.category_label = CTkLabel(
                 self.master, 
                 text="Type:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=120, 
+                height=74
             )
         self.category_label.place(
             x=776, 
-            y=285, 
-            width=120, 
-            height=74
+            y=285
         )
         
         self.category_menu = CTkOptionMenu(
             master=self.master,
-            button_color="#FFCC5C",
-            fg_color="#FBE5B6",
-            bg_color="white",
-            dropdown_fg_color="white",
-            dropdown_hover_color="#F8E1AF",
-            button_hover_color="#FFCC5C",
-            text_color="black",
-            dropdown_text_color="black",
+            button_color=("#FFCC5C", '#021018'),
+            fg_color=("#FBE5B6", BG_DARK_L),
+            bg_color=('white', BG_DARK_R),
+            dropdown_fg_color=("white", 'gray'),
+            dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+            button_hover_color=("#FFCC5C", 'black'),
+            text_color=("black", 'white'),
+            dropdown_text_color=("black", 'white'),
             values=self.category_list)
         self.category_menu.place(x=556, y=310)
         
-        self.description_label = Label(
+        self.description_label = CTkLabel(
                 self.master, 
                 text="Description:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=146, 
+                height=74
             )
         self.description_label.place(
             x=314, 
-            y=400, 
-            width=146, 
-            height=74
+            y=400
         )
         self.description_entry = CTkTextbox(
             master=self.master,
@@ -544,9 +546,9 @@ class CostPage:
             height=190,
             border_width=2,
             corner_radius=10,
-            border_color="#3300FF",
-            bg_color="white",
-            fg_color="white",
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             text_color="black"
         )
         self.description_entry.place(x=480, y=422)
@@ -562,8 +564,8 @@ class CostPage:
             corner_radius=10,
             border_width=1,
             hover=TRUE,
-            fg_color="white",
-            bg_color="white",
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             text="Submit",
             text_color="black",
             font=FONT_BUTTON)
@@ -662,7 +664,7 @@ class CostPage:
             self.submit_btn.configure(fg_color="#B0B2AE")
         
     def on_leave_submit(self, event):
-        self.submit_btn.configure(fg_color="white")
+        self.submit_btn.configure(fg_color=("white", BG_DARK_R))
     
         
     def on_sumbit_clicked(self, event):
@@ -712,32 +714,32 @@ class CategoryPage:
         self.setup_ui()
 
     def setup_ui(self):
-        self.category_label = Label(
+        self.category_label = CTkLabel(
                 self.master, 
                 text="Categories:", 
                 font=('Bold', 40),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=287, 
+                height=74
             )
         self.category_label.place(
             x=313, 
-            y=38, 
-            width=287, 
-            height=74
+            y=38
         )
         
-        self.add_category_label = Label(
+        self.add_category_label = CTkLabel(
                 self.master, 
                 text="add your category:", 
                 font=('Kdam Thmor', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=250, 
+                height=74
             )
         self.add_category_label.place(
             x=316, 
-            y=165, 
-            width=250, 
-            height=74
+            y=165
         )
         
         self.category_entry = CTkEntry(
@@ -747,9 +749,9 @@ class CategoryPage:
             height=40,
             border_width=2,
             corner_radius=10,
-            border_color="#3300FF",
-            bg_color="white",
-            fg_color="white",
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black"
         )
@@ -765,8 +767,8 @@ class CategoryPage:
             corner_radius=10,
             border_width=1,
             hover=TRUE,
-            fg_color="white",
-            bg_color="white",
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             text="Submit",
             text_color="black",
             font=FONT_BUTTON)
@@ -777,9 +779,9 @@ class CategoryPage:
         self.create_cat_btn.bind("<Leave>", self.on_leave_create)
         
         self.widget_list.extend([
+            self.add_category_label,
             self.create_cat_btn,
             self.category_entry,
-            self.add_category_label,
             self.category_label
         ])
         
@@ -843,64 +845,70 @@ class CategoryPage:
         
         connect.commit()
         connect.close()
-            
-
 class SettingPage:  
+    count_dark = 0
+
     def __init__(self, master):
         self.master = master
         self.widget_list = []
-
         self.setup_ui()
 
     def setup_ui(self):
-        self.setting_label = Label(
+        if SettingPage.count_dark == 0:
+            print(SettingPage.count_dark)
+            SettingPage.count_dark = 1
+            set_appearance_mode("light")
+            
+        self.setting_label = CTkLabel(
                 self.master, 
                 text="Setting", 
                 font=('Bold', 40),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=299, 
+                height=74
             )
         self.setting_label.place(
             x=313, 
-            y=38, 
-            width=287, 
-            height=74
+            y=38,  
         )
         
-        self.change_theme_label = Label(
+        self.change_theme_label = CTkLabel(
                 self.master, 
                 text="change theme", 
                 font=('Kdam Thmor', 19),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=250, 
+                height=74
             )
         self.change_theme_label.place(
             x=316, 
-            y=165, 
-            width=250, 
-            height=74
+            y=165
         )
         
         self.theme_switch = CTkSwitch(
             self.master,
-            bg_color="white",
-            text_color="black"
-            # command= change_theme
+            fg_color=('black', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
+            text_color="black",
+            command = self.change_theme
             )
         self.theme_switch.place(x = 580, y= 185)
         
-        self.delete_info_label = Label(
+        
+        self.delete_info_label = CTkLabel(
                 self.master, 
                 text="delete user data", 
                 font=('Kdam Thmor', 19),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=250, 
+                height=74
             )
         self.delete_info_label.place(
             x=316, 
-            y=230, 
-            width=250, 
-            height=74
+            y=230
         )
         
         self.item_for_remove = ['income', 'cost', 'both']
@@ -909,14 +917,14 @@ class SettingPage:
         
         self.source_of_income_menu = CTkOptionMenu(
             master=self.master,
-            button_color="#FFCC5C",
-            fg_color="#FBE5B6",
-            bg_color="white",
-            dropdown_fg_color="white",
-            dropdown_hover_color="#F8E1AF",
-            button_hover_color="#FFCC5C",
-            text_color="black",
-            dropdown_text_color="black",
+            button_color=("#FFCC5C", '#021018'),
+            fg_color=("#FBE5B6", BG_DARK_L),
+            bg_color=('white', BG_DARK_R),
+            dropdown_fg_color=("white", 'gray'),
+            dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+            button_hover_color=("#FFCC5C", 'black'),
+            text_color=("black", 'white'),
+            dropdown_text_color=("black", 'white'),
             values=self.item_for_remove)
         self.source_of_income_menu.place(x=556, y=255)
         
@@ -928,8 +936,8 @@ class SettingPage:
             corner_radius=10,
             border_width=1,
             hover=TRUE,
-            fg_color="white",
-            bg_color="white",
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             text="remove Date",
             text_color="black",
             font=('Kdam Thmor', 17))
@@ -939,18 +947,18 @@ class SettingPage:
         self.delete_info_btn.bind("<Enter>", self.on_enter_del_info)
         self.delete_info_btn.bind("<Leave>", self.on_leave_del_info)
         
-        self.delete_account_label = Label(
+        self.delete_account_label = CTkLabel(
                 self.master, 
                 text="delete user account", 
                 font=('Kdam Thmor', 19),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=250, 
+                height=74
             )
         self.delete_account_label.place(
             x=316, 
-            y=301, 
-            width=250, 
-            height=74
+            y=301
         )
         
         self.delete_user_btn = CTkButton(
@@ -961,8 +969,8 @@ class SettingPage:
             corner_radius=10,
             border_width=1,
             hover=TRUE,
-            fg_color="white",
-            bg_color="white",
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             text="Delete account",
             text_color="black",
             font=('Kdam Thmor', 17))
@@ -984,7 +992,27 @@ class SettingPage:
         ])
         
     def change_theme(self):
-        
+        if self.theme_switch.get()==1:
+            self.apply_dark_theme()
+        else:
+            self.apply_light_theme()
+            
+    def apply_dark_theme(self):
+        set_appearance_mode("dark")
+        print("meow")
+        app.background_image = PhotoImage(file="images/main_dark_2.png")
+        app.canvas.create_image(562.5, 400, image=app.background_image)
+        app.canvas.place(relwidth=1, relheight=1)
+        app.canvas.create_oval(30, 50, 80, 100, outline='white')
+        app.canvas.configure(bg=BG_DARK_L)
+    
+            
+    def apply_light_theme(self):
+        set_appearance_mode("light")
+        app.background_image = PhotoImage(file="images/main_2.png")
+        app.canvas.create_image(562.5, 400, image=app.background_image)
+        app.canvas.place(relwidth=1, relheight=1)
+        app.canvas.create_oval(30, 50, 80, 100, outline='black')
         
     def clear_widgets(self):
         for widget in self.widget_list:
@@ -992,18 +1020,18 @@ class SettingPage:
         self.widget_list.clear()
             
     def on_enter_del_info(self, event):
-        self.delete_info_btn.configure(fg_color="#B0B2AE")
-        self.delete_info_btn.configure(fg_color="#FBE5B6")
+        # self.delete_info_btn.configure(fg_color="#B0B2AE")
+        self.delete_info_btn.configure(fg_color=('#FBE5B6', BG_DARK_L))
         
     def on_leave_del_info(self, event):
-        self.delete_info_btn.configure(fg_color="white")
+        self.delete_info_btn.configure(fg_color=('white', BG_DARK_R))
         
     def on_enter_del_user(self, event):
-        self.delete_user_btn.configure(fg_color="#B0B2AE")
-        self.delete_user_btn.configure(fg_color='#FBE5B6')
+        # self.delete_user_btn.configure(fg_color="#B0B2AE")
+        self.delete_user_btn.configure(fg_color=('#FBE5B6', BG_DARK_L))
         
     def on_leave_del_user(self, event):
-        self.delete_user_btn.configure(fg_color="white")
+        self.delete_user_btn.configure(fg_color=('white', BG_DARK_R))
     
         
     def on_delete_user_account(self, event):
@@ -1108,158 +1136,158 @@ class SearchPage:
         self.setup_ui()
 
     def setup_ui(self):
-        self.search_label = Label(
+        self.search_label = CTkLabel(
                 self.master, 
                 text="search", 
                 font=('Bold', 40),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=287, 
+                height=74
             )
         self.search_label.place(
             x=313, 
-            y=38, 
-            width=287, 
-            height=74
+            y=38
         )    
         
-        self.filter_label = Label(
+        self.filter_label = CTkLabel(
                 self.master, 
                 text="filters:", 
                 font=('inter', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=93, 
+                height=74
             )
         self.filter_label.place(
             x=306, 
-            y=165, 
-            width=93, 
-            height=74
+            y=165
         )     
             
-        self.year_label = Label(
+        self.year_label = CTkLabel(
                 self.master, 
                 text="Year:", 
                 font=('light', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=66, 
+                height=74
             )
         self.year_label.place(
             x=306, 
-            y=245, 
-            width=66, 
-            height=74
+            y=245
         ) 
         
-        self.month_label = Label(
+        self.month_label = CTkLabel(
                 self.master, 
                 text="Month:", 
                 font=('light', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=94, 
+                height=74
             )
         self.month_label.place(
             x=566, 
-            y=245, 
-            width=94, 
-            height=74
+            y=245
         )  
         
-        self.day_label = Label(
+        self.day_label = CTkLabel(
                 self.master, 
                 text="Day:", 
                 font=('light', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=66, 
+                height=74
             )
         self.day_label.place(
             x=866, 
-            y=245, 
-            width=66, 
-            height=74
+            y=245
         )    
         
-        self.search_in_label = Label(
+        self.search_in_label = CTkLabel(
                 self.master, 
                 text="Search in:", 
                 font=('light', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=135, 
+                height=74
             )
         self.search_in_label.place(
             x=306, 
-            y=325, 
-            width=135, 
-            height=74
+            y=325
         )   
         
-        self.money_range_label = Label(
+        self.money_range_label = CTkLabel(
                 self.master, 
                 text="Money range:", 
                 font=('light', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=188, 
+                height=74
             )
         self.money_range_label.place(
             x=666, 
-            y=325, 
-            width=188, 
-            height=74
+            y=325
         ) 
         
-        self.search_in_2_label = Label(
+        self.search_in_2_label = CTkLabel(
                 self.master, 
                 text="Search in:", 
                 font=('light', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=135, 
+                height=74
             )
         self.search_in_2_label.place(
             x=306, 
-            y=405, 
-            width=135, 
-            height=74
+            y=405
         ) 
         
-        self.search_goal_label = Label(
+        self.search_goal_label = CTkLabel(
                 self.master, 
                 text="What do you want to search?", 
                 font=('light', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=372, 
+                height=100
             )
         self.search_goal_label.place(
             x=306, 
-            y=487, 
-            width=372, 
-            height=100
+            y=487
         ) 
         
-        self.from_label = Label(
+        self.from_label = CTkLabel(
                 self.master, 
                 text="from", 
                 font=('light', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=66, 
+                height=74
             )
         self.from_label.place(
             x=856, 
-            y=325, 
-            width=66, 
-            height=74
+            y=325
         )
         
-        self.to_label = Label(
+        self.to_label = CTkLabel(
                 self.master, 
                 text="to", 
                 font=('light', 20),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=66, 
+                height=74
             )
         self.to_label.place(
             x=976, 
-            y=325, 
-            width=66, 
-            height=74
+            y=325
         )
         
         self.from_entry = CTkEntry(
@@ -1268,10 +1296,10 @@ class SearchPage:
             width=60,
             height=60,
             border_width=2,
-            bg_color="white",
             corner_radius=10,
-            border_color= "#3300FF",
-            fg_color="white",
+            border_color= ("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color="gray",
             text_color="black"
             )
@@ -1285,10 +1313,10 @@ class SearchPage:
             width=60,
             height=60,
             border_width=2,
-            bg_color="white",
             corner_radius=10,
-            border_color= "#3300FF",
-            fg_color="white",
+            border_color= ("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color="gray",
             text_color="black"
             )
@@ -1302,10 +1330,10 @@ class SearchPage:
             width=159,
             height=40,
             border_width=2,
-            bg_color="white",
             corner_radius=10,
-            border_color= "#3300FF",
-            fg_color="white",
+            border_color= ("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color="gray",
             text_color="black"
             )
@@ -1319,10 +1347,10 @@ class SearchPage:
             width=159,
             height=40,
             border_width=2,
-            bg_color="white",
             corner_radius=10,
-            border_color= "#3300FF",
-            fg_color="white",
+            border_color= ("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color="gray",
             text_color="black"
             )
@@ -1336,10 +1364,10 @@ class SearchPage:
             width=159,
             height=40,
             border_width=2,
-            bg_color="white",
             corner_radius=10,
-            border_color= "#3300FF",
-            fg_color="white",
+            border_color= ("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color="gray",
             text_color="black"
             )
@@ -1353,10 +1381,10 @@ class SearchPage:
             width=392,
             height=62,
             border_width=2,
-            bg_color="white",
             corner_radius=10,
-            border_color= "#3300FF",
-            fg_color="white",
+            border_color= ("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color="gray",
             text_color="black"
             )
@@ -1371,8 +1399,8 @@ class SearchPage:
             corner_radius=10,
             border_width=1,
             hover=TRUE,
-            fg_color="white",
-            bg_color="white",
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             text="Search",
             text_color="black",
             font=('Kdam Thmor', 17)
@@ -1385,17 +1413,14 @@ class SearchPage:
         self.search_list_1 = ['Income', 'Cost']
         self.search_in_menu = CTkOptionMenu(
             master=self.master,
-            button_color="#FFCC5C",
-            height=40,
-            width=150,
-            font=("arial", 20),
-            fg_color="#FBE5B6",
-            bg_color="white",
-            dropdown_fg_color="white",
-            dropdown_hover_color="#F8E1AF",
-            button_hover_color="#FFCC5C",
-            text_color="black",
-            dropdown_text_color="black",
+            button_color=("#FFCC5C", '#021018'),
+            fg_color=("#FBE5B6", BG_DARK_L),
+            bg_color=('white', BG_DARK_R),
+            dropdown_fg_color=("white", 'gray'),
+            dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+            button_hover_color=("#FFCC5C", 'black'),
+            text_color=("black", 'white'),
+            dropdown_text_color=("black", 'white'),
             values=self.search_list_1 
             )
         self.search_in_menu.place(x=470, y=343)
@@ -1403,17 +1428,14 @@ class SearchPage:
         self.search_list_2 = ['Description', 'money type', 'source', 'all' ]
         self.search_in_2_menu = CTkOptionMenu(
         master=self.master,
-        button_color="#FFCC5C",
-        height=40,
-        width=150,
-        font=("arial", 20),
-        fg_color="#FBE5B6",
-        bg_color="white",
-        dropdown_fg_color="white",
-        dropdown_hover_color="#F8E1AF",
-        button_hover_color="#FFCC5C",
-        text_color="black",
-        dropdown_text_color="black",
+        button_color=("#FFCC5C", '#021018'),
+        fg_color=("#FBE5B6", BG_DARK_L),
+        bg_color=('white', BG_DARK_R),
+        dropdown_fg_color=("white", 'gray'),
+        dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+        button_hover_color=("#FFCC5C", 'black'),
+        text_color=("black", 'white'),
+        dropdown_text_color=("black", 'white'),
         values=self.search_list_2
         )
         self.search_in_2_menu.place(x=470, y=427)
@@ -1496,10 +1518,10 @@ class SearchPage:
                 
     def on_leave_search(self, event):
         if self.search_btn.cget('state') == NORMAL:
-            self.search_btn.configure(fg_color="#B0B2AE")
+            self.search_btn.configure(fg_color=("#B0B2AE", BG_DARK_R))
         
     def on_enter_search(self, event):
-        self.search_btn.configure(fg_color="white")
+        self.search_btn.configure(fg_color=("white", BG_DARK_L))
     
 
 
@@ -1624,46 +1646,46 @@ class ReportingPage:
         self.setup_ui()
         
     def setup_ui(self):
-        self.reporting_label = Label(
+        self.reporting_label = CTkLabel(
                 self.master, 
                 text="Reporting:", 
                 font=('Bold', 40),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=287, 
+                height=74
             )
         self.reporting_label.place(
             x=313, 
-            y=38, 
-            width=287, 
-            height=74
+            y=38
         )
         
-        self.date_label = Label(
+        self.date_label = CTkLabel(
                 self.master, 
                 text="chose your period date:", 
                 font=('Kdam Thmor', 18),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=250, 
+                height=74
             )
         self.date_label.place(
             x=316, 
-            y=165, 
-            width=250, 
-            height=74
+            y=165
         )
         
-        self.report_day_label = Label(
+        self.report_day_label = CTkLabel(
                 self.master, 
                 text="Day:", 
                 font=('Kdam Thmor', 16),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=110, 
+                height=74
             )
         self.report_day_label.place(
             x=296, 
-            y=215, 
-            width=110, 
-            height=74
+            y=215
         )
         self.day_report_entry = CTkEntry(
             master=self.master,
@@ -1673,9 +1695,9 @@ class ReportingPage:
             height=40,
             border_width=2,
             corner_radius=10,
-            border_color="#3300FF",
-            bg_color="white",
-            fg_color="white",
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black"
         )
@@ -1683,18 +1705,18 @@ class ReportingPage:
         self.day_report_entry.bind("<KeyRelease>", self.check_day)
         self.day_report_entry.bind("<KeyRelease>", self.check_day)
         
-        self.report_month_label = Label(
+        self.report_month_label = CTkLabel(
                 self.master, 
                 text="Month:", 
                 font=('Kdam Thmor', 16),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=110, 
+                height=74
             )
         self.report_month_label.place(
             x=550, 
-            y=216, 
-            width=110, 
-            height=74
+            y=216
         )
         self.month_report_entry = CTkEntry(
             master=self.master,
@@ -1704,9 +1726,9 @@ class ReportingPage:
             height=40,
             border_width=2,
             corner_radius=10,
-            border_color="#3300FF",
-            bg_color="white",
-            fg_color="white",
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black"
         )
@@ -1714,18 +1736,18 @@ class ReportingPage:
         self.month_report_entry.bind("<KeyRelease>", self.check_month)
         self.month_report_entry.bind("<KeyRelease>", self.check_month)
         
-        self.report_year_label = Label(
+        self.report_year_label = CTkLabel(
                 self.master, 
                 text="Year:", 
                 font=('Kdam Thmor', 16),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=110, 
+                height=74
             )
         self.report_year_label.place(
             x=800, 
-            y=216, 
-            width=110, 
-            height=74
+            y=216
         )
         self.year_report_entry = CTkEntry(
             master=self.master,
@@ -1735,9 +1757,9 @@ class ReportingPage:
             height=40,
             border_width=2,
             corner_radius=10,
-            border_color="#3300FF",
-            bg_color="white",
-            fg_color="white",
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black"
         )
@@ -1760,70 +1782,70 @@ class ReportingPage:
         self.option_var2 = StringVar() 
         self.option_var2.set(self.report_source_list[0])
         
-        self.report_source_label = Label(
+        self.report_source_label = CTkLabel(
                 self.master, 
                 text="source report:", 
                 font=('Kdam Thmor', 18),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=230, 
+                height=50
             )
         self.report_source_label.place(
             x=280, 
-            y=315, 
-            width=230, 
-            height=50
+            y=315
         )
         self.source_menu = CTkOptionMenu(
             master=self.master,
-            button_color="#FFCC5C",
-            fg_color="#FBE5B6",
-            bg_color="white",
-            dropdown_fg_color="white",
-            dropdown_hover_color="#F8E1AF",
-            button_hover_color="#FFCC5C",
-            text_color="black",
-            dropdown_text_color="black",
+            button_color=("#FFCC5C", '#021018'),
+            fg_color=("#FBE5B6", BG_DARK_L),
+            bg_color=('white', BG_DARK_R),
+            dropdown_fg_color=("white", 'gray'),
+            dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+            button_hover_color=("#FFCC5C", 'black'),
+            text_color=("black", 'white'),
+            dropdown_text_color=("black", 'white'),
             values=self.report_source_list)
         self.source_menu.place(x=480, y=326)
         
-        self.report_kind_label = Label(
+        self.report_kind_label = CTkLabel(
                 self.master, 
                 text="kind of report:", 
                 font=('Kdam Thmor', 18),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=150, 
+                height=50
             )
         self.report_kind_label.place(
             x=700, 
-            y=315, 
-            width=150, 
-            height=50
+            y=315
         )
         self.kind_menu = CTkOptionMenu(
             master=self.master,
-            button_color="#FFCC5C",
-            fg_color="#FBE5B6",
-            bg_color="white",
-            dropdown_fg_color="white",
-            dropdown_hover_color="#F8E1AF",
-            button_hover_color="#FFCC5C",
-            text_color="black",
-            dropdown_text_color="black",
+            button_color=("#FFCC5C", '#021018'),
+            fg_color=("#FBE5B6", BG_DARK_L),
+            bg_color=('white', BG_DARK_R),
+            dropdown_fg_color=("white", 'gray'),
+            dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+            button_hover_color=("#FFCC5C", 'black'),
+            text_color=("black", 'white'),
+            dropdown_text_color=("black", 'white'),
             values=self.report_kind_list)
         self.kind_menu.place(x=870, y=326)
         
-        self.price_amount_label = Label(
+        self.price_amount_label = CTkLabel(
                 self.master, 
                 text="price amount:", 
                 font=('Kdam Thmor', 18),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=150, 
+                height=50
             )
         self.price_amount_label.place(
             x=316, 
-            y=405, 
-            width=150, 
-            height=50
+            y=405
         )
         
         self.price_amount_entry = CTkEntry(
@@ -1834,9 +1856,9 @@ class ReportingPage:
             height=40,
             border_width=2,
             corner_radius=10,
-            border_color="#3300FF",
-            bg_color="white",
-            fg_color="white",
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             placeholder_text_color=TEXT_COLOR_ENTRY,
             text_color="black"
         )
@@ -1848,29 +1870,29 @@ class ReportingPage:
         self.option_var3 = StringVar() 
         self.option_var3.set(self.report_section_list[0])
         
-        self.report_section_label = Label(
+        self.report_section_label = CTkLabel(
                 self.master, 
                 text="source report:", 
                 font=('Kdam Thmor', 18),
-                fg="black", 
-                bg="white"
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=230, 
+                height=50
             )
         self.report_section_label.place(
             x=280, 
-            y=495, 
-            width=230, 
-            height=50
+            y=495
         )
         self.section_menu = CTkOptionMenu(
             master=self.master,
-            button_color="#FFCC5C",
-            fg_color="#FBE5B6",
-            bg_color="white",
-            dropdown_fg_color="white",
-            dropdown_hover_color="#F8E1AF",
-            button_hover_color="#FFCC5C",
-            text_color="black",
-            dropdown_text_color="black",
+            button_color=("#FFCC5C", '#021018'),
+            fg_color=("#FBE5B6", BG_DARK_L),
+            bg_color=('white', BG_DARK_R),
+            dropdown_fg_color=("white", 'gray'),
+            dropdown_hover_color=("#F8E1AF", BG_DARK_L),
+            button_hover_color=("#FFCC5C", 'black'),
+            text_color=("black", 'white'),
+            dropdown_text_color=("black", 'white'),
             values=self.report_section_list)
         self.section_menu.place(x=480, y=505)
         
@@ -1888,8 +1910,8 @@ class ReportingPage:
             corner_radius=10,
             border_width=1,
             hover=TRUE,
-            fg_color="white",
-            bg_color="white",
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
             text="Filtering",
             text_color="black",
             font=FONT_BUTTON)
@@ -1918,7 +1940,8 @@ class ReportingPage:
             self.month_report_entry,
             self.report_month_label,
             self.reporting_label,
-            self.value_listbox
+            self.value_listbox,
+            self.date_label
         ])
         
     def clear_widgets(self):
@@ -1962,7 +1985,7 @@ class ReportingPage:
         self.submit_btn.configure(fg_color="#B0B2AE")
     
     def on_leave_submit(self, event):
-        self.submit_btn.configure(fg_color="white")
+        self.submit_btn.configure(fg_color=("white", BG_DARK_R))
         
     def add_filter(self, item_list):        
         if len(self.day_report_entry.get()) != 0:
@@ -2117,6 +2140,7 @@ class Main(Tk):
         
         
     def setup_ui(self):
+        set_appearance_mode("light")
         self.background_image = PhotoImage(file="images/main_2.png")
         self.canvas = Canvas(self, width=1125, height=800, highlightthickness=0, bg=BG_COLOR_BACK_OFF)
         self.canvas.create_image(562.5, 400, image=self.background_image)
@@ -2126,14 +2150,14 @@ class Main(Tk):
         
         self.set_income_button = CTkButton(
             master=self,
-            width=273,
+            width=274,
             height=62,
             corner_radius=0,
             border_width=0,
             hover=TRUE,
-            fg_color=BG_COLOR_BACK_OFF,
+            fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L),
             text="Set income",
-            text_color="#4B3E39",
+            text_color=("#4B3E39",'white'),
             font=FONT_BUTTON       
         )
         self.set_income_button.place(x=0, y=187)
@@ -2143,14 +2167,14 @@ class Main(Tk):
         
         self.cost_register_button = CTkButton(
             master=self,
-            width=273,
+            width=274,
             height=62,
             corner_radius=0,
             border_width=0,
             hover=TRUE,
-            fg_color=BG_COLOR_BACK_OFF,
+            fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L),
             text="Cost registration",
-            text_color="#4B3E39",
+            text_color=("#4B3E39",'white'),
             font=FONT_BUTTON       
         )
         self.cost_register_button.place(x=0, y=237)
@@ -2161,14 +2185,14 @@ class Main(Tk):
         
         self.categories_button = CTkButton(
             master=self,
-            width=273,
+            width=274,
             height=62,
             corner_radius=0,
             border_width=0,
             hover=TRUE,
-            fg_color=BG_COLOR_BACK_OFF,
+            fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L),
             text="Categories",
-            text_color="#4B3E39",
+            text_color=("#4B3E39",'white'),
             font=FONT_BUTTON       
         )
         self.categories_button.place(x=0, y=287)
@@ -2178,14 +2202,14 @@ class Main(Tk):
         
         self.search_button = CTkButton(
             master=self,
-            width=273,
+            width=274,
             height=62,
             corner_radius=0,
             border_width=0,
             hover=TRUE,
-            fg_color=BG_COLOR_BACK_OFF,
+            fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L),
             text="Search",
-            text_color="#4B3E39",
+            text_color=("#4B3E39",'white'),
             font=FONT_BUTTON       
         )
         self.search_button.place(x=0, y=337)
@@ -2195,14 +2219,14 @@ class Main(Tk):
         
         self.reporting_button = CTkButton(
             master=self,
-            width=273,
+            width=274,
             height=62,
             corner_radius=0,
             border_width=0,
             hover=TRUE,
-            fg_color=BG_COLOR_BACK_OFF,
+            fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L),
             text="Reporting",
-            text_color="#4B3E39",
+            text_color=("#4B3E39",'white'),
             font=FONT_BUTTON       
         )
         self.reporting_button.place(x=0, y=387)
@@ -2212,14 +2236,14 @@ class Main(Tk):
         
         self.setting_button = CTkButton(
             master=self,
-            width=273,
+            width=274,
             height=62,
             corner_radius=0,
             border_width=0,
             hover=TRUE,
-            fg_color=BG_COLOR_BACK_OFF,
+            fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L),
             text="Setting",
-            text_color="#4B3E39",
+            text_color=("#4B3E39",'white'),
             font=FONT_BUTTON       
         )
         self.setting_button.place(x=0, y=437)
@@ -2229,14 +2253,14 @@ class Main(Tk):
         
         self.exit_button = CTkButton(
             master=self,
-            width=273,
+            width=274,
             height=62,
             corner_radius=0,
             border_width=0,
             hover=TRUE,
-            fg_color=BG_COLOR_BACK_OFF,
+            fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L),
             text="Exit",
-            text_color="#4B3E39",
+            text_color=("#4B3E39",'white'),
             font=FONT_BUTTON       
         )
         self.exit_button.place(x=0, y=487)
@@ -2247,32 +2271,31 @@ class Main(Tk):
         with open('user_object.pkl', 'rb') as input:
             person = pickle.load(input)
         
-        self.first_letter = Label(
+        self.first_letter = CTkLabel(
           self.master, 
                 text=f"{person.fname[0]}{person.lname[0]}", 
                 font=('Kdam Thmor', 19),
-                fg="black", 
-                bg=BG_COLOR_BACK_OFF
+                # fg_color=('white'),
+                bg_color=(BG_COLOR_BACK_OFF, BG_DARK_L), 
+                width=30, 
+                height=30
             )
         self.first_letter.place(
             x=40, 
-            y=60, 
-            width=30, 
-            height=30
+            y=60
         )
         
-        self.user_name_label = Label(
+        self.user_name_label = CTkLabel(
           self.master, 
                 text=f"{person.username}", 
                 font=('Kdam Thmor', 19),
-                fg="black", 
-                bg=BG_COLOR_BACK_OFF
+                bg_color=(BG_COLOR_BACK_OFF, BG_DARK_L),
+                width=172, 
+                height=30
             )
         self.user_name_label.place(
             x=100, 
-            y=60, 
-            width=172, 
-            height=30
+            y=60
         )
     
            
@@ -2300,10 +2323,10 @@ class Main(Tk):
         self.search_page.setup_ui()
         
     def on_enter_set_income(self, event):
-        self.set_income_button.configure(fg_color=BG_COLOR_BACK_ON)
+        self.set_income_button.configure(fg_color=(BG_COLOR_BACK_ON, '#094160'))
         
     def on_leave_set_income(self, event):
-        self.set_income_button.configure(fg_color=BG_COLOR_BACK_OFF)
+        self.set_income_button.configure(fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L))
     
     def cost_registration(self, event):
         self.cost_page = CostPage(self)
@@ -2313,10 +2336,10 @@ class Main(Tk):
         self.cost_page.setup_ui()    
         
     def on_enter_cost_register(self, event):
-        self.cost_register_button.configure(fg_color=BG_COLOR_BACK_ON)
+        self.cost_register_button.configure(fg_color=(BG_COLOR_BACK_ON, '#094160'))
         
     def on_leave_cost_register(self, event):
-        self.cost_register_button.configure(fg_color=BG_COLOR_BACK_OFF)
+        self.cost_register_button.configure(fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L))
     
     def show_category_page(self, event):
         self.category_page = CategoryPage(self)
@@ -2326,16 +2349,16 @@ class Main(Tk):
         self.category_page.setup_ui()    
     
     def on_enter_categories(self, event):
-        self.categories_button.configure(fg_color=BG_COLOR_BACK_ON)
+        self.categories_button.configure(fg_color=(BG_COLOR_BACK_ON, '#094160'))
         
     def on_leave_categories(self, event):
-        self.categories_button.configure(fg_color=BG_COLOR_BACK_OFF)
+        self.categories_button.configure(fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L))
         
     def on_enter_search(self, event):
-        self.search_button.configure(fg_color=BG_COLOR_BACK_ON)
+        self.search_button.configure(fg_color=(BG_COLOR_BACK_ON, '#094160'))
         
     def on_leave_search(self, event):
-        self.search_button.configure(fg_color=BG_COLOR_BACK_OFF)
+        self.search_button.configure(fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L))
         
     def show_reporting_page(self, event):
         self.report_page = ReportingPage(self)
@@ -2345,10 +2368,10 @@ class Main(Tk):
         self.report_page.setup_ui()
         
     def on_enter_reporting(self, event):
-        self.reporting_button.configure(fg_color=BG_COLOR_BACK_ON)
+        self.reporting_button.configure(fg_color=(BG_COLOR_BACK_ON, '#094160'))
         
     def on_leave_reporting(self, event):
-        self.reporting_button.configure(fg_color=BG_COLOR_BACK_OFF)
+        self.reporting_button.configure(fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L))
         
     def show_setting_page(self, event):
         self.setting_page = SettingPage(self)
@@ -2358,10 +2381,10 @@ class Main(Tk):
         self.setting_page.setup_ui()
     
     def on_enter_setting(self, event):
-        self.setting_button.configure(fg_color=BG_COLOR_BACK_ON)
+        self.setting_button.configure(fg_color=(BG_COLOR_BACK_ON, '#094160'))
         
     def on_leave_setting(self, event):
-        self.setting_button.configure(fg_color=BG_COLOR_BACK_OFF)
+        self.setting_button.configure(fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L))
         
     
     def on_exit_click(self, event):
@@ -2370,10 +2393,10 @@ class Main(Tk):
             self.destroy()
     
     def on_enter_exit(self, event):
-        self.exit_button.configure(fg_color=BG_COLOR_BACK_ON)
+        self.exit_button.configure(fg_color=(BG_COLOR_BACK_ON, '#094160'))
         
     def on_leave_exit(self, event):
-        self.exit_button.configure(fg_color=BG_COLOR_BACK_OFF)
+        self.exit_button.configure(fg_color=(BG_COLOR_BACK_OFF, BG_DARK_L))
         
    
 
@@ -2388,11 +2411,11 @@ def clear_terminal():
         os.system('clear')
 
    
-        
+app = Main()      
         
 def start():
     try:
-        app = Main()
+       
         
         with open('user_object.pkl', 'rb') as input:
             person = pickle.load(input)
