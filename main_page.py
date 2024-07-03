@@ -983,6 +983,9 @@ class SettingPage:
             self.setting_label
         ])
         
+    def change_theme(self):
+        
+        
     def clear_widgets(self):
         for widget in self.widget_list:
             widget.place_forget()
