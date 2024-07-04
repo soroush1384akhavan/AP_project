@@ -10,9 +10,10 @@ import pickle
 # Constants
 BG_COLOR_BACK_ON = "#FBE5B6"
 BG_COLOR_BACK_OFF = "#F8E1AF"
-FONT_LABEL = ('Kaisei Opi', 75)
+#FONT_LABEL = ('Kaisei Opi', 75)
 FONT_STYLE_ENTRY = ('Kdam Thmor', 20)
 FONT_BUTTON = ('Kdam Thmor', 20)
+FONT = ('Kdam Thmor', 19)
 TEXT_COLOR_ENTRY = "#BDB7B4"
 BG_COLOR_ENTRY = "#F3EBE8"
 LOG_IN_BUTTON_COLOR_OFF = "#F3EBE8"
@@ -35,7 +36,7 @@ class IncomePage:
         self.income_amount_label = CTkLabel(
                 self.master, 
                 text="Income amount:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=200, 
@@ -84,7 +85,7 @@ class IncomePage:
         self.date_label = CTkLabel(
                 self.master, 
                 text="Date:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=66, 
@@ -119,7 +120,7 @@ class IncomePage:
         self.source_of_income_label = CTkLabel(
                 self.master, 
                 text="Source of Income:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=244, 
@@ -161,7 +162,7 @@ class IncomePage:
         self.category_label = CTkLabel(
                 self.master, 
                 text="Type:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=120, 
@@ -188,7 +189,7 @@ class IncomePage:
         self.description_label = CTkLabel(
                 self.master, 
                 text="Description:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=146, 
@@ -377,7 +378,7 @@ class CostPage:
         self.cost_amount_label = CTkLabel(
                 self.master, 
                 text="Cost amount:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=200, 
@@ -426,7 +427,7 @@ class CostPage:
         self.date_label = CTkLabel(
                 self.master, 
                 text="Date:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=66, 
@@ -461,7 +462,7 @@ class CostPage:
         self.source_of_income_label = CTkLabel(
                 self.master, 
                 text="Source of Cost:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=244, 
@@ -502,7 +503,7 @@ class CostPage:
         self.category_label = CTkLabel(
                 self.master, 
                 text="Type:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=120, 
@@ -529,7 +530,7 @@ class CostPage:
         self.description_label = CTkLabel(
                 self.master, 
                 text="Description:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=146, 
@@ -731,7 +732,7 @@ class CategoryPage:
         self.add_category_label = CTkLabel(
                 self.master, 
                 text="add your category:", 
-                font=('Kdam Thmor', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=250, 
@@ -812,7 +813,7 @@ class CategoryPage:
             self.create_cat_btn.configure(fg_color="#B0B2AE")
         
     def on_leave_create(self, event):
-        self.create_cat_btn.configure(fg_color="white")
+        self.create_cat_btn.configure(fg_color=("white",BG_DARK_R))
     
         
     def on_create_clicked(self, event):
@@ -845,13 +846,15 @@ class CategoryPage:
         
         connect.commit()
         connect.close()
+        
 class SettingPage:  
     count_dark = 0
-
     def __init__(self, master):
         self.master = master
         self.widget_list = []
+        self.lable_list = []
         self.setup_ui()
+
 
     def setup_ui(self):
         if SettingPage.count_dark == 0:
@@ -876,7 +879,7 @@ class SettingPage:
         self.change_theme_label = CTkLabel(
                 self.master, 
                 text="change theme", 
-                font=('Kdam Thmor', 19),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=250, 
@@ -900,7 +903,7 @@ class SettingPage:
         self.delete_info_label = CTkLabel(
                 self.master, 
                 text="delete user data", 
-                font=('Kdam Thmor', 19),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=250, 
@@ -950,7 +953,7 @@ class SettingPage:
         self.delete_account_label = CTkLabel(
                 self.master, 
                 text="delete user account", 
-                font=('Kdam Thmor', 19),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=250, 
@@ -960,6 +963,90 @@ class SettingPage:
             x=316, 
             y=301
         )
+        
+        self.font_size_label = CTkLabel(
+                self.master, 
+                text=f"font size (now:{FONT[1]})", 
+                font=FONT,
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=250, 
+                height=74
+            )
+        self.font_size_label.place(
+            x=316, 
+            y=401
+        )
+        
+        self.font_size_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            width=50,
+            height=50,
+            border_width=2,
+            corner_radius=10,
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
+            placeholder_text_color=TEXT_COLOR_ENTRY,
+            text_color="black"
+        )
+        self.font_size_entry.place(
+            x=526,
+            y=411
+        )
+        
+        self.font_ok_btn = CTkButton(
+            master= self.master,
+            width=80,
+            height=47,
+            state=DISABLED,
+            corner_radius=10,
+            border_width=1,
+            hover=TRUE,
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
+            text="Verify",
+            text_color="black",
+            font=('Kdam Thmor', 17))
+        
+        self.font_ok_btn.place(x=700, y=471)
+        self.font_ok_btn.bind("<Button-1>", self.on_click_ok)
+        self.font_ok_btn.bind("<Enter>", self.on_enter_ok)
+        self.font_ok_btn.bind("<Leave>", self.on_leave_ok)
+        
+        self.font_type_label = CTkLabel(
+                self.master, 
+                text=f"font type (now:{FONT[0]})", 
+                font=FONT,
+                fg_color=('white', BG_DARK_R),
+                bg_color=('white', BG_DARK_R),
+                width=250, 
+                height=74
+            )
+        self.font_type_label.place(
+            x=316, 
+            y=501
+        )
+        
+        self.font_type_entry = CTkEntry(
+            master=self.master,
+            font=FONT_STYLE_ENTRY,
+            width=100,
+            height=50,
+            border_width=2,
+            corner_radius=10,
+            border_color=("#3300FF", 'white'),
+            fg_color=('white', BG_DARK_R),
+            bg_color=('white', BG_DARK_R),
+            placeholder_text_color=TEXT_COLOR_ENTRY,
+            text_color="black"
+        )
+        self.font_type_entry.place(
+            x=576,
+            y=511
+        )
+        
         
         self.delete_user_btn = CTkButton(
             master= self.master,
@@ -988,9 +1075,44 @@ class SettingPage:
             self.delete_info_label,
             self.theme_switch,
             self.change_theme_label,
-            self.setting_label
+            self.setting_label,
+            self.font_ok_btn,
+            self.font_size_entry,
+            self.font_size_label,
+            self.font_type_label,
+            self.font_type_entry
         ])
         
+        self.lable_list.extend([
+            self.delete_account_label,
+            self.delete_info_label,
+            self.change_theme_label,
+            self.setting_label,
+            self.font_size_label,
+            self.font_type_label
+        ])
+        
+    def on_enter_ok(self, event):
+        # self.delete_user_btn.configure(fg_color="#B0B2AE")
+        self.font_ok_btn.configure(fg_color=('#FBE5B6', BG_DARK_L))
+        
+    def on_leave_ok(self, event):
+        self.font_ok_btn.configure(fg_color=('white', BG_DARK_R))
+    
+        
+    def on_click_ok(self, event):  
+        global FONT
+        if self.font_size_entry.get():  
+            new_font_size = int(self.font_size_entry.get())
+            FONT = (FONT[0], new_font_size)
+            for lable in self.lable_list:
+                lable.configure(font=FONT)
+        if  self.font_type_entry.get(): 
+            new_font_type = str(self.font_type_entry.get())
+            FONT = (new_font_type, FONT[1])
+            for lable in self.lable_list:
+                lable.configure(font=FONT)
+
     def change_theme(self):
         if self.theme_switch.get()==1:
             self.apply_dark_theme()
@@ -1153,7 +1275,7 @@ class SearchPage:
         self.filter_label = CTkLabel(
                 self.master, 
                 text="filters:", 
-                font=('inter', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=93, 
@@ -1167,7 +1289,7 @@ class SearchPage:
         self.year_label = CTkLabel(
                 self.master, 
                 text="Year:", 
-                font=('light', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=66, 
@@ -1181,7 +1303,7 @@ class SearchPage:
         self.month_label = CTkLabel(
                 self.master, 
                 text="Month:", 
-                font=('light', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=94, 
@@ -1195,7 +1317,7 @@ class SearchPage:
         self.day_label = CTkLabel(
                 self.master, 
                 text="Day:", 
-                font=('light', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=66, 
@@ -1209,7 +1331,7 @@ class SearchPage:
         self.search_in_label = CTkLabel(
                 self.master, 
                 text="Search in:", 
-                font=('light', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=135, 
@@ -1223,7 +1345,7 @@ class SearchPage:
         self.money_range_label = CTkLabel(
                 self.master, 
                 text="Money range:", 
-                font=('light', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=188, 
@@ -1237,7 +1359,7 @@ class SearchPage:
         self.search_in_2_label = CTkLabel(
                 self.master, 
                 text="Search in:", 
-                font=('light', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=135, 
@@ -1251,7 +1373,7 @@ class SearchPage:
         self.search_goal_label = CTkLabel(
                 self.master, 
                 text="What do you want to search?", 
-                font=('light', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=372, 
@@ -1279,7 +1401,7 @@ class SearchPage:
         self.to_label = CTkLabel(
                 self.master, 
                 text="to", 
-                font=('light', 20),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=66, 
@@ -1663,7 +1785,7 @@ class ReportingPage:
         self.date_label = CTkLabel(
                 self.master, 
                 text="chose your period date:", 
-                font=('Kdam Thmor', 18),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=250, 
@@ -1677,7 +1799,7 @@ class ReportingPage:
         self.report_day_label = CTkLabel(
                 self.master, 
                 text="Day:", 
-                font=('Kdam Thmor', 16),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=110, 
@@ -1708,7 +1830,7 @@ class ReportingPage:
         self.report_month_label = CTkLabel(
                 self.master, 
                 text="Month:", 
-                font=('Kdam Thmor', 16),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=110, 
@@ -1739,7 +1861,7 @@ class ReportingPage:
         self.report_year_label = CTkLabel(
                 self.master, 
                 text="Year:", 
-                font=('Kdam Thmor', 16),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=110, 
@@ -1785,7 +1907,7 @@ class ReportingPage:
         self.report_source_label = CTkLabel(
                 self.master, 
                 text="source report:", 
-                font=('Kdam Thmor', 18),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=230, 
@@ -1811,7 +1933,7 @@ class ReportingPage:
         self.report_kind_label = CTkLabel(
                 self.master, 
                 text="kind of report:", 
-                font=('Kdam Thmor', 18),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=150, 
@@ -1837,7 +1959,7 @@ class ReportingPage:
         self.price_amount_label = CTkLabel(
                 self.master, 
                 text="price amount:", 
-                font=('Kdam Thmor', 18),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=150, 
@@ -1873,7 +1995,7 @@ class ReportingPage:
         self.report_section_label = CTkLabel(
                 self.master, 
                 text="source report:", 
-                font=('Kdam Thmor', 18),
+                font=FONT,
                 fg_color=('white', BG_DARK_R),
                 bg_color=('white', BG_DARK_R),
                 width=230, 
@@ -2274,7 +2396,7 @@ class Main(Tk):
         self.first_letter = CTkLabel(
           self.master, 
                 text=f"{person.fname[0]}{person.lname[0]}", 
-                font=('Kdam Thmor', 19),
+                font=FONT,
                 # fg_color=('white'),
                 bg_color=(BG_COLOR_BACK_OFF, BG_DARK_L), 
                 width=30, 
@@ -2288,7 +2410,7 @@ class Main(Tk):
         self.user_name_label = CTkLabel(
           self.master, 
                 text=f"{person.username}", 
-                font=('Kdam Thmor', 19),
+                font=FONT,
                 bg_color=(BG_COLOR_BACK_OFF, BG_DARK_L),
                 width=172, 
                 height=30
