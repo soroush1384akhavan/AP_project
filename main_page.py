@@ -1753,11 +1753,6 @@ class SearchPage:
 
         connect.close()
         return results
-
-
-
-
-
             
         
 class ReportingPage:
