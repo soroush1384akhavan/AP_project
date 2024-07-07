@@ -6,6 +6,9 @@ from tkinter import Toplevel
 import sqlite3
 import re
 import pickle
+import matplotlib.pyplot as plt
+from tkinter import END
+
 
 # Constants
 BG_COLOR_BACK_ON = "#FBE5B6"
@@ -895,6 +898,7 @@ class SettingPage:
             fg_color=('black', BG_DARK_R),
             bg_color=('white', BG_DARK_R),
             text_color="black",
+            text="",
             command = self.change_theme
             )
         self.theme_switch.place(x = 580, y= 185)
@@ -2071,6 +2075,8 @@ class ReportingPage:
             widget.place_forget()
         self.widget_list.clear()
         
+
+
     def on_submit_clicked(self, event):
         self.submit_btn.configure(fg_color="gray")
         self.submit_btn.after(200, lambda: self.submit_btn.configure(fg_color="white"))
@@ -2090,7 +2096,7 @@ class ReportingPage:
             sum_of_cost += int(item[1])
         
         self.value_listbox.delete(0, END)
-        if self.section_menu.get() == "income" :   
+        if self.section_menu.get() == "income":   
             for item in income_list:
                 self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of income".format(int(item[1])*100/sum_of_income))
         elif self.section_menu.get() == 'cost':
@@ -2101,6 +2107,24 @@ class ReportingPage:
                 self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of income".format(int(item[1])*100/sum_of_income))
             for item in cost_list:
                 self.value_listbox.insert('end', item[1:-1], r"{:.2f} % of cost".format(int(item[1])*100/sum_of_cost))
+        
+        labels = []
+        sizes = []
+        if self.section_menu.get() in ['income', 'both']:
+            for item in income_list:
+                labels.append(item[0])
+                sizes.append(int(item[1]))
+        if self.section_menu.get() in ['cost', 'both']:
+            for item in cost_list:
+                labels.append(item[0])
+                sizes.append(int(item[1]))
+        
+        plt.figure(figsize=(8, 6))
+        plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+        plt.axis('equal')  
+        plt.title('Income and Cost Distribution')
+        plt.show()
+
 
     
     def on_enter_submit(self, event):
