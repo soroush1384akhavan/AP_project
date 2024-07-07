@@ -2113,11 +2113,11 @@ class ReportingPage:
         sizes = []
         if self.section_menu.get() in ['income', 'both']:
             for item in income_list:
-                labels.append(item[0])
+                labels.append(item[5])
                 sizes.append(int(item[1]))
         if self.section_menu.get() in ['cost', 'both']:
             for item in cost_list:
-                labels.append(item[0])
+                labels.append(item[5])
                 sizes.append(int(item[1]))
         
         plt.figure(figsize=(8, 6))
