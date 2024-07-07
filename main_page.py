@@ -2087,6 +2087,7 @@ class ReportingPage:
         
         income_list = self.get_income_from_db(person.username, self.source_menu.get(), self.kind_menu.get())
         income_list = self.add_filter(income_list)
+        print(income_list)
         for item in income_list:
             sum_of_income += int(item[1])
         
@@ -2133,30 +2134,22 @@ class ReportingPage:
     def on_leave_submit(self, event):
         self.submit_btn.configure(fg_color=("white", BG_DARK_R))
         
-    def add_filter(self, item_list):        
+    def add_filter(self, item_list):
         if len(self.day_report_entry.get()) != 0:
-            min, max = self.day_report_entry.get().split('-')
-            for item in item_list:
-                if (item[2].split('/'))[2] < min or (item[2].split('/'))[2] > max:
-                    item_list.remove(item)
+            min_day, max_day = map(int, self.day_report_entry.get().split('-'))
+            item_list = [item for item in item_list if min_day <= int(item[2].split('/')[2]) <= max_day]
                         
         if len(self.month_report_entry.get()) != 0:
-            min, max = self.month_report_entry.get().split('-')
-            for item in item_list:
-                if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
-                    item_list.remove(item)
+            min_month, max_month = map(int, self.month_report_entry.get().split('-'))
+            item_list = [item for item in item_list if min_month <= int(item[2].split('/')[1]) <= max_month]
                         
         if len(self.year_report_entry.get()) != 0:
-            min, max = self.year_report_entry.get().split('-')
-            for item in item_list:
-                if (item[2].split('/'))[1] < min or (item[2].split('/'))[1] > max:
-                    item_list.remove(item)
+            min_year, max_year = map(int, self.year_report_entry.get().split('-'))
+            item_list = [item for item in item_list if min_year <= int(item[2].split('/')[0]) <= max_year]
                         
         if len(self.price_amount_entry.get()) != 0:
-            min , max = self.price_amount_entry.get().split('-')
-            for item in item_list:
-                if item[1] < min or item[1] > max:
-                    item_list.remove(item)
+            min_price, max_price = map(int, self.price_amount_entry.get().split('-'))
+            item_list = [item for item in item_list if min_price <= int(item[1]) <= max_price]
                     
         return item_list
     
